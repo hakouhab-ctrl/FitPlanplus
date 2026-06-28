@@ -2766,17 +2766,20 @@
     window.scrollTo(0,0);
   }
 
-  // Override startJourney to hide hero properly
-  const _origStart = startJourney;
+  // Fix startJourney to work with navbar
+  const _origStartJourney = startJourney;
   startJourney = function() {
     document.getElementById('heroSection').style.display = 'none';
+    document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
     document.getElementById('formSection').style.display = 'block';
     document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
     window.scrollTo(0,0);
   };
 
-  // Initialize blog grid on load
-  renderBlogGrid();
+  // Wait for full DOM before initializing
+  document.addEventListener('DOMContentLoaded', function() {
+    renderBlogGrid();
+  });
 
 </script>
 
