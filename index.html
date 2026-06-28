@@ -1,6 +1,52 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
+
+<script>
+// Global navigation - defined early so navbar buttons work
+function showPage(page) {
+  // hide main app sections
+  ['heroSection','formSection','resultsSection'].forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) el.style.display = 'none';
+  });
+
+  // hide all page sections
+  document.querySelectorAll('.page-section').forEach(function(s) {
+    s.classList.remove('active');
+  });
+
+  // update nav active state
+  document.querySelectorAll('.nav-link').forEach(function(l) {
+    l.classList.remove('active');
+  });
+  var navEl = document.getElementById('nav-' + page);
+  if (navEl) navEl.classList.add('active');
+
+  if (page === 'home') {
+    var hero = document.getElementById('heroSection');
+    if (hero) hero.style.display = 'flex';
+    var navHome = document.getElementById('nav-home');
+    if (navHome) navHome.classList.add('active');
+  } else if (page === 'blog') {
+    var blogPage = document.getElementById('page-blog');
+    if (blogPage) blogPage.classList.add('active');
+    if (typeof renderBlogGrid === 'function') renderBlogGrid();
+  } else if (page === 'about') {
+    var aboutPage = document.getElementById('page-about');
+    if (aboutPage) aboutPage.classList.add('active');
+  } else if (page === 'privacy') {
+    var privPage = document.getElementById('page-privacy');
+    if (privPage) privPage.classList.add('active');
+  } else if (page === 'terms') {
+    var termsPage = document.getElementById('page-terms');
+    if (termsPage) termsPage.classList.add('active');
+  }
+
+  window.scrollTo(0, 0);
+}
+</script>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>FitPlan Pro | Your Personal Nutrition & Workout Plan</title>
@@ -2733,38 +2779,7 @@
   }
 
   // ===== PAGE ROUTER =====
-  function showPage(page) {
-    // hide all main sections
-    const mainSections = ['heroSection','formSection','resultsSection'];
-    mainSections.forEach(id => {
-      const el = document.getElementById(id);
-      if (el) el.style.display = 'none';
-    });
-
-    // hide all page sections
-    document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
-
-    // update nav
-    document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-    const navEl = document.getElementById('nav-' + page);
-    if (navEl) navEl.classList.add('active');
-
-    if (page === 'home') {
-      document.getElementById('heroSection').style.display = 'flex';
-      document.getElementById('nav-home').classList.add('active');
-    } else if (page === 'blog') {
-      document.getElementById('page-blog').classList.add('active');
-      renderBlogGrid();
-    } else if (page === 'about') {
-      document.getElementById('page-about').classList.add('active');
-    } else if (page === 'privacy') {
-      document.getElementById('page-privacy').classList.add('active');
-    } else if (page === 'terms') {
-      document.getElementById('page-terms').classList.add('active');
-    }
-
-    window.scrollTo(0,0);
-  }
+  // showPage is defined globally in <head>
 
   // Fix startJourney to work with navbar
   const _origStartJourney = startJourney;
