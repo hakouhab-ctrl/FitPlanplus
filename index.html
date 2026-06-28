@@ -728,9 +728,365 @@
     .tips-grid { grid-template-columns: 1fr; }
     .tabs { flex-wrap: wrap; }
   }
+
+  /* ===== NAVBAR ===== */
+  .navbar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 998;
+    background: rgba(10,14,26,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 24px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .nav-brand {
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--accent);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .nav-link {
+    background: transparent;
+    border: none;
+    color: var(--muted);
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 8px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .nav-link:hover { color: var(--text); background: var(--card); }
+  .nav-link.active { color: var(--accent); }
+
+  /* Push content below navbar */
+  .hero, .form-section, .results-section { padding-top: 80px; }
+
+  /* ===== STATIC PAGES ===== */
+  .page-section {
+    display: none;
+    position: relative;
+    z-index: 1;
+    padding: 80px 20px 60px;
+    max-width: 860px;
+    margin: 0 auto;
+    animation: slideUp 0.5s ease;
+  }
+
+  .page-section.active { display: block; }
+
+  .page-hero {
+    text-align: center;
+    margin-bottom: 50px;
+  }
+
+  .page-hero h1 {
+    font-family: 'Inter', sans-serif;
+    font-size: clamp(28px, 5vw, 48px);
+    font-weight: 900;
+    background: linear-gradient(135deg, #fff 0%, var(--accent) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 12px;
+  }
+
+  .page-hero p { color: var(--muted); font-size: 16px; }
+
+  .prose {
+    font-size: 15px;
+    line-height: 1.9;
+    color: var(--muted);
+  }
+
+  .prose h2 {
+    font-family: 'Inter', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text);
+    margin: 36px 0 14px;
+  }
+
+  .prose h3 {
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--accent);
+    margin: 24px 0 10px;
+  }
+
+  .prose p { margin-bottom: 14px; }
+
+  .prose ul {
+    padding-right: 20px;
+    padding-left: 20px;
+    margin-bottom: 14px;
+  }
+
+  .prose li { margin-bottom: 8px; }
+
+  .prose strong { color: var(--text); font-weight: 600; }
+
+  .prose a { color: var(--accent); text-decoration: none; }
+  .prose a:hover { text-decoration: underline; }
+
+  .policy-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 30px;
+    margin-bottom: 20px;
+  }
+
+  /* ===== ABOUT ===== */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 30px 0;
+  }
+
+  .about-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px;
+    text-align: center;
+  }
+
+  .about-card .ac-icon { font-size: 36px; margin-bottom: 12px; }
+  .about-card .ac-title { font-weight: 700; font-size: 16px; margin-bottom: 8px; }
+  .about-card .ac-desc { font-size: 13px; color: var(--muted); line-height: 1.7; }
+
+  .team-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px;
+    display: flex;
+    gap: 18px;
+    align-items: center;
+    margin-bottom: 14px;
+  }
+
+  .team-avatar {
+    width: 60px; height: 60px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    flex-shrink: 0;
+  }
+
+  .team-name { font-weight: 700; font-size: 16px; margin-bottom: 4px; }
+  .team-role { font-size: 12px; color: var(--accent); margin-bottom: 6px; }
+  .team-bio { font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+  /* ===== BLOG ===== */
+  .blog-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    margin-top: 20px;
+  }
+
+  .blog-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.2s, border-color 0.2s;
+  }
+
+  .blog-card:hover { transform: translateY(-4px); border-color: var(--accent); }
+
+  .blog-img {
+    height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 48px;
+  }
+
+  .blog-body { padding: 18px; }
+  .blog-tag {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+
+  .blog-title { font-weight: 700; font-size: 15px; margin-bottom: 8px; line-height: 1.4; }
+  .blog-excerpt { font-size: 12px; color: var(--muted); line-height: 1.6; margin-bottom: 12px; }
+
+  .blog-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  /* Blog article modal */
+  .blog-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(10,14,26,0.97);
+    z-index: 200;
+    overflow-y: auto;
+    padding: 80px 20px 40px;
+    animation: fadeIn 0.3s ease;
+  }
+
+  .blog-modal.show { display: block; }
+
+  .blog-modal-inner {
+    max-width: 740px;
+    margin: 0 auto;
+  }
+
+  .blog-modal-close {
+    background: var(--card);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-size: 14px;
+    font-weight: 600;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-bottom: 30px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .blog-modal-close:hover { border-color: var(--accent); color: var(--accent); }
+
+  .blog-modal-tag { font-size: 12px; font-weight: 700; color: var(--accent); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; }
+
+  .blog-modal-title {
+    font-family: 'Inter', sans-serif;
+    font-size: clamp(24px, 4vw, 36px);
+    font-weight: 900;
+    line-height: 1.25;
+    margin-bottom: 16px;
+  }
+
+  .blog-modal-meta { font-size: 13px; color: var(--muted); margin-bottom: 32px; padding-bottom: 24px; border-bottom: 1px solid var(--border); }
+
+  /* ===== FOOTER ===== */
+  .site-footer {
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    padding: 40px 24px 24px;
+    margin-top: 60px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .footer-inner {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .footer-top {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 32px;
+    margin-bottom: 32px;
+  }
+
+  .footer-brand-name {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--accent);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .footer-brand-desc { font-size: 13px; color: var(--muted); line-height: 1.7; }
+
+  .footer-col-title { font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; }
+
+  .footer-link {
+    display: block;
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 8px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: color 0.2s;
+    background: none;
+    border: none;
+    text-align: left;
+    padding: 0;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .footer-link:hover { color: var(--accent); }
+
+  .footer-bottom {
+    border-top: 1px solid var(--border);
+    padding-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    color: var(--muted);
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  @media(max-width: 640px) {
+    .about-grid { grid-template-columns: 1fr; }
+    .blog-grid { grid-template-columns: 1fr; }
+    .footer-top { grid-template-columns: 1fr; }
+    .nav-links { gap: 2px; }
+    .nav-link { padding: 6px 8px; font-size: 11px; }
+  }
+
 </style>
 </head>
 <body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <a class="nav-brand" onclick="showPage('home')">⚡ FitPlan Pro</a>
+  <div class="nav-links">
+    <button class="nav-link active" id="nav-home" onclick="showPage('home')">Home</button>
+    <button class="nav-link" id="nav-blog" onclick="showPage('blog')">Blog</button>
+    <button class="nav-link" id="nav-about" onclick="showPage('about')">About</button>
+    <button class="nav-link" id="nav-privacy" onclick="showPage('privacy')">Privacy</button>
+    <button class="nav-link" id="nav-terms" onclick="showPage('terms')">Terms</button>
+  </div>
+</nav>
+
 
 <!-- LANG TOGGLE -->
 <button class="lang-toggle" id="langBtn" onclick="toggleLang()">
@@ -1937,6 +2293,687 @@
 
   // Initialize default language UI (English is default, but run once to be safe)
   applyLang();
+
+
+  // ===== BLOG DATA =====
+  const blogPosts = [
+    {
+      id: 1,
+      tag: 'Nutrition',
+      emoji: '🥗',
+      color: '#00e5a0',
+      title: 'What is TDEE and Why It's the Key to Your Weight Goal',
+      excerpt: 'Understanding Total Daily Energy Expenditure is the foundation of any successful diet. Here's everything you need to know.',
+      date: 'June 10, 2026',
+      readTime: '5 min read',
+      content: `
+        <h2>What is TDEE?</h2>
+        <p>Total Daily Energy Expenditure (TDEE) is the total number of calories your body burns in a day, accounting for all activities including exercise, digestion, and basic bodily functions.</p>
+        <p>It's calculated by multiplying your <strong>Basal Metabolic Rate (BMR)</strong> — the calories burned at rest — by an activity factor that reflects how active you are.</p>
+
+        <h2>Why TDEE Matters</h2>
+        <p>Your TDEE is the magic number that determines everything:</p>
+        <ul>
+          <li><strong>Eat below TDEE</strong> → You lose weight</li>
+          <li><strong>Eat at TDEE</strong> → You maintain weight</li>
+          <li><strong>Eat above TDEE</strong> → You gain weight</li>
+        </ul>
+        <p>Most diets fail because people don't know their actual TDEE. They either eat too little (causing muscle loss and metabolic slowdown) or too much (preventing fat loss).</p>
+
+        <h2>How to Calculate Your TDEE</h2>
+        <p>FitPlan Pro calculates your TDEE automatically using the <strong>Mifflin-St Jeor equation</strong>, considered the most accurate BMR formula:</p>
+        <ul>
+          <li><strong>Men:</strong> BMR = (10 × weight kg) + (6.25 × height cm) − (5 × age) + 5</li>
+          <li><strong>Women:</strong> BMR = (10 × weight kg) + (6.25 × height cm) − (5 × age) − 161</li>
+        </ul>
+        <p>This is then multiplied by your activity factor — ranging from 1.2 (sedentary) to 1.9 (very active athlete).</p>
+
+        <h2>The Optimal Caloric Deficit/Surplus</h2>
+        <p>For <strong>weight loss</strong>, a deficit of 300–700 calories per day is ideal. This creates a loss of roughly 0.3–0.7 kg per week — fast enough to see results, slow enough to preserve muscle.</p>
+        <p>For <strong>muscle gain</strong>, a surplus of 200–500 calories per day maximizes muscle growth while minimizing fat gain.</p>
+
+        <h2>Key Takeaways</h2>
+        <ul>
+          <li>TDEE is your daily calorie "budget"</li>
+          <li>Consistency matters more than perfection</li>
+          <li>Recalculate your TDEE every 4–6 weeks as your weight changes</li>
+          <li>Use FitPlan Pro to auto-calculate your TDEE and get a full meal plan</li>
+        </ul>
+      `
+    },
+    {
+      id: 2,
+      tag: 'Training',
+      emoji: '🏋️',
+      color: '#0097ff',
+      title: 'Progressive Overload: The #1 Rule of Muscle Growth',
+      excerpt: 'Without progressive overload, your muscles have no reason to grow. Learn how to apply this principle correctly.',
+      date: 'June 8, 2026',
+      readTime: '6 min read',
+      content: `
+        <h2>What is Progressive Overload?</h2>
+        <p>Progressive overload is the gradual increase of stress placed on the body during exercise. It's the single most important principle for building muscle, increasing strength, and improving fitness.</p>
+        <p>Your muscles adapt to the demands placed on them. If you always lift the same weight for the same reps, your muscles have no stimulus to grow. You must continuously challenge them.</p>
+
+        <h2>Ways to Apply Progressive Overload</h2>
+        <ul>
+          <li><strong>Increase weight:</strong> Add 2.5–5 kg when you can complete all reps with good form</li>
+          <li><strong>Increase reps:</strong> Go from 8 to 10 to 12 reps before adding weight</li>
+          <li><strong>Increase sets:</strong> Add an extra set to your exercises</li>
+          <li><strong>Decrease rest time:</strong> Same work in less time = more intensity</li>
+          <li><strong>Improve form:</strong> Better range of motion means more muscle activation</li>
+        </ul>
+
+        <h2>The Beginner's Advantage</h2>
+        <p>If you're new to training, you'll experience what's called <strong>"newbie gains"</strong> — rapid strength and muscle increases in your first 6–12 months. This is the best time to build a solid foundation. Take advantage of it by training consistently and eating enough protein.</p>
+
+        <h2>How Fast Should You Progress?</h2>
+        <p>For compound lifts (squat, deadlift, bench press), aim to add weight every 1–2 weeks. For isolation exercises, every 2–4 weeks is fine. Don't rush — ego lifting leads to injury, which sets you back weeks or months.</p>
+
+        <h2>Tracking Your Progress</h2>
+        <p>Keep a simple training log. Write down what you lifted, for how many sets and reps. This makes it easy to see if you're progressing and prevents "junk volume" — just going through the motions without a plan.</p>
+      `
+    },
+    {
+      id: 3,
+      tag: 'Nutrition',
+      emoji: '🥩',
+      color: '#ff6b35',
+      title: 'How Much Protein Do You Really Need?',
+      excerpt: 'Protein requirements are often misunderstood. Here's the science on how much you actually need based on your goal.',
+      date: 'June 5, 2026',
+      readTime: '4 min read',
+      content: `
+        <h2>Why Protein is Essential</h2>
+        <p>Protein is the building block of muscle tissue. When you exercise, you create micro-tears in muscle fibers. Protein provides the amino acids needed to repair and grow those fibers back stronger.</p>
+        <p>Beyond muscle building, protein keeps you full longer, has the highest thermic effect of any macronutrient (meaning you burn more calories digesting it), and helps maintain muscle during weight loss.</p>
+
+        <h2>The Science-Backed Recommendation</h2>
+        <ul>
+          <li><strong>General health:</strong> 0.8g per kg of body weight</li>
+          <li><strong>Fat loss (preserve muscle):</strong> 1.8–2.2g per kg</li>
+          <li><strong>Muscle building:</strong> 2.0–2.4g per kg</li>
+          <li><strong>Body toning:</strong> 1.8–2.2g per kg</li>
+        </ul>
+        <p>FitPlan Pro automatically calculates your protein target based on your goal and body weight.</p>
+
+        <h2>Best Protein Sources</h2>
+        <ul>
+          <li>🐔 <strong>Chicken breast:</strong> 31g protein per 100g</li>
+          <li>🐟 <strong>Tuna:</strong> 30g protein per 100g</li>
+          <li>🥚 <strong>Eggs:</strong> 6g per egg, complete amino acid profile</li>
+          <li>🥛 <strong>Greek yogurt:</strong> 17g per 100g, plus probiotics</li>
+          <li>🫘 <strong>Lentils:</strong> 9g per 100g, great plant-based option</li>
+          <li>🥜 <strong>Tofu:</strong> 8g per 100g, versatile vegetarian protein</li>
+        </ul>
+
+        <h2>Protein Timing</h2>
+        <p>While total daily protein matters most, consuming 20–40g of protein within <strong>30–60 minutes after training</strong> can enhance muscle recovery. Spreading protein intake across 4–5 meals also leads to better utilization than eating it all in one or two meals.</p>
+      `
+    },
+    {
+      id: 4,
+      tag: 'Recovery',
+      emoji: '😴',
+      color: '#ffd700',
+      title: 'Why Sleep is Your Secret Fitness Weapon',
+      excerpt: 'You don't build muscle in the gym. You build it while you sleep. Here's why sleep quality determines your results.',
+      date: 'June 2, 2026',
+      readTime: '5 min read',
+      content: `
+        <h2>What Happens When You Sleep</h2>
+        <p>Sleep is when your body does most of its repair work. During deep sleep stages, your body releases <strong>human growth hormone (HGH)</strong> — the primary hormone responsible for muscle repair, fat burning, and tissue regeneration.</p>
+        <p>Without sufficient sleep, HGH production drops significantly, cortisol (the stress hormone) rises, and your body shifts into a catabolic state — breaking down muscle instead of building it.</p>
+
+        <h2>How Sleep Affects Your Fitness</h2>
+        <ul>
+          <li><strong>Muscle recovery:</strong> Protein synthesis peaks during deep sleep</li>
+          <li><strong>Fat loss:</strong> Sleep deprivation increases hunger hormones (ghrelin) and decreases satiety hormones (leptin)</li>
+          <li><strong>Performance:</strong> Just one night of poor sleep reduces strength output by up to 8%</li>
+          <li><strong>Motivation:</strong> Poor sleep tanks your willpower and makes skipping workouts feel easier</li>
+        </ul>
+
+        <h2>How Much Sleep Do You Need?</h2>
+        <p>For serious training, aim for <strong>7–9 hours per night</strong>. Athletes and those doing intense training may benefit from 9–10 hours.</p>
+
+        <h2>Tips to Improve Sleep Quality</h2>
+        <ul>
+          <li>Keep a consistent sleep schedule — same bedtime and wake time every day</li>
+          <li>Keep your room cool (18–20°C is ideal)</li>
+          <li>Avoid screens 30–60 minutes before bed</li>
+          <li>Avoid caffeine after 2 PM</li>
+          <li>Avoid heavy meals within 2 hours of bedtime</li>
+          <li>Consider magnesium supplementation — it's proven to improve sleep quality</li>
+        </ul>
+      `
+    },
+    {
+      id: 5,
+      tag: 'Training',
+      emoji: '🔥',
+      color: '#00e5a0',
+      title: 'HIIT vs Steady-State Cardio: Which Burns More Fat?',
+      excerpt: 'The cardio debate settled once and for all. Which type is better for fat loss, and when should you use each?',
+      date: 'May 28, 2026',
+      readTime: '6 min read',
+      content: `
+        <h2>What is HIIT?</h2>
+        <p>High-Intensity Interval Training (HIIT) alternates between short bursts of maximum effort and brief rest periods. A typical HIIT session is 15–25 minutes but can burn as many calories as 45 minutes of moderate cardio.</p>
+
+        <h2>What is Steady-State Cardio?</h2>
+        <p>Steady-state cardio (SSC) is sustained moderate-intensity exercise — jogging, cycling, swimming — maintained for 30–60 minutes at a consistent pace.</p>
+
+        <h2>Calories Burned: The Facts</h2>
+        <ul>
+          <li><strong>During exercise:</strong> Steady-state burns more calories per session (longer duration)</li>
+          <li><strong>After exercise:</strong> HIIT creates EPOC (Excess Post-exercise Oxygen Consumption) — your body burns more calories for up to 24 hours post-workout</li>
+          <li><strong>Net effect:</strong> Both are roughly equal for fat loss when total effort is matched</li>
+        </ul>
+
+        <h2>When to Use HIIT</h2>
+        <ul>
+          <li>When you're short on time</li>
+          <li>When you want to preserve muscle during fat loss</li>
+          <li>When you want to improve cardiovascular conditioning rapidly</li>
+          <li>Limit to 2–3 sessions per week — HIIT is demanding on recovery</li>
+        </ul>
+
+        <h2>When to Use Steady-State</h2>
+        <ul>
+          <li>On recovery days — it's gentle on the joints and nervous system</li>
+          <li>When you're training hard with weights and need lower-intensity cardio</li>
+          <li>For stress reduction and mental health benefits</li>
+          <li>For beginners who aren't ready for HIIT intensity</li>
+        </ul>
+
+        <h2>The Verdict</h2>
+        <p>The best cardio is the kind you'll actually do consistently. Use HIIT when time is limited and SSC when you need active recovery or variety. Ideally, use both throughout the week.</p>
+      `
+    },
+    {
+      id: 6,
+      tag: 'Nutrition',
+      emoji: '💧',
+      color: '#0097ff',
+      title: 'Hydration and Performance: How Much Water Do You Need?',
+      excerpt: 'Even mild dehydration kills your performance. Learn exactly how much water you need and when to drink it.',
+      date: 'May 24, 2026',
+      readTime: '4 min read',
+      content: `
+        <h2>Why Hydration Matters for Fitness</h2>
+        <p>Water makes up about 60% of your body and is involved in virtually every physiological process. For athletes and active people, hydration directly affects:</p>
+        <ul>
+          <li><strong>Strength:</strong> A 2% drop in body water reduces strength by up to 10%</li>
+          <li><strong>Endurance:</strong> Dehydration significantly increases perceived effort</li>
+          <li><strong>Recovery:</strong> Water is needed to flush metabolic waste products from muscles</li>
+          <li><strong>Cognitive function:</strong> Even mild dehydration impairs focus and decision-making</li>
+        </ul>
+
+        <h2>How Much Water Do You Need?</h2>
+        <p>A simple formula: drink <strong>35–40ml per kg of body weight per day</strong>. For a 75kg person, that's roughly 2.6–3.0 liters.</p>
+        <p>FitPlan Pro calculates your daily water target based on your caloric intake (a good proxy for metabolic activity).</p>
+
+        <h2>Hydration Around Training</h2>
+        <ul>
+          <li><strong>2 hours before:</strong> Drink 400–600ml</li>
+          <li><strong>During workout:</strong> 150–250ml every 15–20 minutes</li>
+          <li><strong>After workout:</strong> Drink 500ml for every 0.5kg of body weight lost during exercise</li>
+        </ul>
+
+        <h2>Signs You're Dehydrated</h2>
+        <ul>
+          <li>Dark yellow urine (aim for pale yellow)</li>
+          <li>Headaches during or after exercise</li>
+          <li>Feeling dizzy or lightheaded</li>
+          <li>Muscle cramps</li>
+          <li>Decreased performance</li>
+        </ul>
+      `
+    },
+    {
+      id: 7,
+      tag: 'Mindset',
+      emoji: '🧠',
+      color: '#ff6b35',
+      title: '10 Habits of People Who Never Miss a Workout',
+      excerpt: 'Consistency is the most underrated fitness skill. Here are the habits that make some people never skip gym days.',
+      date: 'May 20, 2026',
+      readTime: '5 min read',
+      content: `
+        <h2>Motivation is Unreliable. Systems Win.</h2>
+        <p>People who train consistently don't rely on motivation — they rely on systems and habits that make showing up the path of least resistance. Here are 10 habits they use:</p>
+
+        <h3>1. They Schedule Workouts Like Meetings</h3>
+        <p>Training sessions go in the calendar. Non-negotiable. They don't "find time" — they make time.</p>
+
+        <h3>2. They Prepare the Night Before</h3>
+        <p>Gym bag packed, clothes laid out, pre-workout meal planned. Eliminate morning decisions that can derail you.</p>
+
+        <h3>3. They Follow a Plan</h3>
+        <p>They don't show up to the gym and improvise. A structured program removes decision fatigue and ensures progressive overload.</p>
+
+        <h3>4. They Track Progress</h3>
+        <p>A training log, photos, or body measurements. Seeing progress is the most powerful motivator.</p>
+
+        <h3>5. They Set Process Goals, Not Just Outcome Goals</h3>
+        <p>"Train 4 days this week" is more actionable than "lose 10 kg." Process goals are within your control.</p>
+
+        <h3>6. They Have a Minimum Viable Workout</h3>
+        <p>On tough days, they commit to just 10 minutes. Almost always, they finish the full session once started.</p>
+
+        <h3>7. They Sleep Enough</h3>
+        <p>Recovery makes training enjoyable. When you feel good, you want to train. When you're exhausted, everything is a battle.</p>
+
+        <h3>8. They Find a Community</h3>
+        <p>A training partner, an online group, or a coach. Accountability is the most underrated fitness tool.</p>
+
+        <h3>9. They Enjoy the Process</h3>
+        <p>They find exercises they actually like. Hating your workout is unsustainable long-term.</p>
+
+        <h3>10. They Forgive Missed Days</h3>
+        <p>They never let one missed workout become two. They get back immediately without guilt.</p>
+      `
+    },
+    {
+      id: 8,
+      tag: 'Nutrition',
+      emoji: '🥦',
+      color: '#00e5a0',
+      title: 'The Vegetarian Athlete: Getting Enough Protein Without Meat',
+      excerpt: 'Can you build muscle and perform at your best on a plant-based diet? The answer is yes — here's how.',
+      date: 'May 15, 2026',
+      readTime: '5 min read',
+      content: `
+        <h2>Can Vegetarians Build Muscle?</h2>
+        <p>Absolutely. Multiple studies show that vegetarians and vegans can achieve the same muscle gains as meat-eaters when protein intake is matched. The key is being intentional about your food choices.</p>
+
+        <h2>Best Plant-Based Protein Sources</h2>
+        <ul>
+          <li>🫘 <strong>Lentils:</strong> 9g/100g + high fiber and iron</li>
+          <li>🥚 <strong>Eggs:</strong> 6g per egg, the gold standard of protein quality (not vegan)</li>
+          <li>🧀 <strong>Greek yogurt:</strong> 17g/100g (not vegan)</li>
+          <li>🟤 <strong>Tofu:</strong> 8g/100g, takes on any flavor</li>
+          <li>🫛 <strong>Tempeh:</strong> 19g/100g, fermented soy with great amino profile</li>
+          <li>🥜 <strong>Seitan:</strong> 25g/100g, highest plant protein by weight</li>
+          <li>🟢 <strong>Edamame:</strong> 11g/100g, complete protein</li>
+          <li>🌰 <strong>Hemp seeds:</strong> 31g/100g, complete amino acid profile</li>
+        </ul>
+
+        <h2>The Protein Combining Myth</h2>
+        <p>You don't need to combine proteins in the same meal to get all amino acids. As long as you eat a variety of plant proteins throughout the day, your body gets everything it needs.</p>
+
+        <h2>Supplements Worth Considering</h2>
+        <ul>
+          <li><strong>Plant protein powder</strong> (pea + rice blend is best for amino profile)</li>
+          <li><strong>Creatine monohydrate</strong> — vegetarians have lower natural creatine stores and respond particularly well</li>
+          <li><strong>Vitamin B12</strong> — essential if fully plant-based</li>
+          <li><strong>Iron and Zinc</strong> — harder to absorb from plants, pair with vitamin C</li>
+        </ul>
+      `
+    },
+    {
+      id: 9,
+      tag: 'Training',
+      emoji: '⚡',
+      color: '#ffd700',
+      title: 'The Perfect Warm-Up: 10 Minutes That Prevent Months of Injury',
+      excerpt: 'Skipping the warm-up is the most expensive shortcut in fitness. Here's a science-backed routine that takes 10 minutes.',
+      date: 'May 10, 2026',
+      readTime: '4 min read',
+      content: `
+        <h2>Why Warm-Up Matters</h2>
+        <p>A proper warm-up increases muscle temperature, improves joint mobility, activates the nervous system, and mentally prepares you for training. Studies show a good warm-up can improve performance by 5–20% and dramatically reduces injury risk.</p>
+
+        <h2>The Perfect 10-Minute Warm-Up</h2>
+
+        <h3>Minutes 1–3: General Warm-Up</h3>
+        <ul>
+          <li>Light jogging or jumping jacks — 2 minutes</li>
+          <li>Arm circles (forward and backward) — 30 seconds each</li>
+          <li>Leg swings (front/back and side/side) — 30 seconds each</li>
+        </ul>
+
+        <h3>Minutes 4–6: Mobility Work</h3>
+        <ul>
+          <li>Hip circles — 10 each direction</li>
+          <li>Thoracic rotations — 10 each side</li>
+          <li>Ankle circles — 10 each direction</li>
+          <li>Cat-cow stretches — 10 reps</li>
+        </ul>
+
+        <h3>Minutes 7–10: Activation</h3>
+        <ul>
+          <li>Glute bridges — 15 reps (activates glutes for leg day)</li>
+          <li>Band pull-aparts — 15 reps (activates rear shoulders)</li>
+          <li>Dead bugs — 10 reps each side (core activation)</li>
+          <li>2–3 warm-up sets of your first exercise at 40–60% weight</li>
+        </ul>
+
+        <h2>Key Principle</h2>
+        <p>Your warm-up should be specific to the workout. If you're squatting, spend extra time on hip and ankle mobility. If you're pressing, focus on shoulder and thoracic mobility. Never static stretch cold muscles — save static stretching for after the workout.</p>
+      `
+    },
+    {
+      id: 10,
+      tag: 'Mindset',
+      emoji: '📈',
+      color: '#0097ff',
+      title: 'How to Break a Weight Loss Plateau (Science-Based)',
+      excerpt: 'Your weight loss stalled and nothing seems to work. This happens to everyone — here's exactly why and how to fix it.',
+      date: 'May 5, 2026',
+      readTime: '6 min read',
+      content: `
+        <h2>Why Plateaus Happen</h2>
+        <p>When you lose weight, your body adapts. A lighter body requires fewer calories, your metabolism slows down (adaptive thermogenesis), and activity-induced calorie burn decreases. What worked at 90kg won't work at 75kg.</p>
+
+        <h2>Strategy 1: Recalculate Your TDEE</h2>
+        <p>Use FitPlan Pro to recalculate your plan with your current weight. Your TDEE has likely dropped by 100–200 calories since you started. Your old deficit may now be maintenance.</p>
+
+        <h2>Strategy 2: Take a Diet Break</h2>
+        <p>Eat at maintenance calories for 1–2 weeks. This "resets" adaptive thermogenesis, restores leptin levels, and gives your metabolism a boost. Many people resume losing weight faster after a diet break.</p>
+
+        <h2>Strategy 3: Change Your Training</h2>
+        <p>Your body adapts to exercise. If you've been doing the same workouts for months, switch it up:</p>
+        <ul>
+          <li>Add an extra training day</li>
+          <li>Swap steady-state cardio for HIIT</li>
+          <li>Increase training volume (more sets)</li>
+          <li>Try a completely different type of exercise</li>
+        </ul>
+
+        <h2>Strategy 4: Track More Carefully</h2>
+        <p>Studies consistently show people underestimate their calorie intake by 20–40%. For two weeks, weigh everything you eat precisely. You might find hidden calories in cooking oils, sauces, or drinks.</p>
+
+        <h2>Strategy 5: Increase NEAT</h2>
+        <p>Non-Exercise Activity Thermogenesis (NEAT) — fidgeting, walking, standing — can account for 300–500 extra calories per day. Take the stairs, walk more, stand at your desk. These small habits compound massively.</p>
+
+        <h2>What NOT to Do</h2>
+        <ul>
+          <li>Don't drop calories too low — this accelerates muscle loss and metabolism slowdown</li>
+          <li>Don't give up — plateaus are temporary and a normal part of the process</li>
+          <li>Don't compare to others — your journey is unique</li>
+        </ul>
+      `
+    }
+  ];
+
+  function renderBlogGrid() {
+    const grid = document.getElementById('blogGrid');
+    if (!grid) return;
+    grid.innerHTML = blogPosts.map(p => `
+      <div class="blog-card" onclick="openBlog(${p.id})">
+        <div class="blog-img" style="background:linear-gradient(135deg,${p.color}15,${p.color}05)">${p.emoji}</div>
+        <div class="blog-body">
+          <div class="blog-tag" style="color:${p.color}">${p.tag}</div>
+          <div class="blog-title">${p.title}</div>
+          <div class="blog-excerpt">${p.excerpt}</div>
+          <div class="blog-meta">
+            <span>📅 ${p.date}</span>
+            <span>⏱️ ${p.readTime}</span>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function openBlog(id) {
+    const post = blogPosts.find(p => p.id === id);
+    if (!post) return;
+    document.getElementById('bm-tag').textContent = post.tag;
+    document.getElementById('bm-tag').style.color = post.color;
+    document.getElementById('bm-title').textContent = post.title;
+    document.getElementById('bm-meta').textContent = `📅 ${post.date}  •  ⏱️ ${post.readTime}`;
+    document.getElementById('bm-content').innerHTML = post.content;
+    document.getElementById('blogModal').classList.add('show');
+    window.scrollTo(0,0);
+  }
+
+  function closeBlog() {
+    document.getElementById('blogModal').classList.remove('show');
+  }
+
+  // ===== PAGE ROUTER =====
+  function showPage(page) {
+    // hide all main sections
+    const mainSections = ['heroSection','formSection','resultsSection'];
+    mainSections.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.style.display = 'none';
+    });
+
+    // hide all page sections
+    document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
+
+    // update nav
+    document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+    const navEl = document.getElementById('nav-' + page);
+    if (navEl) navEl.classList.add('active');
+
+    if (page === 'home') {
+      document.getElementById('heroSection').style.display = 'flex';
+      document.getElementById('nav-home').classList.add('active');
+    } else if (page === 'blog') {
+      document.getElementById('page-blog').classList.add('active');
+      renderBlogGrid();
+    } else if (page === 'about') {
+      document.getElementById('page-about').classList.add('active');
+    } else if (page === 'privacy') {
+      document.getElementById('page-privacy').classList.add('active');
+    } else if (page === 'terms') {
+      document.getElementById('page-terms').classList.add('active');
+    }
+
+    window.scrollTo(0,0);
+  }
+
+  // Override startJourney to hide hero properly
+  const _origStart = startJourney;
+  startJourney = function() {
+    document.getElementById('heroSection').style.display = 'none';
+    document.getElementById('formSection').style.display = 'block';
+    document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+    window.scrollTo(0,0);
+  };
+
+  // Initialize blog grid on load
+  renderBlogGrid();
+
 </script>
+
+
+<!-- ========== ABOUT PAGE ========== -->
+<section class="page-section" id="page-about">
+  <div class="page-hero">
+    <h1>About FitPlan Pro</h1>
+    <p>Science-backed fitness planning for everyone, everywhere</p>
+  </div>
+
+  <div class="about-grid">
+    <div class="about-card">
+      <div class="ac-icon">🧬</div>
+      <div class="ac-title">Science-Based</div>
+      <div class="ac-desc">Every plan uses the Mifflin-St Jeor equation and TDEE calculation — the gold standard in nutrition science.</div>
+    </div>
+    <div class="about-card">
+      <div class="ac-icon">🎯</div>
+      <div class="ac-title">100% Personalized</div>
+      <div class="ac-desc">No two plans are the same. Your age, weight, goal, food preferences, and training days all shape your unique program.</div>
+    </div>
+    <div class="about-card">
+      <div class="ac-icon">🌍</div>
+      <div class="ac-title">Bilingual</div>
+      <div class="ac-desc">Full Arabic and English support — we believe language should never be a barrier to better health.</div>
+    </div>
+    <div class="about-card">
+      <div class="ac-icon">🆓</div>
+      <div class="ac-title">Free Forever</div>
+      <div class="ac-desc">No subscriptions, no hidden fees. Professional-grade fitness planning, completely free.</div>
+    </div>
+  </div>
+
+  <div class="prose">
+    <h2>Our Mission</h2>
+    <p>FitPlan Pro was built with one goal: to make professional-level fitness and nutrition planning accessible to everyone. Most personalized plans cost hundreds of dollars from a nutritionist or coach. We believe that knowledge shouldn't be gated behind a paywall.</p>
+    <p>Whether you want to lose weight, build muscle, tone your body, or simply maintain a healthy lifestyle — FitPlan Pro generates a complete, science-backed program tailored to your exact body and goals in seconds.</p>
+
+    <h2>How It Works</h2>
+    <p>You enter your stats — age, height, weight, goal, activity level, training days, and food preferences. Our engine calculates your <strong>Basal Metabolic Rate (BMR)</strong> using the Mifflin-St Jeor formula, then multiplies it by your activity factor to find your <strong>Total Daily Energy Expenditure (TDEE)</strong>.</p>
+    <p>From there, we apply a scientifically appropriate caloric surplus or deficit based on your goal, distribute macronutrients (protein, carbohydrates, fats) optimally, and generate a full meal plan and workout schedule adapted to your preferences.</p>
+
+    <h2>Meet the Team</h2>
+  </div>
+
+  <div class="team-card">
+    <div class="team-avatar">👨‍💻</div>
+    <div>
+      <div class="team-name">Abdelhak</div>
+      <div class="team-role">Founder & Developer</div>
+      <div class="team-bio">Electromechanics engineer and fitness enthusiast. Built FitPlan Pro to combine his passion for technology and health sciences into one practical tool.</div>
+    </div>
+  </div>
+
+  <div class="prose">
+    <h2>Contact Us</h2>
+    <p>Have feedback, suggestions, or questions? We'd love to hear from you.</p>
+    <p>📧 Email: <a href="mailto:contact@fitplanpro.app">contact@fitplanpro.app</a></p>
+    <p>🌐 Website: <a href="https://fit-planplus.vercel.app" target="_blank">fit-planplus.vercel.app</a></p>
+  </div>
+</section>
+
+<!-- ========== PRIVACY POLICY PAGE ========== -->
+<section class="page-section" id="page-privacy">
+  <div class="page-hero">
+    <h1>Privacy Policy</h1>
+    <p>Last updated: June 2026</p>
+  </div>
+
+  <div class="policy-card">
+    <div class="prose">
+      <h2>1. Information We Collect</h2>
+      <p>FitPlan Pro is designed with privacy in mind. We collect only the information you voluntarily enter into the plan generator:</p>
+      <ul>
+        <li>Age, gender, height, and weight</li>
+        <li>Fitness goal and target weight</li>
+        <li>Activity level and training preferences</li>
+        <li>Food preferences and dietary restrictions</li>
+      </ul>
+      <p><strong>We do not require account registration.</strong> All data you enter is processed locally in your browser and is not stored on our servers.</p>
+
+      <h2>2. How We Use Your Information</h2>
+      <p>The information you provide is used solely to generate your personalized fitness and nutrition plan. This calculation happens entirely within your browser — your data never leaves your device.</p>
+
+      <h2>3. Cookies and Analytics</h2>
+      <p>We may use anonymous, aggregated analytics (such as page visit counts) to understand how people use FitPlan Pro and improve the service. This data cannot be used to identify you personally.</p>
+
+      <h2>4. Third-Party Services</h2>
+      <p>FitPlan Pro is hosted on Vercel. Their privacy practices are governed by the <a href="https://vercel.com/legal/privacy-policy" target="_blank">Vercel Privacy Policy</a>. We use Google Fonts for typography; Google's privacy policy applies to font delivery.</p>
+
+      <h2>5. Data Security</h2>
+      <p>Since we do not collect or store personal data on our servers, there is no database of your personal information that could be breached. All plan generation happens client-side in your browser.</p>
+
+      <h2>6. Children's Privacy</h2>
+      <p>FitPlan Pro is not intended for children under 14 years of age. We do not knowingly collect personal information from children under 14.</p>
+
+      <h2>7. Changes to This Policy</h2>
+      <p>We may update this Privacy Policy from time to time. Any changes will be posted on this page with an updated date. Continued use of the service after changes constitutes acceptance of the new policy.</p>
+
+      <h2>8. Contact</h2>
+      <p>If you have questions about this Privacy Policy, please contact us at <a href="mailto:contact@fitplanpro.app">contact@fitplanpro.app</a>.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ========== TERMS OF SERVICE PAGE ========== -->
+<section class="page-section" id="page-terms">
+  <div class="page-hero">
+    <h1>Terms of Service</h1>
+    <p>Last updated: June 2026</p>
+  </div>
+
+  <div class="policy-card">
+    <div class="prose">
+      <h2>1. Acceptance of Terms</h2>
+      <p>By accessing or using FitPlan Pro ("the Service"), you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use the Service.</p>
+
+      <h2>2. Description of Service</h2>
+      <p>FitPlan Pro is a free online tool that generates personalized fitness and nutrition plans based on user-provided information. The Service is provided for informational and educational purposes only.</p>
+
+      <h2>3. Medical Disclaimer</h2>
+      <p><strong>IMPORTANT:</strong> FitPlan Pro is not a medical service. The plans generated by this tool are for general informational purposes only and should not be considered medical advice. Always consult a qualified healthcare provider, physician, or registered dietitian before starting any new diet or exercise program, especially if you have any pre-existing medical conditions.</p>
+
+      <h2>4. User Responsibilities</h2>
+      <ul>
+        <li>You are responsible for providing accurate information to generate an appropriate plan.</li>
+        <li>You use the generated plans at your own risk.</li>
+        <li>You agree not to use the Service for any unlawful purpose.</li>
+        <li>You agree not to attempt to disrupt or interfere with the Service.</li>
+      </ul>
+
+      <h2>5. Intellectual Property</h2>
+      <p>The FitPlan Pro application, including its design, code, content, and functionality, is owned by FitPlan Pro and is protected by applicable intellectual property laws. You may not copy, modify, or distribute the application without explicit written permission.</p>
+
+      <h2>6. Limitation of Liability</h2>
+      <p>To the maximum extent permitted by law, FitPlan Pro shall not be liable for any direct, indirect, incidental, special, or consequential damages resulting from your use of, or inability to use, the Service or the plans generated by it.</p>
+
+      <h2>7. Changes to Terms</h2>
+      <p>We reserve the right to modify these Terms at any time. Continued use of the Service after changes constitutes your acceptance of the new Terms.</p>
+
+      <h2>8. Governing Law</h2>
+      <p>These Terms are governed by applicable law. Any disputes arising from these Terms shall be resolved through good-faith negotiation.</p>
+
+      <h2>9. Contact</h2>
+      <p>Questions about these Terms? Contact us at <a href="mailto:contact@fitplanpro.app">contact@fitplanpro.app</a>.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ========== BLOG PAGE ========== -->
+<section class="page-section" id="page-blog">
+  <div class="page-hero">
+    <h1>Fitness & Nutrition Blog</h1>
+    <p>Science-backed articles to fuel your transformation</p>
+  </div>
+
+  <div class="blog-grid" id="blogGrid"></div>
+</section>
+
+<!-- BLOG ARTICLE MODAL -->
+<div class="blog-modal" id="blogModal">
+  <div class="blog-modal-inner">
+    <button class="blog-modal-close" onclick="closeBlog()">← Back to Blog</button>
+    <div class="blog-modal-tag" id="bm-tag"></div>
+    <div class="blog-modal-title" id="bm-title"></div>
+    <div class="blog-modal-meta" id="bm-meta"></div>
+    <div class="prose" id="bm-content"></div>
+  </div>
+</div>
+
+<!-- ========== FOOTER ========== -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div>
+        <div class="footer-brand-name">⚡ FitPlan Pro</div>
+        <div class="footer-brand-desc">A free, science-backed fitness and nutrition planner. Personalized to your body, your goal, and your lifestyle.</div>
+      </div>
+      <div>
+        <div class="footer-col-title">Pages</div>
+        <button class="footer-link" onclick="showPage('home')">Home</button>
+        <button class="footer-link" onclick="showPage('blog')">Blog</button>
+        <button class="footer-link" onclick="showPage('about')">About</button>
+      </div>
+      <div>
+        <div class="footer-col-title">Legal</div>
+        <button class="footer-link" onclick="showPage('privacy')">Privacy Policy</button>
+        <button class="footer-link" onclick="showPage('terms')">Terms of Service</button>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 FitPlan Pro. All rights reserved.</span>
+      <span>Built with ❤️ for a healthier world</span>
+    </div>
+  </div>
+</footer>
+
 </body>
 </html>
