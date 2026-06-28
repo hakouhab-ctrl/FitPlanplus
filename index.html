@@ -92,7 +92,29 @@ function showPage(page) {
     z-index: 0;
   }
 
-
+  /* ===== LANG TOGGLE ===== */
+  .lang-toggle {
+    position: fixed;
+    top: 18px;
+    right: 18px;
+    z-index: 999;
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    border-radius: 50px;
+    padding: 8px 18px;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    transition: all 0.2s;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  }
+  .lang-toggle:hover { border-color: var(--accent); color: var(--accent); }
+  html[dir="rtl"] .lang-toggle { right: auto; left: 18px; }
 
   /* ===== HERO ===== */
   .hero {
@@ -1112,7 +1134,10 @@ function showPage(page) {
 </nav>
 
 
-
+<!-- LANG TOGGLE -->
+<button class="lang-toggle" id="langBtn" onclick="toggleLang()">
+  🌐 <span id="langBtnText">عربي</span>
+</button>
 
 <!-- LOADING -->
 <div class="loading-overlay" id="loading">
@@ -2813,10 +2838,22 @@ function showPage(page) {
     <p>You enter your stats — age, height, weight, goal, activity level, training days, and food preferences. Our engine calculates your <strong>Basal Metabolic Rate (BMR)</strong> using the Mifflin-St Jeor formula, then multiplies it by your activity factor to find your <strong>Total Daily Energy Expenditure (TDEE)</strong>.</p>
     <p>From there, we apply a scientifically appropriate caloric surplus or deficit based on your goal, distribute macronutrients (protein, carbohydrates, fats) optimally, and generate a full meal plan and workout schedule adapted to your preferences.</p>
 
+    <h2>Meet the Team</h2>
+  </div>
+
+  <div class="team-card">
+    <div class="team-avatar">👨‍💻</div>
+    <div>
+      <div class="team-name">Abdelhak</div>
+      <div class="team-role">Founder & Developer</div>
+      <div class="team-bio">Electromechanics engineer and fitness enthusiast. Built FitPlan Pro to combine his passion for technology and health sciences into one practical tool.</div>
+    </div>
+  </div>
+
   <div class="prose">
     <h2>Contact Us</h2>
     <p>Have feedback, suggestions, or questions? We'd love to hear from you.</p>
-    <p>📧 Email: <a href="mailto:contactfitplanpro@gmail.com">contactfitplanpro@gmail.com</a></p>
+    <p>📧 Email: <a href="mailto:contact@fitplanpro.app">contact@fitplanpro.app</a></p>
     <p>🌐 Website: <a href="https://fit-planplus.vercel.app" target="_blank">fit-planplus.vercel.app</a></p>
   </div>
 </section>
@@ -2859,7 +2896,7 @@ function showPage(page) {
       <p>We may update this Privacy Policy from time to time. Any changes will be posted on this page with an updated date. Continued use of the service after changes constitutes acceptance of the new policy.</p>
 
       <h2>8. Contact</h2>
-      <p>If you have questions about this Privacy Policy, please contact us at <a href="mailto:contactfitplanpro@gmail.com">contactfitplanpro@gmail.com</a>.</p>
+      <p>If you have questions about this Privacy Policy, please contact us at <a href="mailto:contact@fitplanpro.app">contact@fitplanpro.app</a>.</p>
     </div>
   </div>
 </section>
@@ -2903,7 +2940,7 @@ function showPage(page) {
       <p>These Terms are governed by applicable law. Any disputes arising from these Terms shall be resolved through good-faith negotiation.</p>
 
       <h2>9. Contact</h2>
-      <p>Questions about these Terms? Contact us at <a href="mailto:contactfitplanpro@gmail.com">contactfitplanpro@gmail.com</a>.</p>
+      <p>Questions about these Terms? Contact us at <a href="mailto:contact@fitplanpro.app">contact@fitplanpro.app</a>.</p>
     </div>
   </div>
 </section>
