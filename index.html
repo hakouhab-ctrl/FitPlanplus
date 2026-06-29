@@ -1,78 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
-
-<script>
-// Global functions defined early so buttons work immediately
-
-function startJourney() {
-  document.getElementById('heroSection').style.display = 'none';
-  document.querySelectorAll('.page-section').forEach(function(s) { s.classList.remove('active'); });
-  document.getElementById('formSection').style.display = 'block';
-  document.querySelectorAll('.nav-link').forEach(function(l) { l.classList.remove('active'); });
-  window.scrollTo(0,0);
-}
-
-function goBack() {
-  document.getElementById('formSection').style.display = 'none';
-  document.querySelectorAll('.page-section').forEach(function(s) { s.classList.remove('active'); });
-  document.getElementById('heroSection').style.display = 'flex';
-  document.getElementById('nav-home').classList.add('active');
-  window.scrollTo(0,0);
-}
-
-function restart() {
-  document.getElementById('resultsSection').style.display = 'none';
-  document.querySelectorAll('.page-section').forEach(function(s) { s.classList.remove('active'); });
-  document.getElementById('heroSection').style.display = 'flex';
-  document.getElementById('nav-home').classList.add('active');
-  window.scrollTo(0,0);
-}
-
-// Global navigation - defined early so navbar buttons work
-function showPage(page) {
-  // hide main app sections
-  ['heroSection','formSection','resultsSection'].forEach(function(id) {
-    var el = document.getElementById(id);
-    if (el) el.style.display = 'none';
-  });
-
-  // hide all page sections
-  document.querySelectorAll('.page-section').forEach(function(s) {
-    s.classList.remove('active');
-  });
-
-  // update nav active state
-  document.querySelectorAll('.nav-link').forEach(function(l) {
-    l.classList.remove('active');
-  });
-  var navEl = document.getElementById('nav-' + page);
-  if (navEl) navEl.classList.add('active');
-
-  if (page === 'home') {
-    var hero = document.getElementById('heroSection');
-    if (hero) hero.style.display = 'flex';
-    var navHome = document.getElementById('nav-home');
-    if (navHome) navHome.classList.add('active');
-  } else if (page === 'blog') {
-    var blogPage = document.getElementById('page-blog');
-    if (blogPage) blogPage.classList.add('active');
-    if (typeof renderBlogGrid === 'function') renderBlogGrid();
-  } else if (page === 'about') {
-    var aboutPage = document.getElementById('page-about');
-    if (aboutPage) aboutPage.classList.add('active');
-  } else if (page === 'privacy') {
-    var privPage = document.getElementById('page-privacy');
-    if (privPage) privPage.classList.add('active');
-  } else if (page === 'terms') {
-    var termsPage = document.getElementById('page-terms');
-    if (termsPage) termsPage.classList.add('active');
-  }
-
-  window.scrollTo(0, 0);
-}
-</script>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>FitPlan Pro | Your Personal Nutrition & Workout Plan</title>
@@ -118,9 +46,58 @@ function showPage(page) {
     z-index: 0;
   }
 
+  .navbar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 998;
+    background: rgba(10,14,26,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 24px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
 
+  .nav-brand {
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--accent);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    background: none;
+    border: none;
+  }
 
-  /* ===== HERO ===== */
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .nav-link {
+    background: transparent;
+    border: none;
+    color: var(--muted);
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 8px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .nav-link:hover { color: var(--text); background: var(--card); }
+  .nav-link.active { color: var(--accent); }
+
+  .hero, .form-section, .results-section { padding-top: 80px; }
+
   .hero {
     position: relative;
     z-index: 1;
@@ -145,7 +122,6 @@ function showPage(page) {
     align-items: center;
     gap: 10px;
   }
-  html[dir="rtl"] .logo { font-family: 'Tajawal', sans-serif; }
 
   .logo-icon { font-size: 24px; }
 
@@ -160,7 +136,6 @@ function showPage(page) {
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
-  html[dir="rtl"] .hero h1 { font-family: 'Tajawal', sans-serif; }
 
   .hero p {
     font-size: clamp(16px, 2.5vw, 20px);
@@ -184,7 +159,6 @@ function showPage(page) {
     box-shadow: 0 0 40px rgba(0,229,160,0.3);
     animation: pulse-glow 2.5s ease-in-out infinite;
   }
-  html[dir="rtl"] .cta-btn { font-family: 'Tajawal', sans-serif; }
 
   .cta-btn:hover {
     transform: translateY(-3px) scale(1.03);
@@ -205,18 +179,9 @@ function showPage(page) {
   }
 
   .stat { text-align: center; }
-
-  .stat-num {
-    font-family: 'Inter', sans-serif;
-    font-size: 32px;
-    font-weight: 900;
-    color: var(--accent);
-  }
-  html[dir="rtl"] .stat-num { font-family: 'Tajawal', sans-serif; }
-
+  .stat-num { font-family: 'Inter', sans-serif; font-size: 32px; font-weight: 900; color: var(--accent); }
   .stat-label { font-size: 13px; color: var(--muted); margin-top: 4px; }
 
-  /* ===== FORM SECTION ===== */
   .form-section {
     display: none;
     position: relative;
@@ -239,7 +204,6 @@ function showPage(page) {
     text-align: center;
     margin-bottom: 10px;
   }
-  html[dir="rtl"] .section-title { font-family: 'Tajawal', sans-serif; }
 
   .section-sub {
     text-align: center;
@@ -248,7 +212,6 @@ function showPage(page) {
     font-size: 15px;
   }
 
-  /* Goal Cards */
   .goal-cards {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -268,27 +231,11 @@ function showPage(page) {
     overflow: hidden;
   }
 
-  .goal-card::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    opacity: 0;
-    transition: opacity 0.3s;
-  }
-
-  .goal-card.lose::before  { background: linear-gradient(135deg, rgba(0,229,160,0.08), transparent); }
-  .goal-card.gain::before  { background: linear-gradient(135deg, rgba(255,107,53,0.08), transparent); }
-  .goal-card.tone::before  { background: linear-gradient(135deg, rgba(0,151,255,0.08), transparent); }
-  .goal-card.maint::before { background: linear-gradient(135deg, rgba(255,215,0,0.08), transparent); }
-
   .goal-card:hover,
   .goal-card.active {
     border-color: var(--accent);
     transform: translateY(-4px);
   }
-
-  .goal-card:hover::before,
-  .goal-card.active::before { opacity: 1; }
 
   .goal-card.gain.active  { border-color: var(--accent3); }
   .goal-card.tone.active  { border-color: var(--accent2); }
@@ -296,10 +243,8 @@ function showPage(page) {
 
   .goal-icon { font-size: 40px; margin-bottom: 12px; }
   .goal-name { font-family: 'Inter', sans-serif; font-size: 18px; font-weight: 700; }
-  html[dir="rtl"] .goal-name { font-family: 'Tajawal', sans-serif; }
   .goal-desc { font-size: 12px; color: var(--muted); margin-top: 6px; }
 
-  /* Inputs grid */
   .inputs-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -332,15 +277,10 @@ function showPage(page) {
     outline: none;
     transition: border-color 0.2s;
   }
-  html[dir="rtl"] .input-group input,
-  html[dir="rtl"] .input-group select { font-family: 'Tajawal', sans-serif; }
 
   .input-group input:focus,
   .input-group select:focus { border-color: var(--accent); }
 
-  .input-group select option { background: var(--surface); }
-
-  /* Activity selector */
   .activity-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -359,7 +299,6 @@ function showPage(page) {
     font-family: 'Inter', sans-serif;
     color: var(--text);
   }
-  html[dir="rtl"] .act-btn { font-family: 'Tajawal', sans-serif; }
 
   .act-btn .act-icon { font-size: 22px; display: block; margin-bottom: 6px; }
   .act-btn .act-name { font-size: 11px; font-weight: 600; color: var(--muted); }
@@ -371,7 +310,6 @@ function showPage(page) {
 
   .act-btn.active .act-name { color: var(--accent2); }
 
-  /* Days-per-week pills */
   .days-input-wrap {
     display: flex;
     align-items: center;
@@ -383,11 +321,13 @@ function showPage(page) {
     margin-bottom: 28px;
     transition: border-color 0.2s;
   }
+
   .days-input-wrap:focus-within { border-color: var(--accent3); }
   .days-input-icon { font-size: 30px; }
   .days-input-text { flex: 1; }
   .days-input-title { font-size: 15px; font-weight: 700; margin-bottom: 3px; }
   .days-input-sub { font-size: 12px; color: var(--muted); }
+
   .days-number-input {
     background: var(--surface);
     border: 2px solid var(--accent3);
@@ -402,10 +342,9 @@ function showPage(page) {
     outline: none;
     transition: all 0.2s;
   }
-  .days-number-input:focus { box-shadow: 0 0 0 3px rgba(255,107,53,0.25); }
-  html[dir="rtl"] .days-number-input { font-family: 'Tajawal', sans-serif; }
 
-  /* Food preference chips */
+  .days-number-input:focus { box-shadow: 0 0 0 3px rgba(255,107,53,0.25); }
+
   .chip-grid {
     display: flex;
     flex-wrap: wrap;
@@ -435,7 +374,6 @@ function showPage(page) {
     color: var(--accent);
   }
 
-  /* Generate button */
   .gen-btn {
     width: 100%;
     background: linear-gradient(135deg, var(--accent), var(--accent2));
@@ -450,7 +388,6 @@ function showPage(page) {
     transition: all 0.3s;
     letter-spacing: 0.5px;
   }
-  html[dir="rtl"] .gen-btn { font-family: 'Tajawal', sans-serif; }
 
   .gen-btn:hover {
     transform: translateY(-2px);
@@ -459,7 +396,22 @@ function showPage(page) {
 
   .gen-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
 
-  /* ===== RESULTS ===== */
+  .restart-btn {
+    background: transparent;
+    border: 1.5px solid var(--border);
+    color: var(--muted);
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    padding: 14px 36px;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: block;
+    margin: 30px auto 0;
+  }
+
+  .restart-btn:hover { border-color: var(--accent); color: var(--accent); }
+
   .results-section {
     display: none;
     position: relative;
@@ -506,7 +458,6 @@ function showPage(page) {
     color: var(--accent);
     display: block;
   }
-  html[dir="rtl"] .sum-val { font-family: 'Tajawal', sans-serif; }
 
   .sum-card:nth-child(2) .sum-val { color: var(--accent2); }
   .sum-card:nth-child(3) .sum-val { color: var(--accent3); }
@@ -514,7 +465,6 @@ function showPage(page) {
 
   .sum-label { font-size: 12px; color: var(--muted); margin-top: 6px; font-weight: 500; }
 
-  /* Plan Tabs */
   .tabs {
     display: flex;
     gap: 8px;
@@ -538,7 +488,6 @@ function showPage(page) {
     cursor: pointer;
     transition: all 0.2s;
   }
-  html[dir="rtl"] .tab { font-family: 'Tajawal', sans-serif; }
 
   .tab.active {
     background: linear-gradient(135deg, var(--accent), var(--accent2));
@@ -562,7 +511,6 @@ function showPage(page) {
     align-items: center;
     gap: 8px;
   }
-  html[dir="rtl"] .day-label { font-family: 'Tajawal', sans-serif; }
 
   .day-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
 
@@ -579,27 +527,12 @@ function showPage(page) {
     transition: transform 0.2s;
   }
 
-  html[dir="ltr"] .meal-card:hover { transform: translateX(4px); }
-  html[dir="rtl"] .meal-card:hover { transform: translateX(-4px); }
-
   .meal-emoji { font-size: 32px; min-width: 44px; text-align: center; }
-
   .meal-info { flex: 1; }
   .meal-name { font-family: 'Inter', sans-serif; font-size: 16px; font-weight: 700; margin-bottom: 4px; }
-  html[dir="rtl"] .meal-name { font-family: 'Tajawal', sans-serif; }
   .meal-detail { font-size: 13px; color: var(--muted); line-height: 1.6; }
-
   .meal-cals { text-align: center; min-width: 70px; }
-
-  .cal-num {
-    font-family: 'Inter', sans-serif;
-    font-size: 22px;
-    font-weight: 800;
-    color: var(--accent);
-    display: block;
-  }
-  html[dir="rtl"] .cal-num { font-family: 'Tajawal', sans-serif; }
-
+  .cal-num { font-family: 'Inter', sans-serif; font-size: 22px; font-weight: 800; color: var(--accent); display: block; }
   .cal-label { font-size: 10px; color: var(--muted); }
 
   .macros-bar {
@@ -611,15 +544,11 @@ function showPage(page) {
   }
 
   .macros-title { font-family: 'Inter', sans-serif; font-size: 15px; font-weight: 700; margin-bottom: 16px; }
-  html[dir="rtl"] .macros-title { font-family: 'Tajawal', sans-serif; }
-
   .macro-row { margin-bottom: 12px; }
   .macro-header { display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 13px; }
   .macro-name { color: var(--muted); }
   .macro-val { font-weight: 700; }
-
   .macro-track { height: 6px; background: var(--border); border-radius: 10px; overflow: hidden; }
-
   .macro-fill { height: 100%; border-radius: 10px; transition: width 1s ease; }
 
   .workout-day {
@@ -635,14 +564,12 @@ function showPage(page) {
     display: flex;
     align-items: center;
     gap: 14px;
-    cursor: pointer;
     border-bottom: 1px solid var(--border);
   }
 
   .workout-day-icon { font-size: 24px; }
   .workout-day-info { flex: 1; }
   .workout-day-name { font-family: 'Inter', sans-serif; font-size: 17px; font-weight: 700; }
-  html[dir="rtl"] .workout-day-name { font-family: 'Tajawal', sans-serif; }
   .workout-day-focus { font-size: 12px; color: var(--muted); margin-top: 2px; }
   .workout-badge {
     background: rgba(0,229,160,0.15);
@@ -656,7 +583,6 @@ function showPage(page) {
   }
 
   .exercises-list { padding: 0 20px 20px; }
-
   .exercise-item {
     display: flex;
     align-items: center;
@@ -683,14 +609,7 @@ function showPage(page) {
   .ex-info { flex: 1; }
   .ex-name { font-weight: 600; font-size: 14px; margin-bottom: 3px; }
   .ex-detail { font-size: 12px; color: var(--muted); }
-  .ex-sets {
-    font-family: 'Inter', sans-serif;
-    font-size: 14px;
-    font-weight: 700;
-    color: var(--accent3);
-    white-space: nowrap;
-  }
-  html[dir="rtl"] .ex-sets { font-family: 'Tajawal', sans-serif; }
+  .ex-sets { font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 700; color: var(--accent3); white-space: nowrap; }
 
   .tips-grid {
     display: grid;
@@ -712,23 +631,6 @@ function showPage(page) {
   .tip-icon { font-size: 28px; flex-shrink: 0; }
   .tip-text { font-size: 13px; color: var(--muted); line-height: 1.7; }
   .tip-title { font-weight: 700; color: var(--text); margin-bottom: 4px; font-size: 14px; }
-
-  .restart-btn {
-    background: transparent;
-    border: 1.5px solid var(--border);
-    color: var(--muted);
-    font-family: 'Inter', sans-serif;
-    font-size: 15px;
-    padding: 14px 36px;
-    border-radius: 50px;
-    cursor: pointer;
-    transition: all 0.2s;
-    display: block;
-    margin: 30px auto 0;
-  }
-  html[dir="rtl"] .restart-btn { font-family: 'Tajawal', sans-serif; }
-
-  .restart-btn:hover { border-color: var(--accent); color: var(--accent); }
 
   .loading-overlay {
     display: none;
@@ -754,84 +656,9 @@ function showPage(page) {
 
   @keyframes spin { to { transform: rotate(360deg); } }
 
-  .loading-text {
-    font-family: 'Inter', sans-serif;
-    font-size: 18px;
-    font-weight: 600;
-    color: var(--accent);
-  }
-  html[dir="rtl"] .loading-text { font-family: 'Tajawal', sans-serif; }
-
+  .loading-text { font-family: 'Inter', sans-serif; font-size: 18px; font-weight: 600; color: var(--accent); }
   .loading-sub { font-size: 13px; color: var(--muted); }
 
-  ::-webkit-scrollbar { width: 6px; }
-  ::-webkit-scrollbar-track { background: var(--bg); }
-  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
-  ::-webkit-scrollbar-thumb:hover { background: var(--muted); }
-
-  @media(max-width: 640px) {
-    .goal-cards { grid-template-columns: 1fr 1fr; }
-    .inputs-grid { grid-template-columns: 1fr; }
-    .activity-grid { grid-template-columns: repeat(3,1fr); }
-
-    .summary-grid { grid-template-columns: 1fr 1fr; }
-    .tips-grid { grid-template-columns: 1fr; }
-    .tabs { flex-wrap: wrap; }
-  }
-
-  /* ===== NAVBAR ===== */
-  .navbar {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    z-index: 998;
-    background: rgba(10,14,26,0.92);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--border);
-    padding: 0 24px;
-    height: 60px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  .nav-brand {
-    font-family: 'Inter', sans-serif;
-    font-size: 16px;
-    font-weight: 800;
-    color: var(--accent);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    text-decoration: none;
-  }
-
-  .nav-links {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-
-  .nav-link {
-    background: transparent;
-    border: none;
-    color: var(--muted);
-    font-family: 'Inter', sans-serif;
-    font-size: 13px;
-    font-weight: 600;
-    padding: 8px 14px;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-
-  .nav-link:hover { color: var(--text); background: var(--card); }
-  .nav-link.active { color: var(--accent); }
-
-  /* Push content below navbar */
-  .hero, .form-section, .results-section { padding-top: 80px; }
-
-  /* ===== STATIC PAGES ===== */
   .page-section {
     display: none;
     position: relative;
@@ -861,53 +688,17 @@ function showPage(page) {
   }
 
   .page-hero p { color: var(--muted); font-size: 16px; }
-
-  .prose {
-    font-size: 15px;
-    line-height: 1.9;
-    color: var(--muted);
-  }
-
-  .prose h2 {
-    font-family: 'Inter', sans-serif;
-    font-size: 20px;
-    font-weight: 700;
-    color: var(--text);
-    margin: 36px 0 14px;
-  }
-
-  .prose h3 {
-    font-family: 'Inter', sans-serif;
-    font-size: 16px;
-    font-weight: 600;
-    color: var(--accent);
-    margin: 24px 0 10px;
-  }
-
+  .prose { font-size: 15px; line-height: 1.9; color: var(--muted); }
+  .prose h2 { font-family: 'Inter', sans-serif; font-size: 20px; font-weight: 700; color: var(--text); margin: 36px 0 14px; }
+  .prose h3 { font-family: 'Inter', sans-serif; font-size: 16px; font-weight: 600; color: var(--accent); margin: 24px 0 10px; }
   .prose p { margin-bottom: 14px; }
-
-  .prose ul {
-    padding-right: 20px;
-    padding-left: 20px;
-    margin-bottom: 14px;
-  }
-
+  .prose ul { padding-right: 20px; padding-left: 20px; margin-bottom: 14px; }
   .prose li { margin-bottom: 8px; }
-
   .prose strong { color: var(--text); font-weight: 600; }
-
   .prose a { color: var(--accent); text-decoration: none; }
   .prose a:hover { text-decoration: underline; }
+  .policy-card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 30px; margin-bottom: 20px; }
 
-  .policy-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 30px;
-    margin-bottom: 20px;
-  }
-
-  /* ===== ABOUT ===== */
   .about-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -927,33 +718,6 @@ function showPage(page) {
   .about-card .ac-title { font-weight: 700; font-size: 16px; margin-bottom: 8px; }
   .about-card .ac-desc { font-size: 13px; color: var(--muted); line-height: 1.7; }
 
-  .team-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 24px;
-    display: flex;
-    gap: 18px;
-    align-items: center;
-    margin-bottom: 14px;
-  }
-
-  .team-avatar {
-    width: 60px; height: 60px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, var(--accent), var(--accent2));
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 26px;
-    flex-shrink: 0;
-  }
-
-  .team-name { font-weight: 700; font-size: 16px; margin-bottom: 4px; }
-  .team-role { font-size: 12px; color: var(--accent); margin-bottom: 6px; }
-  .team-bio { font-size: 13px; color: var(--muted); line-height: 1.6; }
-
-  /* ===== BLOG ===== */
   .blog-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -981,26 +745,11 @@ function showPage(page) {
   }
 
   .blog-body { padding: 18px; }
-  .blog-tag {
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 8px;
-  }
-
+  .blog-tag { font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; }
   .blog-title { font-weight: 700; font-size: 15px; margin-bottom: 8px; line-height: 1.4; }
   .blog-excerpt { font-size: 12px; color: var(--muted); line-height: 1.6; margin-bottom: 12px; }
+  .blog-meta { display: flex; justify-content: space-between; font-size: 11px; color: var(--muted); }
 
-  .blog-meta {
-    display: flex;
-    justify-content: space-between;
-    font-size: 11px;
-    color: var(--muted);
-  }
-
-  /* Blog article modal */
   .blog-modal {
     display: none;
     position: fixed;
@@ -1013,11 +762,7 @@ function showPage(page) {
   }
 
   .blog-modal.show { display: block; }
-
-  .blog-modal-inner {
-    max-width: 740px;
-    margin: 0 auto;
-  }
+  .blog-modal-inner { max-width: 740px; margin: 0 auto; }
 
   .blog-modal-close {
     background: var(--card);
@@ -1035,20 +780,10 @@ function showPage(page) {
   }
 
   .blog-modal-close:hover { border-color: var(--accent); color: var(--accent); }
-
   .blog-modal-tag { font-size: 12px; font-weight: 700; color: var(--accent); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; }
-
-  .blog-modal-title {
-    font-family: 'Inter', sans-serif;
-    font-size: clamp(24px, 4vw, 36px);
-    font-weight: 900;
-    line-height: 1.25;
-    margin-bottom: 16px;
-  }
-
+  .blog-modal-title { font-family: 'Inter', sans-serif; font-size: clamp(24px, 4vw, 36px); font-weight: 900; line-height: 1.25; margin-bottom: 16px; }
   .blog-modal-meta { font-size: 13px; color: var(--muted); margin-bottom: 32px; padding-bottom: 24px; border-bottom: 1px solid var(--border); }
 
-  /* ===== FOOTER ===== */
   .site-footer {
     background: var(--surface);
     border-top: 1px solid var(--border);
@@ -1058,10 +793,7 @@ function showPage(page) {
     z-index: 1;
   }
 
-  .footer-inner {
-    max-width: 900px;
-    margin: 0 auto;
-  }
+  .footer-inner { max-width: 900px; margin: 0 auto; }
 
   .footer-top {
     display: grid;
@@ -1070,18 +802,8 @@ function showPage(page) {
     margin-bottom: 32px;
   }
 
-  .footer-brand-name {
-    font-size: 18px;
-    font-weight: 800;
-    color: var(--accent);
-    margin-bottom: 10px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
+  .footer-brand-name { font-size: 18px; font-weight: 800; color: var(--accent); margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
   .footer-brand-desc { font-size: 13px; color: var(--muted); line-height: 1.7; }
-
   .footer-col-title { font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; }
 
   .footer-link {
@@ -1113,21 +835,31 @@ function showPage(page) {
     gap: 10px;
   }
 
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--muted); }
+
   @media(max-width: 640px) {
+    .goal-cards { grid-template-columns: 1fr 1fr; }
+    .inputs-grid { grid-template-columns: 1fr; }
+    .activity-grid { grid-template-columns: repeat(3,1fr); }
+    .summary-grid { grid-template-columns: 1fr 1fr; }
+    .tips-grid { grid-template-columns: 1fr; }
+    .tabs { flex-wrap: wrap; }
     .about-grid { grid-template-columns: 1fr; }
     .blog-grid { grid-template-columns: 1fr; }
     .footer-top { grid-template-columns: 1fr; }
     .nav-links { gap: 2px; }
     .nav-link { padding: 6px 8px; font-size: 11px; }
   }
-
 </style>
 </head>
 <body>
 
 <!-- NAVBAR -->
 <nav class="navbar">
-  <a class="nav-brand" onclick="showPage('home')">⚡ FitPlan Pro</a>
+  <button class="nav-brand" onclick="showPage('home')">⚡ FitPlan Pro</button>
   <div class="nav-links">
     <button class="nav-link active" id="nav-home" onclick="showPage('home')">Home</button>
     <button class="nav-link" id="nav-blog" onclick="showPage('blog')">Blog</button>
@@ -1136,9 +868,6 @@ function showPage(page) {
     <button class="nav-link" id="nav-terms" onclick="showPage('terms')">Terms</button>
   </div>
 </nav>
-
-
-
 
 <!-- LOADING -->
 <div class="loading-overlay" id="loading">
@@ -1157,22 +886,10 @@ function showPage(page) {
   <p id="heroSub">A fully personalized nutrition and workout plan, scientifically calculated for your body and your goal.</p>
   <button class="cta-btn" id="heroCta" onclick="startJourney()">Start Your Journey →</button>
   <div class="stats-row">
-    <div class="stat">
-      <div class="stat-num">5</div>
-      <div class="stat-label" id="stat1">Daily Meals</div>
-    </div>
-    <div class="stat">
-      <div class="stat-num" id="statDaysNum">6</div>
-      <div class="stat-label" id="stat2">Training Days</div>
-    </div>
-    <div class="stat">
-      <div class="stat-num">100%</div>
-      <div class="stat-label" id="stat3">Personalized</div>
-    </div>
-    <div class="stat">
-      <div class="stat-num" id="stat4num">Science</div>
-      <div class="stat-label" id="stat4">Based on TDEE</div>
-    </div>
+    <div class="stat"><div class="stat-num">5</div><div class="stat-label" id="stat1">Daily Meals</div></div>
+    <div class="stat"><div class="stat-num" id="statDaysNum">6</div><div class="stat-label" id="stat2">Training Days</div></div>
+    <div class="stat"><div class="stat-num">100%</div><div class="stat-label" id="stat3">Personalized</div></div>
+    <div class="stat"><div class="stat-num" id="stat4num">Science</div><div class="stat-label" id="stat4">Based on TDEE</div></div>
   </div>
 </section>
 
@@ -1185,22 +902,22 @@ function showPage(page) {
   <div style="margin-bottom:28px">
     <div class="day-label" id="goalLabel">What is your goal?</div>
     <div class="goal-cards">
-      <div class="goal-card lose" onclick="selectGoal('lose',this)">
+      <div class="goal-card lose" onclick="selectGoal('lose', this)">
         <div class="goal-icon">🔥</div>
         <div class="goal-name" id="goal1n">Weight Loss</div>
         <div class="goal-desc" id="goal1d">Burn fat while preserving muscle</div>
       </div>
-      <div class="goal-card gain" onclick="selectGoal('gain',this)">
+      <div class="goal-card gain" onclick="selectGoal('gain', this)">
         <div class="goal-icon">💪</div>
         <div class="goal-name" id="goal2n">Weight Gain</div>
         <div class="goal-desc" id="goal2d">Build muscle mass and increase size</div>
       </div>
-      <div class="goal-card tone" onclick="selectGoal('tone',this)">
+      <div class="goal-card tone" onclick="selectGoal('tone', this)">
         <div class="goal-icon">⚡</div>
         <div class="goal-name" id="goal3n">Body Toning</div>
         <div class="goal-desc" id="goal3d">Define muscles and burn fat together</div>
       </div>
-      <div class="goal-card maint" onclick="selectGoal('maint',this)">
+      <div class="goal-card maint" onclick="selectGoal('maint', this)">
         <div class="goal-icon">⚖️</div>
         <div class="goal-name" id="goal4n">Maintenance</div>
         <div class="goal-desc" id="goal4d">Keep your current weight and improve health</div>
@@ -1210,31 +927,14 @@ function showPage(page) {
 
   <!-- Inputs -->
   <div class="inputs-grid">
-    <div class="input-group">
-      <label id="lAge">Age</label>
-      <input type="number" id="age" placeholder="25" min="14" max="80">
+    <div class="input-group"><label id="lAge">Age</label><input type="number" id="age" placeholder="25" min="14" max="80"></div>
+    <div class="input-group"><label id="lGender">Gender</label>
+      <select id="gender"><option value="male" id="optMale">Male</option><option value="female" id="optFemale">Female</option></select>
     </div>
-    <div class="input-group">
-      <label id="lGender">Gender</label>
-      <select id="gender">
-        <option value="male" id="optMale">Male</option>
-        <option value="female" id="optFemale">Female</option>
-      </select>
-    </div>
-    <div class="input-group">
-      <label id="lHeight">Height (cm)</label>
-      <input type="number" id="height" placeholder="175" min="140" max="220">
-    </div>
-    <div class="input-group">
-      <label id="lWeight">Current Weight (kg)</label>
-      <input type="number" id="weight" placeholder="75" min="30" max="250">
-    </div>
-    <div class="input-group">
-      <label id="lTarget">Target Weight (kg)</label>
-      <input type="number" id="targetWeight" placeholder="65" min="30" max="250">
-    </div>
-    <div class="input-group">
-      <label id="lDuration">Duration</label>
+    <div class="input-group"><label id="lHeight">Height (cm)</label><input type="number" id="height" placeholder="175" min="140" max="220"></div>
+    <div class="input-group"><label id="lWeight">Current Weight (kg)</label><input type="number" id="weight" placeholder="75" min="30" max="250"></div>
+    <div class="input-group"><label id="lTarget">Target Weight (kg)</label><input type="number" id="targetWeight" placeholder="65" min="30" max="250"></div>
+    <div class="input-group"><label id="lDuration">Duration</label>
       <select id="duration">
         <option value="4" id="optW4">4 Weeks</option>
         <option value="8" selected id="optW8">8 Weeks</option>
@@ -1248,34 +948,16 @@ function showPage(page) {
   <div style="margin-bottom:28px">
     <div class="day-label" id="actLabel">Your Daily Activity Level</div>
     <div class="activity-grid">
-      <div class="act-btn" onclick="selectActivity(1.2, this)">
-        <span class="act-icon">🛋️</span>
-        <span class="act-name" id="act1">Sedentary</span>
-      </div>
-      <div class="act-btn" onclick="selectActivity(1.375, this)">
-        <span class="act-icon">🚶</span>
-        <span class="act-name" id="act2">Light</span>
-      </div>
-      <div class="act-btn active" onclick="selectActivity(1.55, this)">
-        <span class="act-icon">🏃</span>
-        <span class="act-name" id="act3">Moderate</span>
-      </div>
-      <div class="act-btn" onclick="selectActivity(1.725, this)">
-        <span class="act-icon">🏋️</span>
-        <span class="act-name" id="act4">Active</span>
-      </div>
-      <div class="act-btn" onclick="selectActivity(1.9, this)">
-        <span class="act-icon">🔥</span>
-        <span class="act-name" id="act5">Very Active</span>
-      </div>
-      <div class="act-btn" onclick="selectActivity(1.0, this)">
-        <span class="act-icon">👶</span>
-        <span class="act-name" id="act6">Almost None</span>
-      </div>
+      <div class="act-btn" onclick="selectActivity(1.2, this)"><span class="act-icon">🛋️</span><span class="act-name" id="act1">Sedentary</span></div>
+      <div class="act-btn" onclick="selectActivity(1.375, this)"><span class="act-icon">🚶</span><span class="act-name" id="act2">Light</span></div>
+      <div class="act-btn active" onclick="selectActivity(1.55, this)"><span class="act-icon">🏃</span><span class="act-name" id="act3">Moderate</span></div>
+      <div class="act-btn" onclick="selectActivity(1.725, this)"><span class="act-icon">🏋️</span><span class="act-name" id="act4">Active</span></div>
+      <div class="act-btn" onclick="selectActivity(1.9, this)"><span class="act-icon">🔥</span><span class="act-name" id="act5">Very Active</span></div>
+      <div class="act-btn" onclick="selectActivity(1.0, this)"><span class="act-icon">👶</span><span class="act-name" id="act6">Almost None</span></div>
     </div>
   </div>
 
-  <!-- Training days per week -->
+  <!-- Training days -->
   <div style="margin-bottom:28px">
     <div class="day-label" id="daysLabel">How many days a week do you want to train?</div>
     <div class="days-input-wrap">
@@ -1284,8 +966,7 @@ function showPage(page) {
         <div class="days-input-title" id="daysInputTitle">Training days per week</div>
         <div class="days-input-sub" id="daysInputSub">Enter any number from 1 to 7</div>
       </div>
-      <input class="days-number-input" type="number" id="daysInput" value="5" min="1" max="7"
-        oninput="onDaysInput(this)">
+      <input class="days-number-input" type="number" id="daysInput" value="5" min="1" max="7" oninput="onDaysInput(this)">
     </div>
   </div>
 
@@ -1302,9 +983,7 @@ function showPage(page) {
     </div>
   </div>
 
-  <button class="gen-btn" id="genBtn" onclick="generatePlan()">
-    ✨ Generate My Personal Plan
-  </button>
+  <button class="gen-btn" id="genBtn" onclick="generatePlan()">✨ Generate My Personal Plan</button>
   <button class="restart-btn" id="backBtn" onclick="goBack()">← Back</button>
 </section>
 
@@ -1316,1611 +995,761 @@ function showPage(page) {
     <p class="section-sub" id="resultSub">Personalized based on your body data</p>
   </div>
 
-  <!-- Summary -->
   <div class="summary-grid" id="summaryGrid">
-    <div class="sum-card">
-      <span class="sum-val" id="s1">0</span>
-      <div class="sum-label" id="sum1Label">Daily Calories (kcal)</div>
-    </div>
-    <div class="sum-card">
-      <span class="sum-val" id="s2">0</span>
-      <div class="sum-label" id="sum2Label">Daily Protein (g)</div>
-    </div>
-    <div class="sum-card">
-      <span class="sum-val" id="s3">0</span>
-      <div class="sum-label" id="sum3Label">Current BMI</div>
-    </div>
-    <div class="sum-card">
-      <span class="sum-val" id="s4">0</span>
-      <div class="sum-label" id="sum4Label">Time to Goal</div>
-    </div>
+    <div class="sum-card"><span class="sum-val" id="s1">0</span><div class="sum-label" id="sum1Label">Daily Calories (kcal)</div></div>
+    <div class="sum-card"><span class="sum-val" id="s2">0</span><div class="sum-label" id="sum2Label">Daily Protein (g)</div></div>
+    <div class="sum-card"><span class="sum-val" id="s3">0</span><div class="sum-label" id="sum3Label">Current BMI</div></div>
+    <div class="sum-card"><span class="sum-val" id="s4">0</span><div class="sum-label" id="sum4Label">Time to Goal</div></div>
   </div>
 
-  <!-- Tabs -->
   <div class="tabs">
     <button class="tab active" id="tabNutBtn" onclick="switchTab('nutrition',this)">🥗 Nutrition</button>
     <button class="tab" id="tabWorkBtn" onclick="switchTab('workout',this)">🏋️ Workout</button>
     <button class="tab" id="tabTipsBtn" onclick="switchTab('tips',this)">💡 Tips</button>
   </div>
 
-  <!-- NUTRITION TAB -->
   <div class="tab-content active" id="tab-nutrition">
     <div class="macros-bar">
       <div class="macros-title" id="macrosTitle">🎯 Macronutrient Distribution</div>
-      <div class="macro-row">
-        <div class="macro-header">
-          <span class="macro-name" id="macroPLabel">Protein</span>
-          <span class="macro-val" id="m-protein" style="color:var(--accent)">0g</span>
-        </div>
-        <div class="macro-track"><div class="macro-fill" id="mf-protein" style="width:0%;background:var(--accent)"></div></div>
-      </div>
-      <div class="macro-row">
-        <div class="macro-header">
-          <span class="macro-name" id="macroCLabel">Carbohydrates</span>
-          <span class="macro-val" id="m-carbs" style="color:var(--accent2)">0g</span>
-        </div>
-        <div class="macro-track"><div class="macro-fill" id="mf-carbs" style="width:0%;background:var(--accent2)"></div></div>
-      </div>
-      <div class="macro-row">
-        <div class="macro-header">
-          <span class="macro-name" id="macroFLabel">Fats</span>
-          <span class="macro-val" id="m-fat" style="color:var(--accent3)">0g</span>
-        </div>
-        <div class="macro-track"><div class="macro-fill" id="mf-fat" style="width:0%;background:var(--accent3)"></div></div>
-      </div>
+      <div class="macro-row"><div class="macro-header"><span class="macro-name" id="macroPLabel">Protein</span><span class="macro-val" id="m-protein" style="color:var(--accent)">0g</span></div><div class="macro-track"><div class="macro-fill" id="mf-protein" style="width:0%;background:var(--accent)"></div></div></div>
+      <div class="macro-row"><div class="macro-header"><span class="macro-name" id="macroCLabel">Carbohydrates</span><span class="macro-val" id="m-carbs" style="color:var(--accent2)">0g</span></div><div class="macro-track"><div class="macro-fill" id="mf-carbs" style="width:0%;background:var(--accent2)"></div></div></div>
+      <div class="macro-row"><div class="macro-header"><span class="macro-name" id="macroFLabel">Fats</span><span class="macro-val" id="m-fat" style="color:var(--accent3)">0g</span></div><div class="macro-track"><div class="macro-fill" id="mf-fat" style="width:0%;background:var(--accent3)"></div></div></div>
     </div>
-
     <div id="mealsContainer"></div>
   </div>
 
-  <!-- WORKOUT TAB -->
-  <div class="tab-content" id="tab-workout">
-    <div id="workoutContainer"></div>
-  </div>
-
-  <!-- TIPS TAB -->
-  <div class="tab-content" id="tab-tips">
-    <div class="tips-grid" id="tipsContainer"></div>
-  </div>
+  <div class="tab-content" id="tab-workout"><div id="workoutContainer"></div></div>
+  <div class="tab-content" id="tab-tips"><div class="tips-grid" id="tipsContainer"></div></div>
 
   <button class="restart-btn" id="restartBtn" onclick="restart()">🔄 Recalculate</button>
 </section>
 
 <script>
-  let selectedGoal = null;
-  let activityFactor = 1.55;
-  let selectedDays = 5;
-  let selectedFoodPrefs = ['none'];
-  let currentLang = 'en';
+// ============================================================
+// GLOBAL VARIABLES
+// ============================================================
+let selectedGoal = null;
+let activityFactor = 1.55;
+let selectedDays = 5;
+let selectedFoodPrefs = ['none'];
+let currentLang = 'en';
 
-  // startJourney, goBack, restart defined in <head>
+// ============================================================
+// NAVIGATION FUNCTIONS
+// ============================================================
+function startJourney() {
+  document.getElementById('heroSection').style.display = 'none';
+  document.querySelectorAll('.page-section').forEach(function(s) { s.classList.remove('active'); });
+  document.getElementById('formSection').style.display = 'block';
+  document.querySelectorAll('.nav-link').forEach(function(l) { l.classList.remove('active'); });
+  document.getElementById('nav-home').classList.add('active');
+  window.scrollTo(0,0);
+}
 
-  function selectGoal(goal, el) {
-    document.querySelectorAll('.goal-card').forEach(c => c.classList.remove('active'));
+function goBack() {
+  document.getElementById('formSection').style.display = 'none';
+  document.querySelectorAll('.page-section').forEach(function(s) { s.classList.remove('active'); });
+  document.getElementById('heroSection').style.display = 'flex';
+  document.getElementById('nav-home').classList.add('active');
+  window.scrollTo(0,0);
+}
+
+function restart() {
+  document.getElementById('resultsSection').style.display = 'none';
+  document.querySelectorAll('.page-section').forEach(function(s) { s.classList.remove('active'); });
+  document.getElementById('heroSection').style.display = 'flex';
+  document.getElementById('nav-home').classList.add('active');
+  window.scrollTo(0,0);
+}
+
+function showPage(page) {
+  ['heroSection','formSection','resultsSection'].forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) el.style.display = 'none';
+  });
+  document.querySelectorAll('.page-section').forEach(function(s) { s.classList.remove('active'); });
+  document.querySelectorAll('.nav-link').forEach(function(l) { l.classList.remove('active'); });
+  
+  var navEl = document.getElementById('nav-' + page);
+  if (navEl) navEl.classList.add('active');
+
+  if (page === 'home') {
+    var hero = document.getElementById('heroSection');
+    if (hero) hero.style.display = 'flex';
+    document.getElementById('nav-home').classList.add('active');
+  } else if (page === 'blog') {
+    document.getElementById('page-blog').classList.add('active');
+    renderBlogGrid();
+  } else if (page === 'about') {
+    document.getElementById('page-about').classList.add('active');
+  } else if (page === 'privacy') {
+    document.getElementById('page-privacy').classList.add('active');
+  } else if (page === 'terms') {
+    document.getElementById('page-terms').classList.add('active');
+  }
+  window.scrollTo(0, 0);
+}
+
+// ============================================================
+// FORM FUNCTIONS
+// ============================================================
+function selectGoal(goal, el) {
+  document.querySelectorAll('.goal-card').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  selectedGoal = goal;
+}
+
+function selectActivity(factor, el) {
+  document.querySelectorAll('.act-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  activityFactor = factor;
+}
+
+function onDaysInput(input) {
+  let val = parseInt(input.value);
+  if (isNaN(val) || val < 1) val = 1;
+  if (val > 7) val = 7;
+  input.value = val;
+  selectedDays = val;
+  document.getElementById('statDaysNum').textContent = val;
+}
+
+function toggleFoodPref(val, el) {
+  if (val === 'none') {
+    selectedFoodPrefs = ['none'];
+    document.querySelectorAll('#foodPrefGrid .chip').forEach(c => c.classList.remove('active'));
     el.classList.add('active');
-    selectedGoal = goal;
+    return;
   }
+  
+  const noneChip = document.querySelector('#foodPrefGrid .chip[data-val="none"]');
+  selectedFoodPrefs = selectedFoodPrefs.filter(v => v !== 'none');
+  noneChip.classList.remove('active');
 
-  function selectActivity(factor, el) {
-    document.querySelectorAll('.act-btn').forEach(b => b.classList.remove('active'));
+  if (selectedFoodPrefs.includes(val)) {
+    selectedFoodPrefs = selectedFoodPrefs.filter(v => v !== val);
+    el.classList.remove('active');
+  } else {
+    selectedFoodPrefs.push(val);
     el.classList.add('active');
-    activityFactor = factor;
   }
 
-  function onDaysInput(input) {
-    let val = parseInt(input.value);
-    if (isNaN(val) || val < 1) val = 1;
-    if (val > 7) val = 7;
-    input.value = val;
-    selectedDays = val;
-    document.getElementById('statDaysNum').textContent = val;
+  if (selectedFoodPrefs.length === 0) {
+    selectedFoodPrefs = ['none'];
+    noneChip.classList.add('active');
+  }
+}
+
+function switchTab(name, btn) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('tab-'+name).classList.add('active');
+}
+
+// ============================================================
+// PLAN GENERATION ENGINE
+// ============================================================
+function calcBMR(weight, height, age, gender) {
+  if(gender === 'male') return 10*weight + 6.25*height - 5*age + 5;
+  return 10*weight + 6.25*height - 5*age - 161;
+}
+
+function calcTDEE(bmr, activity) { return Math.round(bmr * activity); }
+function calcBMI(weight, height) { return (weight / (height/100)**2).toFixed(1); }
+
+function generatePlan() {
+  // Get all input values
+  const age = parseInt(document.getElementById('age').value);
+  const gender = document.getElementById('gender').value;
+  const height = parseInt(document.getElementById('height').value);
+  const weight = parseInt(document.getElementById('weight').value);
+  const targetWeight = parseInt(document.getElementById('targetWeight').value);
+  const duration = parseInt(document.getElementById('duration').value);
+
+  // Validation
+  if(!selectedGoal) {
+    alert('Please select a goal!');
+    return;
+  }
+  
+  if(!age || isNaN(age) || age < 14 || age > 80) {
+    alert('Please enter a valid age (14-80)');
+    return;
+  }
+  
+  if(!height || isNaN(height) || height < 140 || height > 220) {
+    alert('Please enter a valid height (140-220 cm)');
+    return;
+  }
+  
+  if(!weight || isNaN(weight) || weight < 30 || weight > 250) {
+    alert('Please enter a valid weight (30-250 kg)');
+    return;
+  }
+  
+  if(!targetWeight || isNaN(targetWeight) || targetWeight < 30 || targetWeight > 250) {
+    alert('Please enter a valid target weight (30-250 kg)');
+    return;
   }
 
-  function toggleFoodPref(val, el) {
-    if (val === 'none') {
-      selectedFoodPrefs = ['none'];
-      document.querySelectorAll('#foodPrefGrid .chip').forEach(c => c.classList.remove('active'));
-      el.classList.add('active');
-      return;
-    }
-    // remove "none" if selecting a real restriction
-    const noneChip = document.querySelector('#foodPrefGrid .chip[data-val="none"]');
-    selectedFoodPrefs = selectedFoodPrefs.filter(v => v !== 'none');
-    noneChip.classList.remove('active');
+  // Show loading
+  document.getElementById('loading').classList.add('show');
 
-    if (selectedFoodPrefs.includes(val)) {
-      selectedFoodPrefs = selectedFoodPrefs.filter(v => v !== val);
-      el.classList.remove('active');
+  setTimeout(() => {
+    const bmr = calcBMR(weight, height, age, gender);
+    const tdee = calcTDEE(bmr, activityFactor);
+    const bmi = calcBMI(weight, height);
+
+    let targetCals, deficit;
+    if(selectedGoal === 'lose') {
+      deficit = Math.min(700, Math.round((weight - targetWeight) * 7700 / (duration * 7)));
+      targetCals = Math.max(1200, tdee - deficit);
+    } else if(selectedGoal === 'gain') {
+      deficit = -Math.min(500, Math.round((targetWeight - weight) * 7700 / (duration * 7)));
+      targetCals = tdee + Math.abs(deficit);
+    } else if(selectedGoal === 'tone') {
+      targetCals = tdee - 300;
+      deficit = 300;
     } else {
-      selectedFoodPrefs.push(val);
-      el.classList.add('active');
+      targetCals = tdee;
+      deficit = 0;
     }
 
-    if (selectedFoodPrefs.length === 0) {
-      selectedFoodPrefs = ['none'];
-      noneChip.classList.add('active');
-    }
+    const protein = Math.round(weight * (selectedGoal === 'gain' ? 2.2 : 2.0));
+    const fat = Math.round(targetCals * 0.25 / 9);
+    const carbs = Math.round((targetCals - protein*4 - fat*9) / 4);
+
+    const weightDiff = Math.abs(targetWeight - weight);
+    const weeklyChange = Math.abs(deficit) * 7 / 7700;
+    const weeksNeeded = weeklyChange > 0 ? Math.round(weightDiff / weeklyChange) : duration;
+
+    document.getElementById('loading').classList.remove('show');
+    document.getElementById('formSection').style.display = 'none';
+    document.getElementById('resultsSection').style.display = 'block';
+    window.scrollTo(0,0);
+
+    renderResults(selectedGoal, targetCals, protein, carbs, fat, bmi, weeksNeeded, weight, gender, selectedDays, selectedFoodPrefs);
+  }, 1800);
+}
+
+// ============================================================
+// RENDER FUNCTIONS
+// ============================================================
+function renderResults(goal, cals, protein, carbs, fat, bmi, weeks, weight, gender, days, foodPrefs) {
+  const l = t[currentLang];
+  document.getElementById('resultTitle').textContent = l.titles[goal];
+  document.getElementById('resultSub').textContent = l.subs[goal];
+  document.getElementById('s1').textContent = cals.toLocaleString();
+  document.getElementById('s2').textContent = protein;
+  document.getElementById('s3').textContent = bmi;
+  document.getElementById('s4').textContent = weeks + l.weekUnit;
+
+  const total = protein*4 + carbs*4 + fat*9;
+  document.getElementById('m-protein').textContent = protein + l.gramUnit;
+  document.getElementById('m-carbs').textContent = carbs + l.gramUnit;
+  document.getElementById('m-fat').textContent = fat + l.gramUnit;
+  
+  setTimeout(() => {
+    document.getElementById('mf-protein').style.width = Math.round(protein*4/total*100) + '%';
+    document.getElementById('mf-carbs').style.width = Math.round(carbs*4/total*100) + '%';
+    document.getElementById('mf-fat').style.width = Math.round(fat*9/total*100) + '%';
+  }, 300);
+
+  renderMeals(goal, cals, protein, carbs, fat, foodPrefs);
+  renderWorkout(goal, gender, days);
+  renderTips(goal);
+}
+
+// ============================================================
+// MEAL DATA
+// ============================================================
+function getMealPool(lang) {
+  const en = {
+    lose: [
+      { t:'Breakfast', emoji:'🥚', name:'Boiled eggs with whole wheat bread', detail:'3 eggs + 1 slice bread + tomato + cucumber', ratio:0.22, tags:['dairy_free','redmeat_free','fish_free'] },
+      { t:'Snack', emoji:'🍎', name:'Fruit & Greek yogurt', detail:'1 large apple + 1 cup low-fat Greek yogurt', ratio:0.10, tags:['veg','dairy'] },
+      { t:'Lunch', emoji:'🍗', name:'Grilled chicken with brown rice & salad', detail:'200g chicken + 1 cup brown rice + green salad', ratio:0.35, tags:['redmeat_free','fish_free','dairy_free'] },
+      { t:'Snack', emoji:'🥜', name:'Nuts & protein shake', detail:'Handful of almonds + protein shake with water', ratio:0.12, tags:['veg','dairy_free'] },
+      { t:'Dinner', emoji:'🐟', name:'Grilled fish with roasted vegetables', detail:'200g fish + zucchini + peppers + grilled onion', ratio:0.21, tags:['redmeat_free','dairy_free'] }
+    ],
+    lose_veg: [
+      { t:'Breakfast', emoji:'🥚', name:'Boiled eggs with whole wheat bread', detail:'3 eggs + 1 slice bread + tomato + cucumber', ratio:0.22, tags:['dairy_free'] },
+      { t:'Snack', emoji:'🍎', name:'Fruit & Greek yogurt', detail:'1 large apple + 1 cup low-fat Greek yogurt', ratio:0.10, tags:['veg','dairy'] },
+      { t:'Lunch', emoji:'🧆', name:'Falafel with hummus, salad & brown rice', detail:'6 falafel + hummus + 1 cup brown rice + salad', ratio:0.35, tags:['veg','dairy_free'] },
+      { t:'Snack', emoji:'🥜', name:'Nuts & plant protein shake', detail:'Handful of almonds + plant protein shake', ratio:0.12, tags:['veg','dairy_free'] },
+      { t:'Dinner', emoji:'🍳', name:'Grilled tofu with roasted vegetables', detail:'200g tofu + zucchini + peppers + grilled onion', ratio:0.21, tags:['veg','dairy_free'] }
+    ],
+    gain: [
+      { t:'Breakfast', emoji:'🥣', name:'Oats with banana, honey & nuts', detail:'2 cups oats + 2 bananas + 1 tbsp honey + mixed nuts', ratio:0.25, tags:['veg','dairy_free'] },
+      { t:'Snack', emoji:'🥛', name:'Protein shake with whole milk & PB', detail:'2 scoops protein + banana + 1 cup whole milk + peanut butter', ratio:0.15, tags:['veg','dairy'] },
+      { t:'Lunch', emoji:'🍖', name:'Beef with roasted potato & rice', detail:'250g beef + potato + 1.5 cups white rice', ratio:0.30, tags:['redmeat','dairy_free'] },
+      { t:'Snack', emoji:'🧀', name:'Tuna with cheese & whole bread', detail:'1 can tuna + cheese + whole wheat bread', ratio:0.12, tags:['fish','dairy'] },
+      { t:'Dinner', emoji:'🍗', name:'Chicken with pasta & tomato sauce', detail:'200g chicken + 1 cup pasta + homemade tomato sauce', ratio:0.18, tags:['redmeat_free','fish_free','dairy_free'] }
+    ],
+    gain_veg: [
+      { t:'Breakfast', emoji:'🥣', name:'Oats with banana, honey & nuts', detail:'2 cups oats + 2 bananas + 1 tbsp honey + mixed nuts', ratio:0.25, tags:['veg','dairy_free'] },
+      { t:'Snack', emoji:'🥛', name:'Protein shake with whole milk & PB', detail:'2 scoops protein + banana + 1 cup whole milk + peanut butter', ratio:0.15, tags:['veg','dairy'] },
+      { t:'Lunch', emoji:'🫘', name:'Lentils & rice with cheese & vegetables', detail:'2 cups lentils + 1.5 cups rice + cheese + mixed vegetables', ratio:0.30, tags:['veg','dairy'] },
+      { t:'Snack', emoji:'🧀', name:'Cheese with whole bread & olives', detail:'Cheese + whole wheat bread + olives', ratio:0.12, tags:['veg','dairy'] },
+      { t:'Dinner', emoji:'🍝', name:'Tofu with pasta & tomato sauce', detail:'200g tofu + 1 cup pasta + homemade tomato sauce', ratio:0.18, tags:['veg','dairy_free'] }
+    ],
+    tone: [
+      { t:'Breakfast', emoji:'🥗', name:'Green smoothie with protein', detail:'Spinach + banana + protein shake + chia seeds', ratio:0.20, tags:['veg','dairy_free'] },
+      { t:'Snack', emoji:'🍳', name:'Egg whites with vegetables', detail:'4 egg whites + bell pepper + onion + tomato', ratio:0.12, tags:['dairy_free','redmeat_free','fish_free'] },
+      { t:'Lunch', emoji:'🥩', name:'Chicken breast with quinoa & broccoli', detail:'200g chicken + 0.5 cup quinoa + steamed broccoli', ratio:0.33, tags:['redmeat_free','fish_free','dairy_free'] },
+      { t:'Snack', emoji:'🫐', name:'Greek yogurt with berries & walnuts', detail:'1 cup Greek yogurt + 1 cup berries + handful walnuts', ratio:0.12, tags:['veg','dairy'] },
+      { t:'Dinner', emoji:'🦐', name:'Grilled shrimp with asparagus & salad', detail:'200g shrimp + asparagus + arugula salad', ratio:0.23, tags:['fish','dairy_free'] }
+    ],
+    tone_veg: [
+      { t:'Breakfast', emoji:'🥗', name:'Green smoothie with protein', detail:'Spinach + banana + protein shake + chia seeds', ratio:0.20, tags:['veg','dairy_free'] },
+      { t:'Snack', emoji:'🍳', name:'Egg whites with vegetables', detail:'4 egg whites + bell pepper + onion + tomato', ratio:0.12, tags:['veg','dairy_free'] },
+      { t:'Lunch', emoji:'🥗', name:'Quinoa with hummus, vegetables & broccoli', detail:'0.5 cup quinoa + hummus + steamed broccoli + vegetables', ratio:0.33, tags:['veg','dairy_free'] },
+      { t:'Snack', emoji:'🫐', name:'Greek yogurt with berries & walnuts', detail:'1 cup Greek yogurt + 1 cup berries + handful walnuts', ratio:0.12, tags:['veg','dairy'] },
+      { t:'Dinner', emoji:'🍆', name:'Grilled tofu with asparagus & salad', detail:'200g tofu + asparagus + arugula salad', ratio:0.23, tags:['veg','dairy_free'] }
+    ],
+    maint: [
+      { t:'Breakfast', emoji:'🍳', name:'Balanced full breakfast', detail:'2 eggs + oats + seasonal fruit + green tea', ratio:0.22, tags:['dairy_free','redmeat_free','fish_free'] },
+      { t:'Snack', emoji:'🍌', name:'Banana & almond butter', detail:'1 banana + 1 tbsp almond butter', ratio:0.10, tags:['veg','dairy_free'] },
+      { t:'Lunch', emoji:'🥘', name:'Chicken stew with vegetables & rice', detail:'200g chicken + vegetables + 1 cup rice', ratio:0.35, tags:['redmeat_free','fish_free','dairy_free'] },
+      { t:'Snack', emoji:'🥛', name:'Milk with whole grain crackers', detail:'1 cup milk + 4 whole grain crackers', ratio:0.10, tags:['veg','dairy'] },
+      { t:'Dinner', emoji:'🫕', name:'Fish soup with mixed vegetables', detail:'150g fish + vegetables + quarter whole bread', ratio:0.23, tags:['fish','dairy_free'] }
+    ],
+    maint_veg: [
+      { t:'Breakfast', emoji:'🍳', name:'Balanced full breakfast', detail:'2 eggs + oats + seasonal fruit + green tea', ratio:0.22, tags:['veg','dairy_free'] },
+      { t:'Snack', emoji:'🍌', name:'Banana & almond butter', detail:'1 banana + 1 tbsp almond butter', ratio:0.10, tags:['veg','dairy_free'] },
+      { t:'Lunch', emoji:'🥘', name:'Vegetable & chickpea stew with rice', detail:'Mixed vegetables + chickpeas + 1 cup rice', ratio:0.35, tags:['veg','dairy_free'] },
+      { t:'Snack', emoji:'🥛', name:'Milk with whole grain crackers', detail:'1 cup milk + 4 whole grain crackers', ratio:0.10, tags:['veg','dairy'] },
+      { t:'Dinner', emoji:'🍲', name:'Lentil soup with mixed vegetables', detail:'Lentils + vegetables + quarter whole bread', ratio:0.23, tags:['veg','dairy_free'] }
+    ]
+  };
+  return lang === 'ar' ? en : en;
+}
+
+function renderMeals(goal, cals, protein, carbs, fat, foodPrefs) {
+  const l = t[currentLang];
+  const pool = getMealPool(currentLang);
+
+  const isVeg = foodPrefs.includes('vegetarian');
+  let meals = isVeg ? pool[goal + '_veg'] : pool[goal];
+
+  if (!meals) meals = pool[goal];
+
+  meals = meals.filter(m => {
+    if (foodPrefs.includes('nodairy') && m.tags.includes('dairy')) return false;
+    if (foodPrefs.includes('nofish') && m.tags.includes('fish')) return false;
+    if (foodPrefs.includes('nored') && m.tags.includes('redmeat')) return false;
+    return true;
+  });
+
+  if (meals.length < 4) meals = isVeg ? pool[goal + '_veg'] : pool[goal];
+
+  let html = `<div class="day-label">${l.dayMealLabel}</div><div class="meals-grid">`;
+  meals.forEach(m => {
+    const mCals = Math.round(cals * m.ratio);
+    html += `
+      <div class="meal-card">
+        <span class="meal-emoji">${m.emoji}</span>
+        <div class="meal-info">
+          <div class="meal-name">${l.mealTimeNames[m.t] || m.t}: ${m.name}</div>
+          <div class="meal-detail">${m.detail}</div>
+        </div>
+        <div class="meal-cals">
+          <span class="cal-num">${mCals}</span>
+          <span class="cal-label">${l.calUnit}</span>
+        </div>
+      </div>`;
+  });
+  html += '</div>';
+
+  let lowCarbNote = '';
+  if (foodPrefs.includes('lowcarb')) {
+    lowCarbNote = `<br><b style="color:var(--text)">${l.lowCarbNote}</b> ${l.lowCarbVal}`;
   }
 
-  function switchTab(name, btn) {
-    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-    btn.classList.add('active');
-    document.getElementById('tab-'+name).classList.add('active');
+  html += `<div style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:18px;margin-bottom:20px;font-size:14px;color:var(--muted);line-height:1.9">
+    <b style="color:var(--text)">${l.waterNote}</b> ${Math.round(cals / 30)} ${l.waterVal}<br>
+    <b style="color:var(--text)">${l.mealTime}</b> ${l.mealTimeVal}<br>
+    <b style="color:var(--text)">${l.avoid}</b> ${l.avoidVal}${lowCarbNote}
+  </div>`;
+
+  document.getElementById('mealsContainer').innerHTML = html;
+}
+
+// ============================================================
+// WORKOUT DATA
+// ============================================================
+function getWorkoutPool(lang) {
+  const en = {
+    lose: [
+      { day:'Day 1', icon:'🦵', name:'Legs + Cardio', focus:'Quads, Hamstrings, Calves', badge:'High Burn', exercises:[
+        { n:'Squats', d:'Full depth, straight back', sets:'4 × 15' },
+        { n:'Forward Lunge', d:'Alternating steps', sets:'3 × 12' },
+        { n:'Leg Press', d:'Medium foot position', sets:'3 × 15' },
+        { n:'Calf Raise', d:'Slow and controlled', sets:'4 × 20' },
+        { n:'Treadmill', d:'30 min, moderate intensity', sets:'1 × 30 min' }
+      ]},
+      { day:'Day 2', icon:'💪', name:'Chest + Triceps', focus:'Chest, Triceps', badge:'Upper Body', exercises:[
+        { n:'Barbell Bench Press', d:'3 second slow descent', sets:'4 × 10' },
+        { n:'Dumbbell Fly', d:'Full lateral stretch', sets:'3 × 12' },
+        { n:'Push-Up', d:'Full range, no stopping', sets:'3 × 15' },
+        { n:'Tricep Dips', d:'Full depth', sets:'3 × 12' },
+        { n:'Tricep Pushdown', d:'Cable press', sets:'3 × 15' }
+      ]},
+      { day:'Day 3', icon:'🔙', name:'Back + Biceps', focus:'Back, Biceps', badge:'Pull', exercises:[
+        { n:'Romanian Deadlift', d:'Always keep back straight', sets:'4 × 10' },
+        { n:'Pull-Up', d:'Wide grip', sets:'3 × 10' },
+        { n:'Cable Row', d:'Pull to abdomen', sets:'3 × 12' },
+        { n:'Barbell Bicep Curl', d:'Squeeze at top', sets:'3 × 12' },
+        { n:'Hammer Curl', d:'Neutral dumbbell grip', sets:'3 × 12' }
+      ]},
+      { day:'Day 4', icon:'🔥', name:'HIIT Cardio', focus:'Fat Burn', badge:'Fat Burn', exercises:[
+        { n:'High Knees', d:'20 sec work / 10 sec rest', sets:'8 rounds' },
+        { n:'Burpees', d:'Push-up + jump', sets:'4 × 10' },
+        { n:'Jumping Jacks', d:'High speed', sets:'4 × 30 sec' },
+        { n:'Battle Ropes / Jump Rope', d:'30 seconds intense', sets:'6 × 30 sec' },
+        { n:'Brisk Walk', d:'Cool down 10 min', sets:'1 × 10 min' }
+      ]},
+      { day:'Day 5', icon:'🎯', name:'Shoulders + Core', focus:'Shoulders, Core', badge:'Full', exercises:[
+        { n:'Military Press', d:'Shoulder-width grip', sets:'4 × 10' },
+        { n:'Lateral Raise', d:'Slow lateral lift', sets:'3 × 15' },
+        { n:'Front Raise', d:'Front raise', sets:'3 × 12' },
+        { n:'Plank', d:'Perfectly straight back', sets:'3 × 45 sec' },
+        { n:'Crunches', d:'Slow and controlled', sets:'3 × 20' }
+      ]},
+      { day:'Day 6', icon:'🧘', name:'Flexibility & Active Recovery', focus:'Recovery', badge:'Rest Day', exercises:[
+        { n:'Yoga / Full Stretch', d:'15 minutes', sets:'1 × 15 min' },
+        { n:'Easy Walk', d:'30-40 minutes', sets:'1 × 35 min' },
+        { n:'Foam Rolling', d:'Major muscle groups', sets:'10 min' },
+        { n:'Breathing Exercises', d:'Deep breathing 4-7-8', sets:'3 × 5 min' }
+      ]}
+    ],
+    gain: [
+      { day:'Day 1', icon:'💪', name:'Chest + Triceps (Heavy)', focus:'Chest, Triceps — Hypertrophy', badge:'Mass', exercises:[
+        { n:'Barbell Bench Press', d:'Explosive push, 4 sec return', sets:'5 × 5' },
+        { n:'Incline Dumbbell Press', d:'30 degree angle', sets:'4 × 8' },
+        { n:'Weighted Dips', d:'Add belt and weights', sets:'3 × 8' },
+        { n:'Cable Fly', d:'Full contraction', sets:'3 × 12' },
+        { n:'Overhead Tricep Extension', d:'Full extension', sets:'4 × 10' }
+      ]},
+      { day:'Day 2', icon:'🔙', name:'Back + Biceps (Heavy)', focus:'Back, Biceps — Strength', badge:'Pull', exercises:[
+        { n:'Classic Deadlift', d:'Max weight, perfect form', sets:'5 × 5' },
+        { n:'Barbell Row', d:'Back parallel to floor', sets:'4 × 8' },
+        { n:'Dumbbell Pullover', d:'Full chest stretch', sets:'3 × 12' },
+        { n:'EZ Bar Curl', d:'Neutral grip', sets:'4 × 8' },
+        { n:'Incline Dumbbell Curl', d:'Full stretch at bottom', sets:'3 × 10' }
+      ]},
+      { day:'Day 3', icon:'🦵', name:'Legs (Heavy Mass)', focus:'Legs — Mass Building', badge:'Strength', exercises:[
+        { n:'Barbell Squat', d:'5 sec descent + explosive up', sets:'5 × 5' },
+        { n:'Leg Press', d:'Very heavy weight', sets:'4 × 10' },
+        { n:'Hack Squat', d:'Or multi-directional lunge', sets:'3 × 10' },
+        { n:'Leg Curl Machine', d:'Contract at top', sets:'4 × 12' },
+        { n:'Weighted Calf Raise', d:'Full extension', sets:'5 × 15' }
+      ]},
+      { day:'Day 4', icon:'🎯', name:'Shoulders + Core (Heavy)', focus:'Shoulders, Core', badge:'Volume', exercises:[
+        { n:'Overhead Press (Barbell)', d:'Standing or seated', sets:'5 × 5' },
+        { n:'Lateral Raise Drop Set', d:'Drop set', sets:'4 × 10' },
+        { n:'Face Pull Cable', d:'Rear shoulder muscles', sets:'3 × 15' },
+        { n:'Barbell Shrugs', d:'Heavy weight, high shoulder lift', sets:'4 × 12' },
+        { n:'Plank with Arm Raise', d:'Balance and core', sets:'3 × 30 sec' }
+      ]},
+      { day:'Day 5', icon:'🔥', name:'Chest + Back Volume', focus:'Upper Body Volume', badge:'High Pump', exercises:[
+        { n:'Explosive Push-Up', d:'Fast and powerful', sets:'4 × 12' },
+        { n:'Cable Crossover', d:'Full chest contraction', sets:'4 × 15' },
+        { n:'T-Bar Row', d:'Strong pull', sets:'3 × 10' },
+        { n:'Wide Seated Cable Row', d:'Wide grip', sets:'3 × 12' },
+        { n:'Farmer Walk', d:'Walk 30m with heavy weights', sets:'5 rounds' }
+      ]},
+      { day:'Day 6', icon:'🧘', name:'Active Recovery & Flexibility', focus:'Recovery', badge:'Recovery', exercises:[
+        { n:'Full Stretch', d:'20 min, every major muscle', sets:'1 × 20 min' },
+        { n:'Easy Walk', d:'20-30 minutes', sets:'1 × 25 min' },
+        { n:'Muscle Massage', d:'Foam roll + ball', sets:'15 min' }
+      ]}
+    ],
+    tone: [
+      { day:'Day 1', icon:'⚡', name:'Upper Body Circuit', focus:'Upper Body Circuit', badge:'Definition', exercises:[
+        { n:'Push-Up + Dumbbell Row', d:'Back-to-back no rest', sets:'4 × 12' },
+        { n:'Dumbbell Shoulder Press', d:'Slow 2-2', sets:'3 × 15' },
+        { n:'Tricep Kickback', d:'Full contraction', sets:'3 × 15' },
+        { n:'Bicep Hammer Curl', d:'Fully controlled', sets:'3 × 12' },
+        { n:'Cardio 20 min', d:'Moderate run', sets:'1 × 20 min' }
+      ]},
+      { day:'Day 2', icon:'🦵', name:'Lower Body Circuit', focus:'Lower Body Circuit', badge:'Agility', exercises:[
+        { n:'Jump Squat', d:'Jump squat', sets:'4 × 15' },
+        { n:'Alternating Lunge', d:'Wide steps', sets:'3 × 12' },
+        { n:'Hip Thrust', d:'Squeeze at top', sets:'4 × 15' },
+        { n:'Leg Raise', d:'Legs straight', sets:'3 × 15' },
+        { n:'HIIT Cardio', d:'15 min HIIT', sets:'1 × 15 min' }
+      ]},
+      { day:'Day 3', icon:'🔥', name:'Cardio + Core', focus:'Cardio & Core', badge:'Burn', exercises:[
+        { n:'Burpees', d:'Perfect form', sets:'4 × 10' },
+        { n:'Mountain Climbers', d:'Very fast', sets:'4 × 30 sec' },
+        { n:'Side Plank', d:'Alternating sides', sets:'3 × 40 sec' },
+        { n:'Bicycle Crunches', d:'Elbow-to-knee touch', sets:'3 × 20' },
+        { n:'Run 25 min', d:'70% max intensity', sets:'1 × 25 min' }
+      ]},
+      { day:'Day 4', icon:'🧘', name:'Yoga + Flexibility', focus:'Flexibility & Balance', badge:'Balance', exercises:[
+        { n:'Full Flexibility Routine', d:'30 full minutes', sets:'1 × 30 min' },
+        { n:'Basic Pilates', d:'Core strengthening', sets:'15 min' }
+      ]},
+      { day:'Day 5', icon:'💥', name:'Full Body Circuit', focus:'Full Body Circuit', badge:'Full', exercises:[
+        { n:'Light Deadlift', d:'Perfect form, full control', sets:'4 × 12' },
+        { n:'Bench + Fly Superset', d:'Dumbbell superset', sets:'3 × 12' },
+        { n:'Squat + Shoulder Press', d:'Dumbbell overhead', sets:'3 × 12' },
+        { n:'Final Cardio', d:'20 min gradual', sets:'1 × 20 min' }
+      ]},
+      { day:'Day 6', icon:'🌿', name:'Light Activity', focus:'Active Recovery', badge:'Rest', exercises:[
+        { n:'Walk + Stretch', d:'45 min outdoors', sets:'1 × 45 min' },
+        { n:'Breathing & Meditation', d:'10 minutes', sets:'1 × 10 min' }
+      ]}
+    ],
+    maint: [
+      { day:'Day 1', icon:'🏋️', name:'Full Body Training', focus:'Full Body Maintenance', badge:'Maintain', exercises:[
+        { n:'Squats', d:'Moderate weight, perfect form', sets:'3 × 12' },
+        { n:'Bench Press', d:'Balanced', sets:'3 × 10' },
+        { n:'Pull-Up', d:'Steady and slow', sets:'3 × 10' },
+        { n:'Cardio', d:'30 min, moderate intensity', sets:'1 × 30 min' }
+      ]},
+      { day:'Day 2', icon:'🚴', name:'Cardio + Flexibility', focus:'Cardio & Flexibility', badge:'Cardio', exercises:[
+        { n:'Cycling or Brisk Walk', d:'40 minutes', sets:'1 × 40 min' },
+        { n:'Full Stretch', d:'20 minutes', sets:'1 × 20 min' }
+      ]},
+      { day:'Day 3', icon:'🎯', name:'Functional Training', focus:'Functional Training', badge:'Functional', exercises:[
+        { n:'Lunge + Rotation', d:'Multi-directional', sets:'3 × 12' },
+        { n:'Varied Push-Up', d:'Wide + narrow', sets:'3 × 12' },
+        { n:'Core Endurance', d:'Plank + Side Plank', sets:'4 × 30 sec' }
+      ]},
+      { day:'Day 4', icon:'🧘', name:'Yoga or Swimming', focus:'Mind & Body', badge:'Calm', exercises:[
+        { n:'Full Yoga', d:'45 minutes', sets:'1 × 45 min' },
+        { n:'Meditation & Breathing', d:'10 minutes', sets:'1 × 10 min' }
+      ]}
+    ]
+  };
+  return lang === 'ar' ? en : en;
+}
+
+function renderWorkout(goal, gender, days) {
+  const pool = getWorkoutPool(currentLang);
+  let plan = pool[goal];
+
+  if (!plan) return;
+
+  let selected;
+  if (days <= plan.length) {
+    selected = plan.slice(0, days);
+  } else {
+    selected = [];
+    for (let i = 0; i < days; i++) selected.push(plan[i % plan.length]);
   }
 
-  // ===== CALCULATION ENGINE =====
-  function calcBMR(weight, height, age, gender) {
-    if(gender === 'male') return 10*weight + 6.25*height - 5*age + 5;
-    return 10*weight + 6.25*height - 5*age - 161;
-  }
-
-  function calcTDEE(bmr, activity) { return Math.round(bmr * activity); }
-
-  function calcBMI(weight, height) { return (weight / (height/100)**2).toFixed(1); }
-
-  function generatePlan() {
-    const age = parseInt(document.getElementById('age').value);
-    const gender = document.getElementById('gender').value;
-    const height = parseInt(document.getElementById('height').value);
-    const weight = parseInt(document.getElementById('weight').value);
-    const targetWeight = parseInt(document.getElementById('targetWeight').value);
-    const duration = parseInt(document.getElementById('duration').value);
-
-    if(!selectedGoal || !age || !height || !weight || !targetWeight) {
-      alert(t[currentLang].alertMsg);
-      return;
-    }
-
-    document.getElementById('loading').classList.add('show');
-
-    setTimeout(() => {
-      const bmr = calcBMR(weight, height, age, gender);
-      const tdee = calcTDEE(bmr, activityFactor);
-      const bmi = calcBMI(weight, height);
-
-      let targetCals, deficit;
-      if(selectedGoal === 'lose') {
-        deficit = Math.min(700, Math.round((weight - targetWeight) * 7700 / (duration * 7)));
-        targetCals = Math.max(1200, tdee - deficit);
-      } else if(selectedGoal === 'gain') {
-        deficit = -Math.min(500, Math.round((targetWeight - weight) * 7700 / (duration * 7)));
-        targetCals = tdee + Math.abs(deficit);
-      } else if(selectedGoal === 'tone') {
-        targetCals = tdee - 300;
-        deficit = 300;
-      } else {
-        targetCals = tdee;
-        deficit = 0;
-      }
-
-      const protein = Math.round(weight * (selectedGoal === 'gain' ? 2.2 : 2.0));
-      const fat = Math.round(targetCals * 0.25 / 9);
-      const carbs = Math.round((targetCals - protein*4 - fat*9) / 4);
-
-      const weightDiff = Math.abs(targetWeight - weight);
-      const weeklyChange = Math.abs(deficit) * 7 / 7700;
-      const weeksNeeded = weeklyChange > 0 ? Math.round(weightDiff / weeklyChange) : duration;
-
-      document.getElementById('loading').classList.remove('show');
-      document.getElementById('formSection').style.display = 'none';
-      document.getElementById('resultsSection').style.display = 'block';
-      window.scrollTo(0,0);
-
-      renderResults(selectedGoal, targetCals, protein, carbs, fat, bmi, weeksNeeded, weight, gender, selectedDays, selectedFoodPrefs);
-    }, 1800);
-  }
-
-  function renderResults(goal, cals, protein, carbs, fat, bmi, weeks, weight, gender, days, foodPrefs) {
-    const l = t[currentLang];
-    document.getElementById('resultTitle').textContent = l.titles[goal];
-    document.getElementById('resultSub').textContent = l.subs[goal];
-    document.getElementById('s1').textContent = cals.toLocaleString();
-    document.getElementById('s2').textContent = protein;
-    document.getElementById('s3').textContent = bmi;
-    document.getElementById('s4').textContent = weeks + l.weekUnit;
-
-    const total = protein*4 + carbs*4 + fat*9;
-    document.getElementById('m-protein').textContent = protein + l.gramUnit;
-    document.getElementById('m-carbs').textContent = carbs + l.gramUnit;
-    document.getElementById('m-fat').textContent = fat + l.gramUnit;
-    setTimeout(() => {
-      document.getElementById('mf-protein').style.width = Math.round(protein*4/total*100) + '%';
-      document.getElementById('mf-carbs').style.width = Math.round(carbs*4/total*100) + '%';
-      document.getElementById('mf-fat').style.width = Math.round(fat*9/total*100) + '%';
-    }, 300);
-
-    renderMeals(goal, cals, protein, carbs, fat, foodPrefs);
-    renderWorkout(goal, gender, days);
-    renderTips(goal);
-  }
-
-  // ===== MEAL DATA (tagged by dietary attributes) =====
-  // tags: veg (vegetarian-friendly), dairy, fish, redmeat, carbHeavy
-  function getMealPool(lang) {
-    const ar = {
-      lose: [
-        { t:'Breakfast', emoji:'🥚', name:'بيض مسلوق مع خبز قمح كامل', detail:'3 بيضات + شريحة خبز + طماطم + خيار', ratio:0.22, tags:['dairy_free','redmeat_free','fish_free'] },
-        { t:'Snack', emoji:'🍎', name:'فاكهة وزبادي يوناني', detail:'تفاحة كبيرة + كوب زبادي قليل الدسم', ratio:0.10, tags:['veg','redmeat_free','fish_free','dairy'] },
-        { t:'Lunch', emoji:'🍗', name:'صدر دجاج مشوي مع أرز بني وسلطة', detail:'200 غرام دجاج + 1 كوب أرز بني + سلطة خضراء', ratio:0.35, tags:['redmeat_free','fish_free','dairy_free'] },
-        { t:'Snack', emoji:'🥜', name:'مكسرات وبروتين شيك', detail:'حفنة لوز + بروتين شيك بالماء', ratio:0.12, tags:['veg','redmeat_free','fish_free','dairy_free'] },
-        { t:'Dinner', emoji:'🐟', name:'سمك مشوي مع خضروات مشوية', detail:'200 غرام سمك + كوسة + فلفل + بصل مشوي', ratio:0.21, tags:['redmeat_free','dairy_free'] }
-      ],
-      lose_veg: [
-        { t:'Breakfast', emoji:'🥚', name:'بيض مسلوق مع خبز قمح كامل', detail:'3 بيضات + شريحة خبز + طماطم + خيار', ratio:0.22, tags:['dairy_free','redmeat_free','fish_free'] },
-        { t:'Snack', emoji:'🍎', name:'فاكهة وزبادي يوناني', detail:'تفاحة كبيرة + كوب زبادي قليل الدسم', ratio:0.10, tags:['veg','dairy'] },
-        { t:'Lunch', emoji:'🧆', name:'فلافل مع حمص وسلطة وأرز بني', detail:'6 حبات فلافل + حمص + 1 كوب أرز بني + سلطة', ratio:0.35, tags:['veg','dairy_free'] },
-        { t:'Snack', emoji:'🥜', name:'مكسرات وبروتين شيك نباتي', detail:'حفنة لوز + بروتين شيك بالماء (نباتي)', ratio:0.12, tags:['veg','dairy_free'] },
-        { t:'Dinner', emoji:'🍳', name:'توفو مشوي مع خضروات مشوية', detail:'200 غرام توفو + كوسة + فلفل + بصل مشوي', ratio:0.21, tags:['veg','dairy_free'] }
-      ],
-      gain: [
-        { t:'Breakfast', emoji:'🥣', name:'شوفان بالموز والعسل والمكسرات', detail:'2 كوب شوفان + موزتان + ملعقة عسل + مكسرات مشكلة', ratio:0.25, tags:['veg','dairy_free'] },
-        { t:'Snack', emoji:'🥛', name:'بروتين شيك مع الموز والحليب الكامل', detail:'2 مسحوق بروتين + موزة + كوب حليب كامل + زبدة فول سوداني', ratio:0.15, tags:['veg','dairy'] },
-        { t:'Lunch', emoji:'🍖', name:'لحم بقري مع بطاطا مشوية وأرز', detail:'250 غرام لحم بقري + بطاطا + 1.5 كوب أرز أبيض', ratio:0.30, tags:['redmeat','dairy_free'] },
-        { t:'Snack', emoji:'🧀', name:'تونة مع جبنة وخبز كامل', detail:'علبة تونة + جبنة + خبز قمح كامل', ratio:0.12, tags:['fish','dairy'] },
-        { t:'Dinner', emoji:'🍗', name:'دجاج مع مكرونة وصلصة طماطم', detail:'200 غرام دجاج + كوب مكرونة + صلصة طماطم منزلية', ratio:0.18, tags:['redmeat_free','fish_free','dairy_free'] }
-      ],
-      gain_veg: [
-        { t:'Breakfast', emoji:'🥣', name:'شوفان بالموز والعسل والمكسرات', detail:'2 كوب شوفان + موزتان + ملعقة عسل + مكسرات مشكلة', ratio:0.25, tags:['veg','dairy_free'] },
-        { t:'Snack', emoji:'🥛', name:'بروتين شيك مع الموز والحليب الكامل', detail:'2 مسحوق بروتين + موزة + كوب حليب كامل + زبدة فول سوداني', ratio:0.15, tags:['veg','dairy'] },
-        { t:'Lunch', emoji:'🫘', name:'عدس وأرز مع جبنة وخضروات', detail:'2 كوب عدس + 1.5 كوب أرز + جبنة + خضروات مشكلة', ratio:0.30, tags:['veg','dairy'] },
-        { t:'Snack', emoji:'🧀', name:'جبنة مع خبز كامل وزيتون', detail:'جبنة + خبز قمح كامل + زيتون', ratio:0.12, tags:['veg','dairy'] },
-        { t:'Dinner', emoji:'🍝', name:'توفو مع مكرونة وصلصة طماطم', detail:'200 غرام توفو + كوب مكرونة + صلصة طماطم منزلية', ratio:0.18, tags:['veg','dairy_free'] }
-      ],
-      tone: [
-        { t:'Breakfast', emoji:'🥗', name:'سموذي خضراء مع بروتين', detail:'سبانخ + موزة + بروتين شيك + بذور شيا', ratio:0.20, tags:['veg','dairy_free'] },
-        { t:'Snack', emoji:'🍳', name:'بياض البيض مع خضروات', detail:'4 بياض بيض + فلفل + بصل + بندورة', ratio:0.12, tags:['dairy_free','redmeat_free','fish_free'] },
-        { t:'Lunch', emoji:'🥩', name:'صدر دجاج مع كينوا وبروكلي', detail:'200 غرام دجاج + نصف كوب كينوا + بروكلي مسلوق', ratio:0.33, tags:['redmeat_free','fish_free','dairy_free'] },
-        { t:'Snack', emoji:'🫐', name:'زبادي يوناني مع توت وجوز', detail:'كوب زبادي يوناني + كوب توت + حفنة جوز', ratio:0.12, tags:['veg','dairy'] },
-        { t:'Dinner', emoji:'🦐', name:'جمبري مشوي مع أسباراغس وسلطة', detail:'200 غرام جمبري + أسباراغس + سلطة روكا', ratio:0.23, tags:['fish','dairy_free'] }
-      ],
-      tone_veg: [
-        { t:'Breakfast', emoji:'🥗', name:'سموذي خضراء مع بروتين', detail:'سبانخ + موزة + بروتين شيك + بذور شيا', ratio:0.20, tags:['veg','dairy_free'] },
-        { t:'Snack', emoji:'🍳', name:'بياض البيض مع خضروات', detail:'4 بياض بيض + فلفل + بصل + بندورة', ratio:0.12, tags:['veg','dairy_free'] },
-        { t:'Lunch', emoji:'🥗', name:'كينوا مع حمص وخضروات وبروكلي', detail:'نصف كوب كينوا + حمص + بروكلي مسلوق + خضروات', ratio:0.33, tags:['veg','dairy_free'] },
-        { t:'Snack', emoji:'🫐', name:'زبادي يوناني مع توت وجوز', detail:'كوب زبادي يوناني + كوب توت + حفنة جوز', ratio:0.12, tags:['veg','dairy'] },
-        { t:'Dinner', emoji:'🍆', name:'توفو مشوي مع أسباراغس وسلطة', detail:'200 غرام توفو + أسباراغس + سلطة روكا', ratio:0.23, tags:['veg','dairy_free'] }
-      ],
-      maint: [
-        { t:'Breakfast', emoji:'🍳', name:'فطور متوازن كامل', detail:'2 بيض + شوفان + فاكهة موسمية + شاي أخضر', ratio:0.22, tags:['dairy_free','redmeat_free','fish_free'] },
-        { t:'Snack', emoji:'🍌', name:'موزة وزبدة لوز', detail:'موزة + ملعقة كبيرة زبدة لوز', ratio:0.10, tags:['veg','dairy_free'] },
-        { t:'Lunch', emoji:'🥘', name:'طاجين دجاج بالخضروات وأرز', detail:'200 غرام دجاج + خضروات + كوب أرز', ratio:0.35, tags:['redmeat_free','fish_free','dairy_free'] },
-        { t:'Snack', emoji:'🥛', name:'حليب مع بسكويت كامل الحبوب', detail:'كوب حليب + 4 بسكويت حبوب كاملة', ratio:0.10, tags:['veg','dairy'] },
-        { t:'Dinner', emoji:'🫕', name:'حساء سمك مع خضروات متنوعة', detail:'150 غرام سمك + خضروات + ربع خبز كامل', ratio:0.23, tags:['fish','dairy_free'] }
-      ],
-      maint_veg: [
-        { t:'Breakfast', emoji:'🍳', name:'فطور متوازن كامل', detail:'2 بيض + شوفان + فاكهة موسمية + شاي أخضر', ratio:0.22, tags:['veg','dairy_free'] },
-        { t:'Snack', emoji:'🍌', name:'موزة وزبدة لوز', detail:'موزة + ملعقة كبيرة زبدة لوز', ratio:0.10, tags:['veg','dairy_free'] },
-        { t:'Lunch', emoji:'🥘', name:'طاجين خضروات وحمص مع أرز', detail:'خضروات مشكلة + حمص + كوب أرز', ratio:0.35, tags:['veg','dairy_free'] },
-        { t:'Snack', emoji:'🥛', name:'حليب مع بسكويت كامل الحبوب', detail:'كوب حليب + 4 بسكويت حبوب كاملة', ratio:0.10, tags:['veg','dairy'] },
-        { t:'Dinner', emoji:'🍲', name:'حساء عدس مع خضروات متنوعة', detail:'عدس + خضروات + ربع خبز كامل', ratio:0.23, tags:['veg','dairy_free'] }
-      ]
-    };
-
-    const en = {
-      lose: [
-        { t:'Breakfast', emoji:'🥚', name:'Boiled eggs with whole wheat bread', detail:'3 eggs + 1 slice bread + tomato + cucumber', ratio:0.22, tags:['dairy_free','redmeat_free','fish_free'] },
-        { t:'Snack', emoji:'🍎', name:'Fruit & Greek yogurt', detail:'1 large apple + 1 cup low-fat Greek yogurt', ratio:0.10, tags:['veg','dairy'] },
-        { t:'Lunch', emoji:'🍗', name:'Grilled chicken with brown rice & salad', detail:'200g chicken + 1 cup brown rice + green salad', ratio:0.35, tags:['redmeat_free','fish_free','dairy_free'] },
-        { t:'Snack', emoji:'🥜', name:'Nuts & protein shake', detail:'Handful of almonds + protein shake with water', ratio:0.12, tags:['veg','dairy_free'] },
-        { t:'Dinner', emoji:'🐟', name:'Grilled fish with roasted vegetables', detail:'200g fish + zucchini + peppers + grilled onion', ratio:0.21, tags:['redmeat_free','dairy_free'] }
-      ],
-      lose_veg: [
-        { t:'Breakfast', emoji:'🥚', name:'Boiled eggs with whole wheat bread', detail:'3 eggs + 1 slice bread + tomato + cucumber', ratio:0.22, tags:['dairy_free'] },
-        { t:'Snack', emoji:'🍎', name:'Fruit & Greek yogurt', detail:'1 large apple + 1 cup low-fat Greek yogurt', ratio:0.10, tags:['veg','dairy'] },
-        { t:'Lunch', emoji:'🧆', name:'Falafel with hummus, salad & brown rice', detail:'6 falafel + hummus + 1 cup brown rice + salad', ratio:0.35, tags:['veg','dairy_free'] },
-        { t:'Snack', emoji:'🥜', name:'Nuts & plant protein shake', detail:'Handful of almonds + plant protein shake', ratio:0.12, tags:['veg','dairy_free'] },
-        { t:'Dinner', emoji:'🍳', name:'Grilled tofu with roasted vegetables', detail:'200g tofu + zucchini + peppers + grilled onion', ratio:0.21, tags:['veg','dairy_free'] }
-      ],
-      gain: [
-        { t:'Breakfast', emoji:'🥣', name:'Oats with banana, honey & nuts', detail:'2 cups oats + 2 bananas + 1 tbsp honey + mixed nuts', ratio:0.25, tags:['veg','dairy_free'] },
-        { t:'Snack', emoji:'🥛', name:'Protein shake with whole milk & PB', detail:'2 scoops protein + banana + 1 cup whole milk + peanut butter', ratio:0.15, tags:['veg','dairy'] },
-        { t:'Lunch', emoji:'🍖', name:'Beef with roasted potato & rice', detail:'250g beef + potato + 1.5 cups white rice', ratio:0.30, tags:['redmeat','dairy_free'] },
-        { t:'Snack', emoji:'🧀', name:'Tuna with cheese & whole bread', detail:'1 can tuna + cheese + whole wheat bread', ratio:0.12, tags:['fish','dairy'] },
-        { t:'Dinner', emoji:'🍗', name:'Chicken with pasta & tomato sauce', detail:'200g chicken + 1 cup pasta + homemade tomato sauce', ratio:0.18, tags:['redmeat_free','fish_free','dairy_free'] }
-      ],
-      gain_veg: [
-        { t:'Breakfast', emoji:'🥣', name:'Oats with banana, honey & nuts', detail:'2 cups oats + 2 bananas + 1 tbsp honey + mixed nuts', ratio:0.25, tags:['veg','dairy_free'] },
-        { t:'Snack', emoji:'🥛', name:'Protein shake with whole milk & PB', detail:'2 scoops protein + banana + 1 cup whole milk + peanut butter', ratio:0.15, tags:['veg','dairy'] },
-        { t:'Lunch', emoji:'🫘', name:'Lentils & rice with cheese & vegetables', detail:'2 cups lentils + 1.5 cups rice + cheese + mixed vegetables', ratio:0.30, tags:['veg','dairy'] },
-        { t:'Snack', emoji:'🧀', name:'Cheese with whole bread & olives', detail:'Cheese + whole wheat bread + olives', ratio:0.12, tags:['veg','dairy'] },
-        { t:'Dinner', emoji:'🍝', name:'Tofu with pasta & tomato sauce', detail:'200g tofu + 1 cup pasta + homemade tomato sauce', ratio:0.18, tags:['veg','dairy_free'] }
-      ],
-      tone: [
-        { t:'Breakfast', emoji:'🥗', name:'Green smoothie with protein', detail:'Spinach + banana + protein shake + chia seeds', ratio:0.20, tags:['veg','dairy_free'] },
-        { t:'Snack', emoji:'🍳', name:'Egg whites with vegetables', detail:'4 egg whites + bell pepper + onion + tomato', ratio:0.12, tags:['dairy_free','redmeat_free','fish_free'] },
-        { t:'Lunch', emoji:'🥩', name:'Chicken breast with quinoa & broccoli', detail:'200g chicken + 0.5 cup quinoa + steamed broccoli', ratio:0.33, tags:['redmeat_free','fish_free','dairy_free'] },
-        { t:'Snack', emoji:'🫐', name:'Greek yogurt with berries & walnuts', detail:'1 cup Greek yogurt + 1 cup berries + handful walnuts', ratio:0.12, tags:['veg','dairy'] },
-        { t:'Dinner', emoji:'🦐', name:'Grilled shrimp with asparagus & salad', detail:'200g shrimp + asparagus + arugula salad', ratio:0.23, tags:['fish','dairy_free'] }
-      ],
-      tone_veg: [
-        { t:'Breakfast', emoji:'🥗', name:'Green smoothie with protein', detail:'Spinach + banana + protein shake + chia seeds', ratio:0.20, tags:['veg','dairy_free'] },
-        { t:'Snack', emoji:'🍳', name:'Egg whites with vegetables', detail:'4 egg whites + bell pepper + onion + tomato', ratio:0.12, tags:['veg','dairy_free'] },
-        { t:'Lunch', emoji:'🥗', name:'Quinoa with hummus, vegetables & broccoli', detail:'0.5 cup quinoa + hummus + steamed broccoli + vegetables', ratio:0.33, tags:['veg','dairy_free'] },
-        { t:'Snack', emoji:'🫐', name:'Greek yogurt with berries & walnuts', detail:'1 cup Greek yogurt + 1 cup berries + handful walnuts', ratio:0.12, tags:['veg','dairy'] },
-        { t:'Dinner', emoji:'🍆', name:'Grilled tofu with asparagus & salad', detail:'200g tofu + asparagus + arugula salad', ratio:0.23, tags:['veg','dairy_free'] }
-      ],
-      maint: [
-        { t:'Breakfast', emoji:'🍳', name:'Balanced full breakfast', detail:'2 eggs + oats + seasonal fruit + green tea', ratio:0.22, tags:['dairy_free','redmeat_free','fish_free'] },
-        { t:'Snack', emoji:'🍌', name:'Banana & almond butter', detail:'1 banana + 1 tbsp almond butter', ratio:0.10, tags:['veg','dairy_free'] },
-        { t:'Lunch', emoji:'🥘', name:'Chicken stew with vegetables & rice', detail:'200g chicken + vegetables + 1 cup rice', ratio:0.35, tags:['redmeat_free','fish_free','dairy_free'] },
-        { t:'Snack', emoji:'🥛', name:'Milk with whole grain crackers', detail:'1 cup milk + 4 whole grain crackers', ratio:0.10, tags:['veg','dairy'] },
-        { t:'Dinner', emoji:'🫕', name:'Fish soup with mixed vegetables', detail:'150g fish + vegetables + quarter whole bread', ratio:0.23, tags:['fish','dairy_free'] }
-      ],
-      maint_veg: [
-        { t:'Breakfast', emoji:'🍳', name:'Balanced full breakfast', detail:'2 eggs + oats + seasonal fruit + green tea', ratio:0.22, tags:['veg','dairy_free'] },
-        { t:'Snack', emoji:'🍌', name:'Banana & almond butter', detail:'1 banana + 1 tbsp almond butter', ratio:0.10, tags:['veg','dairy_free'] },
-        { t:'Lunch', emoji:'🥘', name:'Vegetable & chickpea stew with rice', detail:'Mixed vegetables + chickpeas + 1 cup rice', ratio:0.35, tags:['veg','dairy_free'] },
-        { t:'Snack', emoji:'🥛', name:'Milk with whole grain crackers', detail:'1 cup milk + 4 whole grain crackers', ratio:0.10, tags:['veg','dairy'] },
-        { t:'Dinner', emoji:'🍲', name:'Lentil soup with mixed vegetables', detail:'Lentils + vegetables + quarter whole bread', ratio:0.23, tags:['veg','dairy_free'] }
-      ]
-    };
-
-    return lang === 'ar' ? ar : en;
-  }
-
-  function renderMeals(goal, cals, protein, carbs, fat, foodPrefs) {
-    const l = t[currentLang];
-    const pool = getMealPool(currentLang);
-
-    // pick vegetarian variant if requested
-    const isVeg = foodPrefs.includes('vegetarian');
-    let meals = isVeg ? pool[goal + '_veg'] : pool[goal];
-
-    // filter further by other restrictions
-    meals = meals.filter(m => {
-      if (foodPrefs.includes('nodairy') && m.tags.includes('dairy')) return false;
-      if (foodPrefs.includes('nofish') && m.tags.includes('fish')) return false;
-      if (foodPrefs.includes('nored') && m.tags.includes('redmeat')) return false;
-      return true;
-    });
-
-    // if filtering removed too much, fall back to base set (safety net)
-    if (meals.length < 4) meals = isVeg ? pool[goal + '_veg'] : pool[goal];
-
-    let html = `<div class="day-label">${l.dayMealLabel}</div><div class="meals-grid">`;
-    meals.forEach(m => {
-      const mCals = Math.round(cals * m.ratio);
+  let html = '';
+  selected.forEach((day, i) => {
+    html += `
+      <div class="workout-day">
+        <div class="workout-header">
+          <span class="workout-day-icon">${day.icon}</span>
+          <div class="workout-day-info">
+            <div class="workout-day-name">${day.day} — ${day.name}</div>
+            <div class="workout-day-focus">${day.focus}</div>
+          </div>
+          <span class="workout-badge">${day.badge}</span>
+        </div>
+        <div class="exercises-list">`;
+    day.exercises.forEach((ex, j) => {
       html += `
-        <div class="meal-card">
-          <span class="meal-emoji">${m.emoji}</span>
-          <div class="meal-info">
-            <div class="meal-name">${l.mealTimeNames[m.t] || m.t}: ${m.name}</div>
-            <div class="meal-detail">${m.detail}</div>
+        <div class="exercise-item">
+          <span class="ex-num">${j+1}</span>
+          <div class="ex-info">
+            <div class="ex-name">${ex.n}</div>
+            <div class="ex-detail">${ex.d}</div>
           </div>
-          <div class="meal-cals">
-            <span class="cal-num">${mCals}</span>
-            <span class="cal-label">${l.calUnit}</span>
-          </div>
+          <span class="ex-sets">${ex.sets}</span>
         </div>`;
     });
-    html += '</div>';
+    html += `</div></div>`;
+  });
 
-    let lowCarbNote = '';
-    if (foodPrefs.includes('lowcarb')) {
-      lowCarbNote = `<br><b style="color:var(--text)">${l.lowCarbNote}</b> ${l.lowCarbVal}`;
-    }
+  document.getElementById('workoutContainer').innerHTML = html;
+}
 
-    html += `<div style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:18px;margin-bottom:20px;font-size:14px;color:var(--muted);line-height:1.9">
-      <b style="color:var(--text)">${l.waterNote}</b> ${Math.round(cals / 30)} ${l.waterVal}<br>
-      <b style="color:var(--text)">${l.mealTime}</b> ${l.mealTimeVal}<br>
-      <b style="color:var(--text)">${l.avoid}</b> ${l.avoidVal}${lowCarbNote}
-    </div>`;
-
-    document.getElementById('mealsContainer').innerHTML = html;
-  }
-
-  // ===== WORKOUT POOL (per goal) - we slice to N days =====
-  function getWorkoutPool(lang) {
-    const ar = {
-      lose: [
-        { day:'Day 1', icon:'🦵', name:'أرجل + كارديو', focus:'Quads, Hamstrings, Calves', badge:'حرق عالي', exercises:[
-          { n:'سكوات', d:'عمق كامل، ظهر مستقيم', sets:'4 × 15' },
-          { n:'لانج أمامي', d:'خطوات متناوبة', sets:'3 × 12' },
-          { n:'بريس أرجل', d:'وضع أقدام متوسط', sets:'3 × 15' },
-          { n:'رفع الكعب', d:'بطيء ومتحكم', sets:'4 × 20' },
-          { n:'تردميل', d:'30 دقيقة، شدة متوسطة', sets:'1 × 30 دق' }
-        ]},
-        { day:'Day 2', icon:'💪', name:'صدر + تراي', focus:'Chest, Triceps', badge:'جزء علوي', exercises:[
-          { n:'بنش بريس بالبار', d:'إنزال بطيء 3 ثوانٍ', sets:'4 × 10' },
-          { n:'دمبل فلاي', d:'توسيع جانبي كامل', sets:'3 × 12' },
-          { n:'بوش أب', d:'تنفيذ كامل بلا توقف', sets:'3 × 15' },
-          { n:'تراي ديبس', d:'عمق كامل', sets:'3 × 12' },
-          { n:'ترايسبس بوشداون', d:'كابل ضغط', sets:'3 × 15' }
-        ]},
-        { day:'Day 3', icon:'🔙', name:'ظهر + بايسبس', focus:'Back, Biceps', badge:'سحب', exercises:[
-          { n:'ديد ليفت رومانياني', d:'ظهر مستقيم دائماً', sets:'4 × 10' },
-          { n:'سحب بالبار', d:'قبضة واسعة', sets:'3 × 10' },
-          { n:'كابل روو', d:'سحب للبطن', sets:'3 × 12' },
-          { n:'بايسبس كيرل بالبار', d:'ضغط عند الأعلى', sets:'3 × 12' },
-          { n:'هامر كيرل', d:'دمبل بقبضة محايدة', sets:'3 × 12' }
-        ]},
-        { day:'Day 4', icon:'🔥', name:'كارديو مكثف HIIT', focus:'Fat Burn', badge:'حرق دهون', exercises:[
-          { n:'جري في المكان عالي الركبتين', d:'20 ثانية عمل / 10 ثوانٍ راحة', sets:'8 جولات' },
-          { n:'بربي', d:'ضغط + قفز', sets:'4 × 10' },
-          { n:'جامبينج جاكس', d:'سرعة عالية', sets:'4 × 30 ثانية' },
-          { n:'باتل روبز أو جمب روب', d:'30 ثانية قوية', sets:'6 × 30 ثانية' },
-          { n:'مشي سريع', d:'تهدئة 10 دقائق', sets:'1 × 10 دق' }
-        ]},
-        { day:'Day 5', icon:'🎯', name:'كتف + أوبر', focus:'Shoulders, Core', badge:'كامل', exercises:[
-          { n:'ميلتري بريس', d:'قبضة عرض الكتف', sets:'4 × 10' },
-          { n:'لاترال ريز', d:'رفع جانبي بطيء', sets:'3 × 15' },
-          { n:'فرونت ريز', d:'رفع أمامي', sets:'3 × 12' },
-          { n:'بلانك', d:'ظهر مستقيم تماماً', sets:'3 × 45 ثانية' },
-          { n:'كرانشز', d:'تنفيذ بطيء ومتحكم', sets:'3 × 20' }
-        ]},
-        { day:'Day 6', icon:'🧘', name:'مرونة وتعافي نشط', focus:'Recovery', badge:'راحة نشطة', exercises:[
-          { n:'يوغا أو إطالة كاملة', d:'15 دقيقة', sets:'1 × 15 دق' },
-          { n:'مشي هادئ', d:'30-40 دقيقة', sets:'1 × 35 دق' },
-          { n:'تدليك باستخدام رول فوم', d:'تدليك عضلات رئيسية', sets:'10 دقائق' },
-          { n:'تمارين تنفس', d:'تنفس عميق 4-7-8', sets:'3 × 5 دقائق' }
-        ]}
-      ],
-      gain: [
-        { day:'Day 1', icon:'💪', name:'صدر + تراي (ثقيل)', focus:'Chest, Triceps — Hypertrophy', badge:'ضخم', exercises:[
-          { n:'بنش بريس بالبار', d:'دفع قوي، عودة بطيئة 4 ثوانٍ', sets:'5 × 5' },
-          { n:'إنكلاين دمبل بريس', d:'زاوية 30 درجة', sets:'4 × 8' },
-          { n:'ديب (ثقل إضافي)', d:'أضف حزام وأثقال', sets:'3 × 8' },
-          { n:'فلاي كابل', d:'تقريب كامل', sets:'3 × 12' },
-          { n:'تراي اوفرهيد', d:'تمديد كامل', sets:'4 × 10' }
-        ]},
-        { day:'Day 2', icon:'🔙', name:'ظهر + بايسبس (ثقيل)', focus:'Back, Biceps — Strength', badge:'شد', exercises:[
-          { n:'ديد ليفت كلاسيك', d:'أثقال قصوى، شكل مثالي', sets:'5 × 5' },
-          { n:'بارتليت رو', d:'ظهر موازٍ للأرض', sets:'4 × 8' },
-          { n:'بولوفر دمبل', d:'تمديد صدر كامل', sets:'3 × 12' },
-          { n:'EZ بار كيرل', d:'قبضة محايدة', sets:'4 × 8' },
-          { n:'إنكلاين دمبل كيرل', d:'تمديد كامل أسفلاً', sets:'3 × 10' }
-        ]},
-        { day:'Day 3', icon:'🦵', name:'أرجل (ثقيل ضخم)', focus:'Legs — Mass Building', badge:'قوة', exercises:[
-          { n:'سكوات بالبار', d:'5 ثوانٍ نزول + انفجار للأعلى', sets:'5 × 5' },
-          { n:'بريس أرجل', d:'أثقال عالية جداً', sets:'4 × 10' },
-          { n:'هاكتسكوات', d:'أو لانج متعدد الاتجاهات', sets:'3 × 10' },
-          { n:'ليغ كيرل آلة', d:'تقلص عند الأعلى', sets:'4 × 12' },
-          { n:'كاف ريز مع وزن', d:'تمديد كامل', sets:'5 × 15' }
-        ]},
-        { day:'Day 4', icon:'🎯', name:'كتف + أوبر (ثقيل)', focus:'Shoulders, Core', badge:'حجم', exercises:[
-          { n:'أوفرهيد بريس بالبار', d:'وقوفاً أو جلوساً', sets:'5 × 5' },
-          { n:'ببد دمبل لاترال', d:'دروب سيت', sets:'4 × 10' },
-          { n:'فيس بول كابل', d:'عضلات الكتف الخلفية', sets:'3 × 15' },
-          { n:'شراغز بالبار', d:'رفع الكتفين بثقل عالٍ', sets:'4 × 12' },
-          { n:'بلانك مع رفع ذراع', d:'توازن وأوبر', sets:'3 × 30 ثانية' }
-        ]},
-        { day:'Day 5', icon:'🔥', name:'صدر + ظهر تضخيم', focus:'Upper Body Volume', badge:'ضخ عالٍ', exercises:[
-          { n:'بوش أب انفجاري', d:'سريع وقوي', sets:'4 × 12' },
-          { n:'كابل كروسوفر', d:'تقريب صدر كامل', sets:'4 × 15' },
-          { n:'تي بار رو', d:'سحب قوي', sets:'3 × 10' },
-          { n:'سيتد كابل رو واسع', d:'قبضة واسعة', sets:'3 × 12' },
-          { n:'فارمر ووك', d:'مشي 30 متر بأثقال ثقيلة', sets:'5 جولات' }
-        ]},
-        { day:'Day 6', icon:'🧘', name:'تعافي نشط + مرونة', focus:'Recovery', badge:'تعافي', exercises:[
-          { n:'إطالة كاملة', d:'20 دقيقة، كل مجموعة عضلية', sets:'1 × 20 دق' },
-          { n:'مشي هادئ', d:'20-30 دقيقة', sets:'1 × 25 دق' },
-          { n:'تدليك عضلي', d:'رول فوم + كرة', sets:'15 دقائق' }
-        ]}
-      ],
-      tone: [
-        { day:'Day 1', icon:'⚡', name:'دوائر علوية', focus:'Upper Body Circuit', badge:'تحديد', exercises:[
-          { n:'بوش أب + دمبل رو', d:'تنفيذ متتابع بلا راحة', sets:'4 × 12' },
-          { n:'دمبل شولدر بريس', d:'بطيء 2-2', sets:'3 × 15' },
-          { n:'تراي كيك باك', d:'تقلص كامل', sets:'3 × 15' },
-          { n:'بايسبس هامر كيرل', d:'متحكم تماماً', sets:'3 × 12' },
-          { n:'كارديو 20 دقيقة', d:'ركض متوسط', sets:'1 × 20 دق' }
-        ]},
-        { day:'Day 2', icon:'🦵', name:'دوائر سفلية', focus:'Lower Body Circuit', badge:'رشاقة', exercises:[
-          { n:'سكوات + تقفيز', d:'جمبسكوات', sets:'4 × 15' },
-          { n:'لانج متناوب', d:'خطوات واسعة', sets:'3 × 12' },
-          { n:'هيب ثراست', d:'ضغط في القمة', sets:'4 × 15' },
-          { n:'ليغ ريز', d:'أرجل مستقيمة', sets:'3 × 15' },
-          { n:'كارديو جامبينج', d:'15 دقيقة HIIT', sets:'1 × 15 دق' }
-        ]},
-        { day:'Day 3', icon:'🔥', name:'كارديو + أوبر', focus:'Cardio & Core', badge:'حرق', exercises:[
-          { n:'بربي', d:'شكل مثالي', sets:'4 × 10' },
-          { n:'ماونتن كلايمبر', d:'سريع جداً', sets:'4 × 30 ثانية' },
-          { n:'بلانك ساايد', d:'جانبي متناوب', sets:'3 × 40 ثانية' },
-          { n:'كرانشز بايسيكل', d:'تلامس مرفق-ركبة', sets:'3 × 20' },
-          { n:'ركض 25 دقيقة', d:'شدة 70% من الأقصى', sets:'1 × 25 دق' }
-        ]},
-        { day:'Day 4', icon:'🧘', name:'يوغا + مرونة', focus:'Flexibility & Balance', badge:'توازن', exercises:[
-          { n:'تمارين مرونة شاملة', d:'30 دقيقة كاملة', sets:'1 × 30 دق' },
-          { n:'بيلاتيس أساسية', d:'تقوية الجوهر', sets:'15 دقائق' }
-        ]},
-        { day:'Day 5', icon:'💥', name:'دوائر كاملة', focus:'Full Body Circuit', badge:'كامل', exercises:[
-          { n:'ديد ليفت خفيف', d:'شكل مثالي، تحكم كامل', sets:'4 × 12' },
-          { n:'بنش دمبل + فلاي', d:'سوبر ست', sets:'3 × 12' },
-          { n:'سكوات + بريس أكتاف', d:'دمبل فوق الرأس', sets:'3 × 12' },
-          { n:'كارديو نهائي', d:'20 دقيقة تدريج', sets:'1 × 20 دق' }
-        ]},
-        { day:'Day 6', icon:'🌿', name:'نشاط خفيف', focus:'Active Recovery', badge:'راحة', exercises:[
-          { n:'مشي + إطالة', d:'45 دقيقة في الطبيعة', sets:'1 × 45 دق' },
-          { n:'تنفس وتأمل', d:'10 دقائق', sets:'1 × 10 دق' }
-        ]}
-      ],
-      maint: [
-        { day:'Day 1', icon:'🏋️', name:'تمارين شاملة', focus:'Full Body Maintenance', badge:'صيانة', exercises:[
-          { n:'سكوات', d:'وزن معتدل، شكل مثالي', sets:'3 × 12' },
-          { n:'بنش بريس', d:'متوازن', sets:'3 × 10' },
-          { n:'سحب بالبار', d:'ثابت وبطيء', sets:'3 × 10' },
-          { n:'كارديو', d:'30 دقيقة، شدة متوسطة', sets:'1 × 30 دق' }
-        ]},
-        { day:'Day 2', icon:'🚴', name:'كارديو + مرونة', focus:'Cardio & Flexibility', badge:'قلب', exercises:[
-          { n:'دراجة هوائية أو مشي سريع', d:'40 دقيقة', sets:'1 × 40 دق' },
-          { n:'إطالة شاملة', d:'20 دقيقة', sets:'1 × 20 دق' }
-        ]},
-        { day:'Day 3', icon:'🎯', name:'تمارين وظيفية', focus:'Functional Training', badge:'وظيفي', exercises:[
-          { n:'لانج + دوران', d:'متعدد الاتجاهات', sets:'3 × 12' },
-          { n:'بوش أب متنوع', d:'عريض + ضيق', sets:'3 × 12' },
-          { n:'تمارين تحمل أوبر', d:'بلانك + سايد بلانك', sets:'4 × 30 ثانية' }
-        ]},
-        { day:'Day 4', icon:'🧘', name:'يوغا أو سباحة', focus:'Mind & Body', badge:'هدوء', exercises:[
-          { n:'يوغا كاملة', d:'45 دقيقة', sets:'1 × 45 دق' },
-          { n:'تأمل وتنفس', d:'10 دقائق', sets:'1 × 10 دق' }
-        ]}
-      ]
-    };
-
-    const en = {
-      lose: [
-        { day:'Day 1', icon:'🦵', name:'Legs + Cardio', focus:'Quads, Hamstrings, Calves', badge:'High Burn', exercises:[
-          { n:'Squats', d:'Full depth, straight back', sets:'4 × 15' },
-          { n:'Forward Lunge', d:'Alternating steps', sets:'3 × 12' },
-          { n:'Leg Press', d:'Medium foot position', sets:'3 × 15' },
-          { n:'Calf Raise', d:'Slow and controlled', sets:'4 × 20' },
-          { n:'Treadmill', d:'30 min, moderate intensity', sets:'1 × 30 min' }
-        ]},
-        { day:'Day 2', icon:'💪', name:'Chest + Triceps', focus:'Chest, Triceps', badge:'Upper Body', exercises:[
-          { n:'Barbell Bench Press', d:'3 second slow descent', sets:'4 × 10' },
-          { n:'Dumbbell Fly', d:'Full lateral stretch', sets:'3 × 12' },
-          { n:'Push-Up', d:'Full range, no stopping', sets:'3 × 15' },
-          { n:'Tricep Dips', d:'Full depth', sets:'3 × 12' },
-          { n:'Tricep Pushdown', d:'Cable press', sets:'3 × 15' }
-        ]},
-        { day:'Day 3', icon:'🔙', name:'Back + Biceps', focus:'Back, Biceps', badge:'Pull', exercises:[
-          { n:'Romanian Deadlift', d:'Always keep back straight', sets:'4 × 10' },
-          { n:'Pull-Up', d:'Wide grip', sets:'3 × 10' },
-          { n:'Cable Row', d:'Pull to abdomen', sets:'3 × 12' },
-          { n:'Barbell Bicep Curl', d:'Squeeze at top', sets:'3 × 12' },
-          { n:'Hammer Curl', d:'Neutral dumbbell grip', sets:'3 × 12' }
-        ]},
-        { day:'Day 4', icon:'🔥', name:'HIIT Cardio', focus:'Fat Burn', badge:'Fat Burn', exercises:[
-          { n:'High Knees', d:'20 sec work / 10 sec rest', sets:'8 rounds' },
-          { n:'Burpees', d:'Push-up + jump', sets:'4 × 10' },
-          { n:'Jumping Jacks', d:'High speed', sets:'4 × 30 sec' },
-          { n:'Battle Ropes / Jump Rope', d:'30 seconds intense', sets:'6 × 30 sec' },
-          { n:'Brisk Walk', d:'Cool down 10 min', sets:'1 × 10 min' }
-        ]},
-        { day:'Day 5', icon:'🎯', name:'Shoulders + Core', focus:'Shoulders, Core', badge:'Full', exercises:[
-          { n:'Military Press', d:'Shoulder-width grip', sets:'4 × 10' },
-          { n:'Lateral Raise', d:'Slow lateral lift', sets:'3 × 15' },
-          { n:'Front Raise', d:'Front raise', sets:'3 × 12' },
-          { n:'Plank', d:'Perfectly straight back', sets:'3 × 45 sec' },
-          { n:'Crunches', d:'Slow and controlled', sets:'3 × 20' }
-        ]},
-        { day:'Day 6', icon:'🧘', name:'Flexibility & Active Recovery', focus:'Recovery', badge:'Rest Day', exercises:[
-          { n:'Yoga / Full Stretch', d:'15 minutes', sets:'1 × 15 min' },
-          { n:'Easy Walk', d:'30-40 minutes', sets:'1 × 35 min' },
-          { n:'Foam Rolling', d:'Major muscle groups', sets:'10 min' },
-          { n:'Breathing Exercises', d:'Deep breathing 4-7-8', sets:'3 × 5 min' }
-        ]}
-      ],
-      gain: [
-        { day:'Day 1', icon:'💪', name:'Chest + Triceps (Heavy)', focus:'Chest, Triceps — Hypertrophy', badge:'Mass', exercises:[
-          { n:'Barbell Bench Press', d:'Explosive push, 4 sec return', sets:'5 × 5' },
-          { n:'Incline Dumbbell Press', d:'30 degree angle', sets:'4 × 8' },
-          { n:'Weighted Dips', d:'Add belt and weights', sets:'3 × 8' },
-          { n:'Cable Fly', d:'Full contraction', sets:'3 × 12' },
-          { n:'Overhead Tricep Extension', d:'Full extension', sets:'4 × 10' }
-        ]},
-        { day:'Day 2', icon:'🔙', name:'Back + Biceps (Heavy)', focus:'Back, Biceps — Strength', badge:'Pull', exercises:[
-          { n:'Classic Deadlift', d:'Max weight, perfect form', sets:'5 × 5' },
-          { n:'Barbell Row', d:'Back parallel to floor', sets:'4 × 8' },
-          { n:'Dumbbell Pullover', d:'Full chest stretch', sets:'3 × 12' },
-          { n:'EZ Bar Curl', d:'Neutral grip', sets:'4 × 8' },
-          { n:'Incline Dumbbell Curl', d:'Full stretch at bottom', sets:'3 × 10' }
-        ]},
-        { day:'Day 3', icon:'🦵', name:'Legs (Heavy Mass)', focus:'Legs — Mass Building', badge:'Strength', exercises:[
-          { n:'Barbell Squat', d:'5 sec descent + explosive up', sets:'5 × 5' },
-          { n:'Leg Press', d:'Very heavy weight', sets:'4 × 10' },
-          { n:'Hack Squat', d:'Or multi-directional lunge', sets:'3 × 10' },
-          { n:'Leg Curl Machine', d:'Contract at top', sets:'4 × 12' },
-          { n:'Weighted Calf Raise', d:'Full extension', sets:'5 × 15' }
-        ]},
-        { day:'Day 4', icon:'🎯', name:'Shoulders + Core (Heavy)', focus:'Shoulders, Core', badge:'Volume', exercises:[
-          { n:'Overhead Press (Barbell)', d:'Standing or seated', sets:'5 × 5' },
-          { n:'Lateral Raise Drop Set', d:'Drop set', sets:'4 × 10' },
-          { n:'Face Pull Cable', d:'Rear shoulder muscles', sets:'3 × 15' },
-          { n:'Barbell Shrugs', d:'Heavy weight, high shoulder lift', sets:'4 × 12' },
-          { n:'Plank with Arm Raise', d:'Balance and core', sets:'3 × 30 sec' }
-        ]},
-        { day:'Day 5', icon:'🔥', name:'Chest + Back Volume', focus:'Upper Body Volume', badge:'High Pump', exercises:[
-          { n:'Explosive Push-Up', d:'Fast and powerful', sets:'4 × 12' },
-          { n:'Cable Crossover', d:'Full chest contraction', sets:'4 × 15' },
-          { n:'T-Bar Row', d:'Strong pull', sets:'3 × 10' },
-          { n:'Wide Seated Cable Row', d:'Wide grip', sets:'3 × 12' },
-          { n:'Farmer Walk', d:'Walk 30m with heavy weights', sets:'5 rounds' }
-        ]},
-        { day:'Day 6', icon:'🧘', name:'Active Recovery & Flexibility', focus:'Recovery', badge:'Recovery', exercises:[
-          { n:'Full Stretch', d:'20 min, every major muscle', sets:'1 × 20 min' },
-          { n:'Easy Walk', d:'20-30 minutes', sets:'1 × 25 min' },
-          { n:'Muscle Massage', d:'Foam roll + ball', sets:'15 min' }
-        ]}
-      ],
-      tone: [
-        { day:'Day 1', icon:'⚡', name:'Upper Body Circuit', focus:'Upper Body Circuit', badge:'Definition', exercises:[
-          { n:'Push-Up + Dumbbell Row', d:'Back-to-back no rest', sets:'4 × 12' },
-          { n:'Dumbbell Shoulder Press', d:'Slow 2-2', sets:'3 × 15' },
-          { n:'Tricep Kickback', d:'Full contraction', sets:'3 × 15' },
-          { n:'Bicep Hammer Curl', d:'Fully controlled', sets:'3 × 12' },
-          { n:'Cardio 20 min', d:'Moderate run', sets:'1 × 20 min' }
-        ]},
-        { day:'Day 2', icon:'🦵', name:'Lower Body Circuit', focus:'Lower Body Circuit', badge:'Agility', exercises:[
-          { n:'Jump Squat', d:'Jump squat', sets:'4 × 15' },
-          { n:'Alternating Lunge', d:'Wide steps', sets:'3 × 12' },
-          { n:'Hip Thrust', d:'Squeeze at top', sets:'4 × 15' },
-          { n:'Leg Raise', d:'Legs straight', sets:'3 × 15' },
-          { n:'HIIT Cardio', d:'15 min HIIT', sets:'1 × 15 min' }
-        ]},
-        { day:'Day 3', icon:'🔥', name:'Cardio + Core', focus:'Cardio & Core', badge:'Burn', exercises:[
-          { n:'Burpees', d:'Perfect form', sets:'4 × 10' },
-          { n:'Mountain Climbers', d:'Very fast', sets:'4 × 30 sec' },
-          { n:'Side Plank', d:'Alternating sides', sets:'3 × 40 sec' },
-          { n:'Bicycle Crunches', d:'Elbow-to-knee touch', sets:'3 × 20' },
-          { n:'Run 25 min', d:'70% max intensity', sets:'1 × 25 min' }
-        ]},
-        { day:'Day 4', icon:'🧘', name:'Yoga + Flexibility', focus:'Flexibility & Balance', badge:'Balance', exercises:[
-          { n:'Full Flexibility Routine', d:'30 full minutes', sets:'1 × 30 min' },
-          { n:'Basic Pilates', d:'Core strengthening', sets:'15 min' }
-        ]},
-        { day:'Day 5', icon:'💥', name:'Full Body Circuit', focus:'Full Body Circuit', badge:'Full', exercises:[
-          { n:'Light Deadlift', d:'Perfect form, full control', sets:'4 × 12' },
-          { n:'Bench + Fly Superset', d:'Dumbbell superset', sets:'3 × 12' },
-          { n:'Squat + Shoulder Press', d:'Dumbbell overhead', sets:'3 × 12' },
-          { n:'Final Cardio', d:'20 min gradual', sets:'1 × 20 min' }
-        ]},
-        { day:'Day 6', icon:'🌿', name:'Light Activity', focus:'Active Recovery', badge:'Rest', exercises:[
-          { n:'Walk + Stretch', d:'45 min outdoors', sets:'1 × 45 min' },
-          { n:'Breathing & Meditation', d:'10 minutes', sets:'1 × 10 min' }
-        ]}
-      ],
-      maint: [
-        { day:'Day 1', icon:'🏋️', name:'Full Body Training', focus:'Full Body Maintenance', badge:'Maintain', exercises:[
-          { n:'Squats', d:'Moderate weight, perfect form', sets:'3 × 12' },
-          { n:'Bench Press', d:'Balanced', sets:'3 × 10' },
-          { n:'Pull-Up', d:'Steady and slow', sets:'3 × 10' },
-          { n:'Cardio', d:'30 min, moderate intensity', sets:'1 × 30 min' }
-        ]},
-        { day:'Day 2', icon:'🚴', name:'Cardio + Flexibility', focus:'Cardio & Flexibility', badge:'Cardio', exercises:[
-          { n:'Cycling or Brisk Walk', d:'40 minutes', sets:'1 × 40 min' },
-          { n:'Full Stretch', d:'20 minutes', sets:'1 × 20 min' }
-        ]},
-        { day:'Day 3', icon:'🎯', name:'Functional Training', focus:'Functional Training', badge:'Functional', exercises:[
-          { n:'Lunge + Rotation', d:'Multi-directional', sets:'3 × 12' },
-          { n:'Varied Push-Up', d:'Wide + narrow', sets:'3 × 12' },
-          { n:'Core Endurance', d:'Plank + Side Plank', sets:'4 × 30 sec' }
-        ]},
-        { day:'Day 4', icon:'🧘', name:'Yoga or Swimming', focus:'Mind & Body', badge:'Calm', exercises:[
-          { n:'Full Yoga', d:'45 minutes', sets:'1 × 45 min' },
-          { n:'Meditation & Breathing', d:'10 minutes', sets:'1 × 10 min' }
-        ]}
-      ]
-    };
-
-    return lang === 'ar' ? ar : en;
-  }
-
-  function renderWorkout(goal, gender, days) {
-    const pool = getWorkoutPool(currentLang);
-    let plan = pool[goal];
-
-    // build a plan that respects the chosen number of training days
-    let selected;
-    if (days <= plan.length) {
-      selected = plan.slice(0, days);
-    } else {
-      // repeat/cycle through the pool if user wants more days than the base template has
-      selected = [];
-      for (let i = 0; i < days; i++) selected.push(plan[i % plan.length]);
-    }
-
-    let html = '';
-    selected.forEach((day, i) => {
-      html += `
-        <div class="workout-day">
-          <div class="workout-header">
-            <span class="workout-day-icon">${day.icon}</span>
-            <div class="workout-day-info">
-              <div class="workout-day-name">${day.day} — ${day.name}</div>
-              <div class="workout-day-focus">${day.focus}</div>
-            </div>
-            <span class="workout-badge">${day.badge}</span>
-          </div>
-          <div class="exercises-list">`;
-      day.exercises.forEach((ex, j) => {
-        html += `
-          <div class="exercise-item">
-            <span class="ex-num">${j+1}</span>
-            <div class="ex-info">
-              <div class="ex-name">${ex.n}</div>
-              <div class="ex-detail">${ex.d}</div>
-            </div>
-            <span class="ex-sets">${ex.sets}</span>
-          </div>`;
-      });
-      html += `</div></div>`;
-    });
-
-    document.getElementById('workoutContainer').innerHTML = html;
-  }
-
-  function renderTips(goal) {
-    const allTips = {
-      ar: {
-        lose: [
-          { icon:'🥤', t:'الماء أولاً', d:'اشرب كوب ماء كبير قبل كل وجبة بـ 20 دقيقة — يقلل الشهية بشكل طبيعي ويحسن الهضم' },
-          { icon:'⏰', t:'توقيت الوجبات', d:'لا تتخطَ الفطور أبداً. تناوله خلال ساعة من الاستيقاظ لتنشيط الأيض' },
-          { icon:'😴', t:'النوم الكافي', d:'النوم 7-9 ساعات يومياً ضروري — قلة النوم ترفع الكورتيزول ويصعب خسارة الوزن' },
-          { icon:'📊', t:'تتبع الطعام', d:'سجّل كل ما تأكله باستخدام تطبيق MyFitnessPal — الوعي بالسعرات أقوى دوري في التحكم' },
-          { icon:'🚫', t:'تجنب السكر', d:'قلل السكريات البسيطة والمشروبات الغازية — كلوريها مخفية وتحفز الجوع' },
-          { icon:'💪', t:'اثبت على البرنامج', d:'النتائج تظهر بعد 3-4 أسابيع. الاستمرارية أهم من الكمال — يوم سيء لا يدمر أسبوعاً جيداً' }
-        ],
-        gain: [
-          { icon:'🍽️', t:'كُل أكثر من شعورك', d:'لبناء العضلات يجب أن تأكل فوق طاقتك — حتى لو لم تشعر بالجوع، كُل' },
-          { icon:'🥩', t:'البروتين بعد التمرين', d:'تناول وجبة بروتينية خلال 45 دقيقة من انتهاء التمرين لأقصى بناء عضلي' },
-          { icon:'📈', t:'زيادة الأثقال تدريجياً', d:'أضف وزناً كل أسبوع أو أسبوعين (2-5 كغ) — التقدم التدريجي محرك بناء العضلات' },
-          { icon:'😴', t:'النوم = بناء العضلات', d:'عضلاتك تنمو أثناء النوم لا أثناء التمرين. احرص على 8-9 ساعات نوم عميق' },
-          { icon:'🏥', t:'تجنب الإصابات', d:'الشكل الصحيح أهم من الوزن الثقيل. إصابة واحدة تعيدك أسابيع للوراء' },
-          { icon:'🍌', t:'كربوهيدرات مع التمرين', d:'تناول كربوهيدرات قبل التمرين بساعة — توفر الطاقة الانفجارية لتمرين أفضل' }
-        ],
-        tone: [
-          { icon:'⚡', t:'ثبات السرعة', d:'أداء التمارين بسرعة متحكمة (2 ثانية صعود، 3 ثوانٍ نزول) يضاعف تأثير التحديد' },
-          { icon:'🔁', t:'تبديل التمارين', d:'غيّر ترتيب التمارين كل أسبوعين لإحداث صدمة عضلية وتجنب الملل' },
-          { icon:'🫁', t:'التنفس الصحيح', d:'أخرج الهواء عند المجهود، خذ الهواء عند الارتخاء — يحسن الأداء ويحمي من الإصابة' },
-          { icon:'💧', t:'الماء والكهارل', d:'اشرب ماء كافياً وتناول أطعمة غنية بالبوتاسيوم لتجنب التشنجات العضلية' },
-          { icon:'🌿', t:'الأطعمة المضادة للالتهاب', d:'الكركم، الزنجبيل، التوت، الأسماك الدهنية — تقلل التهاب ما بعد التمرين' },
-          { icon:'🧘', t:'يوم الراحة مقدس', d:'العضلة تحتاج 48 ساعة للتعافي. الراحة النشطة تسرع نموها لا تبطئها' }
-        ],
-        maint: [
-          { icon:'⚖️', t:'وازن ولا تحرم', d:'الحفاظ على الوزن يعني الاعتدال — وجبة احتفالية واحدة أسبوعياً لا تضر' },
-          { icon:'🧠', t:'الأكل الواعي', d:'تناول طعامك ببطء دون شاشات — يعطي دماغك وقتاً لإرسال إشارة الشبع' },
-          { icon:'📅', t:'انتظام التمارين', d:'3-4 أيام تمارين أسبوعياً كافية للحفاظ. الانتظام أهم من الشدة' },
-          { icon:'🔬', t:'فحص منتظم', d:'راقب وزنك أسبوعياً في نفس الوقت (فور الاستيقاظ) وسجّل المتوسط' }
-        ]
-      },
-      en: {
-        lose: [
-          { icon:'🥤', t:'Water First', d:'Drink a large glass of water 20 min before each meal — naturally reduces appetite and improves digestion' },
-          { icon:'⏰', t:'Meal Timing', d:'Never skip breakfast. Eat it within an hour of waking up to boost your metabolism' },
-          { icon:'😴', t:'Get Enough Sleep', d:'7-9 hours of sleep daily is essential — lack of sleep raises cortisol and makes weight loss harder' },
-          { icon:'📊', t:'Track Your Food', d:'Log everything using MyFitnessPal — calorie awareness is the strongest tool for control' },
-          { icon:'🚫', t:'Avoid Sugar', d:'Cut simple sugars and sodas — their calories are hidden and they stimulate hunger' },
-          { icon:'💪', t:'Stay Consistent', d:"Results appear after 3-4 weeks. Consistency beats perfection — one bad day doesn't ruin a good week" }
-        ],
-        gain: [
-          { icon:'🍽️', t:'Eat More Than You Feel', d:'To build muscle you must eat above your energy needs — even if not hungry, eat' },
-          { icon:'🥩', t:'Protein After Workout', d:'Eat a protein meal within 45 minutes of finishing your workout for maximum muscle building' },
-          { icon:'📈', t:'Progressive Overload', d:'Add weight every 1-2 weeks (2-5 kg) — progressive overload is the engine of muscle growth' },
-          { icon:'😴', t:'Sleep = Muscle Growth', d:'Your muscles grow during sleep, not during training. Aim for 8-9 hours of deep sleep' },
-          { icon:'🏥', t:'Avoid Injuries', d:'Perfect form is more important than heavy weight. One injury sets you back weeks' },
-          { icon:'🍌', t:'Carbs Around Training', d:'Eat carbs 1 hour before training — they provide explosive energy for a better session' }
-        ],
-        tone: [
-          { icon:'⚡', t:'Controlled Speed', d:'Performing exercises at controlled speed (2 sec up, 3 sec down) doubles the toning effect' },
-          { icon:'🔁', t:'Switch Exercises', d:'Change exercise order every two weeks to create muscle shock and avoid plateaus' },
-          { icon:'🫁', t:'Proper Breathing', d:'Exhale on effort, inhale on release — improves performance and protects from injury' },
-          { icon:'💧', t:'Water & Electrolytes', d:'Drink enough water and eat potassium-rich foods to avoid muscle cramps' },
-          { icon:'🌿', t:'Anti-Inflammatory Foods', d:'Turmeric, ginger, berries, fatty fish — reduce post-workout inflammation' },
-          { icon:'🧘', t:'Rest Days Are Sacred', d:'Muscles need 48 hours to recover. Active rest accelerates growth, not slows it' }
-        ],
-        maint: [
-          { icon:'⚖️', t:"Balance, Don't Deprive", d:"Maintenance means moderation — one celebratory meal per week won't hurt" },
-          { icon:'🧠', t:'Mindful Eating', d:'Eat slowly without screens — gives your brain time to send the fullness signal' },
-          { icon:'📅', t:'Regular Training', d:'3-4 training days per week is enough to maintain. Consistency beats intensity' },
-          { icon:'🔬', t:'Regular Check-In', d:'Monitor your weight weekly at the same time (right after waking) and track the average' }
-        ]
-      }
-    };
-
-    const tips = allTips[currentLang][goal];
-    let html = '';
-    tips.forEach(tip => {
-      html += `
-        <div class="tip-card">
-          <span class="tip-icon">${tip.icon}</span>
-          <div>
-            <div class="tip-title">${tip.t}</div>
-            <div class="tip-text">${tip.d}</div>
-          </div>
-        </div>`;
-    });
-    document.getElementById('tipsContainer').innerHTML = html;
-  }
-
-  // ===== i18n SYSTEM (UI strings) =====
-  const t = {
+// ============================================================
+// TIPS DATA
+// ============================================================
+function renderTips(goal) {
+  const allTips = {
     en: {
-      pageTitle: 'FitPlan Pro | Your Nutrition & Workout Plan',
-      heroTitle: 'Transform Your Body<br>with Real Intelligence',
-      heroSub: 'A fully personalized nutrition and workout plan, scientifically calculated for your body and your goal.',
-      heroCta: 'Start Your Journey →',
-      stat1: 'Daily Meals', stat2: 'Training Days', stat3: 'Personalized', stat4: 'Based on TDEE', stat4num: 'Science',
-      loadingText: 'Analyzing your data...', loadingSub: 'Building your personal plan',
-      formTitle: 'Tell Us About Yourself', formSub: 'All the info we need to calculate your plan accurately',
-      goalLabel: 'What is your goal?',
-      goal1n: 'Weight Loss', goal1d: 'Burn fat while preserving muscle',
-      goal2n: 'Weight Gain', goal2d: 'Build muscle mass and increase size',
-      goal3n: 'Body Toning', goal3d: 'Define muscles and burn fat together',
-      goal4n: 'Maintenance', goal4d: 'Keep your current weight and improve health',
-      lAge: 'Age', lGender: 'Gender', lHeight: 'Height (cm)', lWeight: 'Current Weight (kg)',
-      lTarget: 'Target Weight (kg)', lDuration: 'Duration',
-      male: 'Male', female: 'Female',
-      w4: '4 Weeks', w8: '8 Weeks', w12: '12 Weeks', w16: '16 Weeks',
-      actLabel: 'Your Daily Activity Level',
-      act1: 'Sedentary', act2: 'Light', act3: 'Moderate', act4: 'Active', act5: 'Very Active', act6: 'Almost None',
-      daysLabel: 'How many days a week do you want to train?',
-      daysInputTitle: 'Training days per week',
-      daysInputSub: 'Enter any number from 1 to 7',
-      foodPrefLabel: 'Any food preferences?',
-      fp0: 'No restrictions', fp1: 'Vegetarian', fp2: 'No dairy', fp3: 'No fish/seafood', fp4: 'No red meat', fp5: 'Low carb',
-      genBtn: '✨ Generate My Personal Plan',
-      backBtn: '← Back',
-      myPlan: '⚡ Your Personal Plan',
-      sum1: 'Daily Calories (kcal)', sum2: 'Daily Protein (g)', sum3: 'Current BMI', sum4: 'Time to Goal',
-      tabNut: '🥗 Nutrition', tabWork: '🏋️ Workout', tabTips: '💡 Tips',
-      restartBtn: '🔄 Recalculate',
-      alertMsg: 'Please fill all fields and select your goal!',
-      weekUnit: ' weeks',
-      macroTitle: '🎯 Macronutrient Distribution',
-      macroP: 'Protein', macroC: 'Carbohydrates', macroF: 'Fats',
-      gramUnit: 'g',
-      titles: { lose:'Weight Loss Program 🔥', gain:'Muscle Building Program 💪', tone:'Body Toning Program ⚡', maint:'Maintenance Program ⚖️' },
-      subs: { lose:'Burn fat healthily and steadily', gain:'Build strong muscles and healthy mass', tone:'Defined muscles and a lean physique', maint:'Perfect balance to maintain your health' },
-      dayMealLabel: 'Daily Meal Plan',
-      calUnit: 'kcal',
-      waterNote: '💧 Daily Water:', waterVal: 'glasses of water minimum per day',
-      mealTime: '⏱️ Meal Timing:', mealTimeVal: '7AM Breakfast — 10AM Snack — 1PM Lunch — 4PM Snack — 7PM Dinner',
-      avoid: '🚫 Avoid:', avoidVal: 'Refined sugars, sodas, and fast food',
-      lowCarbNote: '🥑 Low Carb Mode:', lowCarbVal: 'Replace rice/pasta portions with extra vegetables or salad',
-      mealTimeNames: { 'Breakfast':'Breakfast', 'Snack':'Snack', 'Lunch':'Lunch', 'Dinner':'Dinner' },
-    },
-    ar: {
-      pageTitle: 'FitPlan | برنامجك الغذائي والرياضي',
-      heroTitle: 'حوّل جسمك<br>بذكاء حقيقي',
-      heroSub: 'برنامج غذائي وتمارين مخصص بالكامل لجسمك وهدفك، محسوب بدقة علمية',
-      heroCta: 'ابدأ رحلتك الآن ←',
-      stat1: 'وجبات يومياً', stat2: 'أيام تمارين', stat3: 'مخصص لك', stat4: 'مبني على TDEE', stat4num: 'علمي',
-      loadingText: 'جاري تحليل بياناتك...', loadingSub: 'نحن نصنع برنامجك الشخصي',
-      formTitle: 'أخبرنا عن نفسك', formSub: 'كل المعلومات لحساب برنامجك بدقة',
-      goalLabel: 'ما هو هدفك؟',
-      goal1n: 'خسارة الوزن', goal1d: 'حرق الدهون مع المحافظة على العضلات',
-      goal2n: 'زيادة الوزن', goal2d: 'بناء كتلة عضلية وزيادة الحجم',
-      goal3n: 'تحديد الجسم', goal3d: 'تنشيط العضلات وحرق الدهون معاً',
-      goal4n: 'الحفاظ على الوزن', goal4d: 'الحفاظ على وزنك الحالي وتحسين الصحة',
-      lAge: 'العمر', lGender: 'الجنس', lHeight: 'الطول (سم)', lWeight: 'الوزن الحالي (كغ)',
-      lTarget: 'الوزن المستهدف (كغ)', lDuration: 'المدة الزمنية',
-      male: 'ذكر', female: 'أنثى',
-      w4: '4 أسابيع', w8: '8 أسابيع', w12: '12 أسبوع', w16: '16 أسبوع',
-      actLabel: 'مستوى نشاطك اليومي',
-      act1: 'خامل جداً', act2: 'خفيف', act3: 'متوسط', act4: 'نشيط', act5: 'رياضي محترف', act6: 'لا أتحرك',
-      daysLabel: 'كم يوم بالأسبوع تريد التمرين؟',
-      daysInputTitle: 'أيام التمرين في الأسبوع',
-      daysInputSub: 'أدخل أي رقم من 1 إلى 7',
-      foodPrefLabel: 'هل لديك تفضيلات غذائية؟',
-      fp0: 'بدون قيود', fp1: 'نباتي', fp2: 'بدون ألبان', fp3: 'بدون أسماك', fp4: 'بدون لحوم حمراء', fp5: 'قليل الكارب',
-      genBtn: '✨ احسب برنامجي الشخصي',
-      backBtn: '← العودة',
-      myPlan: '⚡ برنامجك الشخصي',
-      sum1: 'سعرات يومية (كيلو كالوري)', sum2: 'بروتين يومي (غرام)', sum3: 'BMI الحالي', sum4: 'وقت الوصول للهدف',
-      tabNut: '🥗 التغذية', tabWork: '🏋️ التمارين', tabTips: '💡 النصائح',
-      restartBtn: '🔄 إعادة الحساب',
-      alertMsg: 'يرجى ملء جميع الحقول واختيار هدفك!',
-      weekUnit: ' أسبوع',
-      macroTitle: '🎯 توزيع المغذيات الكبرى',
-      macroP: 'بروتين', macroC: 'كربوهيدرات', macroF: 'دهون',
-      gramUnit: ' غرام',
-      titles: { lose:'برنامج خسارة الوزن 🔥', gain:'برنامج زيادة الكتلة العضلية 💪', tone:'برنامج تحديد الجسم ⚡', maint:'برنامج الحفاظ على الوزن ⚖️' },
-      subs: { lose:'حرق الدهون بشكل صحي ومنتظم', gain:'بناء عضلات قوية وكتلة صحية', tone:'عضلات محددة وجسم رشيق', maint:'توازن مثالي للحفاظ على صحتك' },
-      dayMealLabel: 'الخطة الغذائية اليومية',
-      calUnit: 'كيلو كالوري',
-      waterNote: '💧 الماء اليومي:', waterVal: 'كوب ماء يومياً على الأقل',
-      mealTime: '⏱️ مواعيد الوجبات:', mealTimeVal: 'الفطور 7ص — منتصف الصباح 10ص — الغداء 1م — العصر 4م — العشاء 7م',
-      avoid: '🚫 تجنب:', avoidVal: 'السكريات المكررة، المشروبات الغازية، الوجبات السريعة',
-      lowCarbNote: '🥑 نمط قليل الكارب:', lowCarbVal: 'استبدل حصص الأرز/المكرونة بخضروات أو سلطة إضافية',
-      mealTimeNames: { 'Breakfast':'الفطور', 'Snack':'وجبة خفيفة', 'Lunch':'الغداء', 'Dinner':'العشاء' },
+      lose: [
+        { icon:'🥤', t:'Water First', d:'Drink a large glass of water 20 min before each meal — naturally reduces appetite and improves digestion' },
+        { icon:'⏰', t:'Meal Timing', d:'Never skip breakfast. Eat it within an hour of waking up to boost your metabolism' },
+        { icon:'😴', t:'Get Enough Sleep', d:'7-9 hours of sleep daily is essential — lack of sleep raises cortisol and makes weight loss harder' },
+        { icon:'📊', t:'Track Your Food', d:'Log everything using MyFitnessPal — calorie awareness is the strongest tool for control' },
+        { icon:'🚫', t:'Avoid Sugar', d:'Cut simple sugars and sodas — their calories are hidden and they stimulate hunger' },
+        { icon:'💪', t:'Stay Consistent', d:"Results appear after 3-4 weeks. Consistency beats perfection — one bad day doesn't ruin a good week" }
+      ],
+      gain: [
+        { icon:'🍽️', t:'Eat More Than You Feel', d:'To build muscle you must eat above your energy needs — even if not hungry, eat' },
+        { icon:'🥩', t:'Protein After Workout', d:'Eat a protein meal within 45 minutes of finishing your workout for maximum muscle building' },
+        { icon:'📈', t:'Progressive Overload', d:'Add weight every 1-2 weeks (2-5 kg) — progressive overload is the engine of muscle growth' },
+        { icon:'😴', t:'Sleep = Muscle Growth', d:'Your muscles grow during sleep, not during training. Aim for 8-9 hours of deep sleep' },
+        { icon:'🏥', t:'Avoid Injuries', d:'Perfect form is more important than heavy weight. One injury sets you back weeks' },
+        { icon:'🍌', t:'Carbs Around Training', d:'Eat carbs 1 hour before training — they provide explosive energy for a better session' }
+      ],
+      tone: [
+        { icon:'⚡', t:'Controlled Speed', d:'Performing exercises at controlled speed (2 sec up, 3 sec down) doubles the toning effect' },
+        { icon:'🔁', t:'Switch Exercises', d:'Change exercise order every two weeks to create muscle shock and avoid plateaus' },
+        { icon:'🫁', t:'Proper Breathing', d:'Exhale on effort, inhale on release — improves performance and protects from injury' },
+        { icon:'💧', t:'Water & Electrolytes', d:'Drink enough water and eat potassium-rich foods to avoid muscle cramps' },
+        { icon:'🌿', t:'Anti-Inflammatory Foods', d:'Turmeric, ginger, berries, fatty fish — reduce post-workout inflammation' },
+        { icon:'🧘', t:'Rest Days Are Sacred', d:'Muscles need 48 hours to recover. Active rest accelerates growth, not slows it' }
+      ],
+      maint: [
+        { icon:'⚖️', t:"Balance, Don't Deprive", d:"Maintenance means moderation — one celebratory meal per week won't hurt" },
+        { icon:'🧠', t:'Mindful Eating', d:'Eat slowly without screens — gives your brain time to send the fullness signal' },
+        { icon:'📅', t:'Regular Training', d:'3-4 training days per week is enough to maintain. Consistency beats intensity' },
+        { icon:'🔬', t:'Regular Check-In', d:'Monitor your weight weekly at the same time (right after waking) and track the average' }
+      ]
     }
   };
 
-  function toggleLang() {
-    currentLang = currentLang === 'en' ? 'ar' : 'en';
-    applyLang();
-  }
-
-  function applyLang() {
-    const l = t[currentLang];
-    const isAr = currentLang === 'ar';
-    const html = document.documentElement;
-
-    html.setAttribute('lang', currentLang);
-    html.setAttribute('dir', isAr ? 'rtl' : 'ltr');
-    document.title = l.pageTitle;
-    document.getElementById('langBtnText').textContent = isAr ? 'EN' : 'عربي';
-
-    document.getElementById('loadingText').textContent = l.loadingText;
-    document.getElementById('loadingSub').textContent = l.loadingSub;
-
-    document.getElementById('heroTitle').innerHTML = l.heroTitle;
-    document.getElementById('heroSub').textContent = l.heroSub;
-    document.getElementById('heroCta').textContent = l.heroCta;
-    document.getElementById('stat1').textContent = l.stat1;
-    document.getElementById('stat2').textContent = l.stat2;
-    document.getElementById('stat3').textContent = l.stat3;
-    document.getElementById('stat4').textContent = l.stat4;
-    document.getElementById('stat4num').textContent = l.stat4num;
-
-    document.getElementById('formTitle').textContent = l.formTitle;
-    document.getElementById('formSub').textContent = l.formSub;
-    document.getElementById('goalLabel').textContent = l.goalLabel;
-
-    document.getElementById('goal1n').textContent = l.goal1n;
-    document.getElementById('goal1d').textContent = l.goal1d;
-    document.getElementById('goal2n').textContent = l.goal2n;
-    document.getElementById('goal2d').textContent = l.goal2d;
-    document.getElementById('goal3n').textContent = l.goal3n;
-    document.getElementById('goal3d').textContent = l.goal3d;
-    document.getElementById('goal4n').textContent = l.goal4n;
-    document.getElementById('goal4d').textContent = l.goal4d;
-
-    document.getElementById('lAge').textContent = l.lAge;
-    document.getElementById('lGender').textContent = l.lGender;
-    document.getElementById('lHeight').textContent = l.lHeight;
-    document.getElementById('lWeight').textContent = l.lWeight;
-    document.getElementById('lTarget').textContent = l.lTarget;
-    document.getElementById('lDuration').textContent = l.lDuration;
-
-    document.getElementById('optMale').textContent = l.male;
-    document.getElementById('optFemale').textContent = l.female;
-    document.getElementById('optW4').textContent = l.w4;
-    document.getElementById('optW8').textContent = l.w8;
-    document.getElementById('optW12').textContent = l.w12;
-    document.getElementById('optW16').textContent = l.w16;
-
-    document.getElementById('actLabel').textContent = l.actLabel;
-    document.getElementById('act1').textContent = l.act1;
-    document.getElementById('act2').textContent = l.act2;
-    document.getElementById('act3').textContent = l.act3;
-    document.getElementById('act4').textContent = l.act4;
-    document.getElementById('act5').textContent = l.act5;
-    document.getElementById('act6').textContent = l.act6;
-
-    document.getElementById('daysLabel').textContent = l.daysLabel;
-    document.getElementById('daysInputTitle').textContent = l.daysInputTitle;
-    document.getElementById('daysInputSub').textContent = l.daysInputSub;
-
-    document.getElementById('foodPrefLabel').textContent = l.foodPrefLabel;
-    document.getElementById('fp0').textContent = l.fp0;
-    document.getElementById('fp1').textContent = l.fp1;
-    document.getElementById('fp2').textContent = l.fp2;
-    document.getElementById('fp3').textContent = l.fp3;
-    document.getElementById('fp4').textContent = l.fp4;
-    document.getElementById('fp5').textContent = l.fp5;
-
-    document.getElementById('genBtn').textContent = l.genBtn;
-    document.getElementById('backBtn').textContent = l.backBtn;
-
-    document.getElementById('myPlanLabel').innerHTML = l.myPlan;
-    document.getElementById('sum1Label').textContent = l.sum1;
-    document.getElementById('sum2Label').textContent = l.sum2;
-    document.getElementById('sum3Label').textContent = l.sum3;
-    document.getElementById('sum4Label').textContent = l.sum4;
-
-    document.getElementById('tabNutBtn').textContent = l.tabNut;
-    document.getElementById('tabWorkBtn').textContent = l.tabWork;
-    document.getElementById('tabTipsBtn').textContent = l.tabTips;
-    document.getElementById('restartBtn').textContent = l.restartBtn;
-
-    document.getElementById('macrosTitle').textContent = l.macroTitle;
-    document.getElementById('macroPLabel').textContent = l.macroP;
-    document.getElementById('macroCLabel').textContent = l.macroC;
-    document.getElementById('macroFLabel').textContent = l.macroF;
-  }
-
-  // Initialize default language UI (English is default, but run once to be safe)
-  applyLang();
-
-
-  // ===== BLOG DATA =====
-  const blogPosts = [
-    {
-      id: 1,
-      tag: 'Nutrition',
-      emoji: '🥗',
-      color: '#00e5a0',
-      title: 'What is TDEE and Why It's the Key to Your Weight Goal',
-      excerpt: 'Understanding Total Daily Energy Expenditure is the foundation of any successful diet. Here's everything you need to know.',
-      date: 'June 10, 2026',
-      readTime: '5 min read',
-      content: `
-        <h2>What is TDEE?</h2>
-        <p>Total Daily Energy Expenditure (TDEE) is the total number of calories your body burns in a day, accounting for all activities including exercise, digestion, and basic bodily functions.</p>
-        <p>It's calculated by multiplying your <strong>Basal Metabolic Rate (BMR)</strong> — the calories burned at rest — by an activity factor that reflects how active you are.</p>
-
-        <h2>Why TDEE Matters</h2>
-        <p>Your TDEE is the magic number that determines everything:</p>
-        <ul>
-          <li><strong>Eat below TDEE</strong> → You lose weight</li>
-          <li><strong>Eat at TDEE</strong> → You maintain weight</li>
-          <li><strong>Eat above TDEE</strong> → You gain weight</li>
-        </ul>
-        <p>Most diets fail because people don't know their actual TDEE. They either eat too little (causing muscle loss and metabolic slowdown) or too much (preventing fat loss).</p>
-
-        <h2>How to Calculate Your TDEE</h2>
-        <p>FitPlan Pro calculates your TDEE automatically using the <strong>Mifflin-St Jeor equation</strong>, considered the most accurate BMR formula:</p>
-        <ul>
-          <li><strong>Men:</strong> BMR = (10 × weight kg) + (6.25 × height cm) − (5 × age) + 5</li>
-          <li><strong>Women:</strong> BMR = (10 × weight kg) + (6.25 × height cm) − (5 × age) − 161</li>
-        </ul>
-        <p>This is then multiplied by your activity factor — ranging from 1.2 (sedentary) to 1.9 (very active athlete).</p>
-
-        <h2>The Optimal Caloric Deficit/Surplus</h2>
-        <p>For <strong>weight loss</strong>, a deficit of 300–700 calories per day is ideal. This creates a loss of roughly 0.3–0.7 kg per week — fast enough to see results, slow enough to preserve muscle.</p>
-        <p>For <strong>muscle gain</strong>, a surplus of 200–500 calories per day maximizes muscle growth while minimizing fat gain.</p>
-
-        <h2>Key Takeaways</h2>
-        <ul>
-          <li>TDEE is your daily calorie "budget"</li>
-          <li>Consistency matters more than perfection</li>
-          <li>Recalculate your TDEE every 4–6 weeks as your weight changes</li>
-          <li>Use FitPlan Pro to auto-calculate your TDEE and get a full meal plan</li>
-        </ul>
-      `
-    },
-    {
-      id: 2,
-      tag: 'Training',
-      emoji: '🏋️',
-      color: '#0097ff',
-      title: 'Progressive Overload: The #1 Rule of Muscle Growth',
-      excerpt: 'Without progressive overload, your muscles have no reason to grow. Learn how to apply this principle correctly.',
-      date: 'June 8, 2026',
-      readTime: '6 min read',
-      content: `
-        <h2>What is Progressive Overload?</h2>
-        <p>Progressive overload is the gradual increase of stress placed on the body during exercise. It's the single most important principle for building muscle, increasing strength, and improving fitness.</p>
-        <p>Your muscles adapt to the demands placed on them. If you always lift the same weight for the same reps, your muscles have no stimulus to grow. You must continuously challenge them.</p>
-
-        <h2>Ways to Apply Progressive Overload</h2>
-        <ul>
-          <li><strong>Increase weight:</strong> Add 2.5–5 kg when you can complete all reps with good form</li>
-          <li><strong>Increase reps:</strong> Go from 8 to 10 to 12 reps before adding weight</li>
-          <li><strong>Increase sets:</strong> Add an extra set to your exercises</li>
-          <li><strong>Decrease rest time:</strong> Same work in less time = more intensity</li>
-          <li><strong>Improve form:</strong> Better range of motion means more muscle activation</li>
-        </ul>
-
-        <h2>The Beginner's Advantage</h2>
-        <p>If you're new to training, you'll experience what's called <strong>"newbie gains"</strong> — rapid strength and muscle increases in your first 6–12 months. This is the best time to build a solid foundation. Take advantage of it by training consistently and eating enough protein.</p>
-
-        <h2>How Fast Should You Progress?</h2>
-        <p>For compound lifts (squat, deadlift, bench press), aim to add weight every 1–2 weeks. For isolation exercises, every 2–4 weeks is fine. Don't rush — ego lifting leads to injury, which sets you back weeks or months.</p>
-
-        <h2>Tracking Your Progress</h2>
-        <p>Keep a simple training log. Write down what you lifted, for how many sets and reps. This makes it easy to see if you're progressing and prevents "junk volume" — just going through the motions without a plan.</p>
-      `
-    },
-    {
-      id: 3,
-      tag: 'Nutrition',
-      emoji: '🥩',
-      color: '#ff6b35',
-      title: 'How Much Protein Do You Really Need?',
-      excerpt: 'Protein requirements are often misunderstood. Here's the science on how much you actually need based on your goal.',
-      date: 'June 5, 2026',
-      readTime: '4 min read',
-      content: `
-        <h2>Why Protein is Essential</h2>
-        <p>Protein is the building block of muscle tissue. When you exercise, you create micro-tears in muscle fibers. Protein provides the amino acids needed to repair and grow those fibers back stronger.</p>
-        <p>Beyond muscle building, protein keeps you full longer, has the highest thermic effect of any macronutrient (meaning you burn more calories digesting it), and helps maintain muscle during weight loss.</p>
-
-        <h2>The Science-Backed Recommendation</h2>
-        <ul>
-          <li><strong>General health:</strong> 0.8g per kg of body weight</li>
-          <li><strong>Fat loss (preserve muscle):</strong> 1.8–2.2g per kg</li>
-          <li><strong>Muscle building:</strong> 2.0–2.4g per kg</li>
-          <li><strong>Body toning:</strong> 1.8–2.2g per kg</li>
-        </ul>
-        <p>FitPlan Pro automatically calculates your protein target based on your goal and body weight.</p>
-
-        <h2>Best Protein Sources</h2>
-        <ul>
-          <li>🐔 <strong>Chicken breast:</strong> 31g protein per 100g</li>
-          <li>🐟 <strong>Tuna:</strong> 30g protein per 100g</li>
-          <li>🥚 <strong>Eggs:</strong> 6g per egg, complete amino acid profile</li>
-          <li>🥛 <strong>Greek yogurt:</strong> 17g per 100g, plus probiotics</li>
-          <li>🫘 <strong>Lentils:</strong> 9g per 100g, great plant-based option</li>
-          <li>🥜 <strong>Tofu:</strong> 8g per 100g, versatile vegetarian protein</li>
-        </ul>
-
-        <h2>Protein Timing</h2>
-        <p>While total daily protein matters most, consuming 20–40g of protein within <strong>30–60 minutes after training</strong> can enhance muscle recovery. Spreading protein intake across 4–5 meals also leads to better utilization than eating it all in one or two meals.</p>
-      `
-    },
-    {
-      id: 4,
-      tag: 'Recovery',
-      emoji: '😴',
-      color: '#ffd700',
-      title: 'Why Sleep is Your Secret Fitness Weapon',
-      excerpt: 'You don't build muscle in the gym. You build it while you sleep. Here's why sleep quality determines your results.',
-      date: 'June 2, 2026',
-      readTime: '5 min read',
-      content: `
-        <h2>What Happens When You Sleep</h2>
-        <p>Sleep is when your body does most of its repair work. During deep sleep stages, your body releases <strong>human growth hormone (HGH)</strong> — the primary hormone responsible for muscle repair, fat burning, and tissue regeneration.</p>
-        <p>Without sufficient sleep, HGH production drops significantly, cortisol (the stress hormone) rises, and your body shifts into a catabolic state — breaking down muscle instead of building it.</p>
-
-        <h2>How Sleep Affects Your Fitness</h2>
-        <ul>
-          <li><strong>Muscle recovery:</strong> Protein synthesis peaks during deep sleep</li>
-          <li><strong>Fat loss:</strong> Sleep deprivation increases hunger hormones (ghrelin) and decreases satiety hormones (leptin)</li>
-          <li><strong>Performance:</strong> Just one night of poor sleep reduces strength output by up to 8%</li>
-          <li><strong>Motivation:</strong> Poor sleep tanks your willpower and makes skipping workouts feel easier</li>
-        </ul>
-
-        <h2>How Much Sleep Do You Need?</h2>
-        <p>For serious training, aim for <strong>7–9 hours per night</strong>. Athletes and those doing intense training may benefit from 9–10 hours.</p>
-
-        <h2>Tips to Improve Sleep Quality</h2>
-        <ul>
-          <li>Keep a consistent sleep schedule — same bedtime and wake time every day</li>
-          <li>Keep your room cool (18–20°C is ideal)</li>
-          <li>Avoid screens 30–60 minutes before bed</li>
-          <li>Avoid caffeine after 2 PM</li>
-          <li>Avoid heavy meals within 2 hours of bedtime</li>
-          <li>Consider magnesium supplementation — it's proven to improve sleep quality</li>
-        </ul>
-      `
-    },
-    {
-      id: 5,
-      tag: 'Training',
-      emoji: '🔥',
-      color: '#00e5a0',
-      title: 'HIIT vs Steady-State Cardio: Which Burns More Fat?',
-      excerpt: 'The cardio debate settled once and for all. Which type is better for fat loss, and when should you use each?',
-      date: 'May 28, 2026',
-      readTime: '6 min read',
-      content: `
-        <h2>What is HIIT?</h2>
-        <p>High-Intensity Interval Training (HIIT) alternates between short bursts of maximum effort and brief rest periods. A typical HIIT session is 15–25 minutes but can burn as many calories as 45 minutes of moderate cardio.</p>
-
-        <h2>What is Steady-State Cardio?</h2>
-        <p>Steady-state cardio (SSC) is sustained moderate-intensity exercise — jogging, cycling, swimming — maintained for 30–60 minutes at a consistent pace.</p>
-
-        <h2>Calories Burned: The Facts</h2>
-        <ul>
-          <li><strong>During exercise:</strong> Steady-state burns more calories per session (longer duration)</li>
-          <li><strong>After exercise:</strong> HIIT creates EPOC (Excess Post-exercise Oxygen Consumption) — your body burns more calories for up to 24 hours post-workout</li>
-          <li><strong>Net effect:</strong> Both are roughly equal for fat loss when total effort is matched</li>
-        </ul>
-
-        <h2>When to Use HIIT</h2>
-        <ul>
-          <li>When you're short on time</li>
-          <li>When you want to preserve muscle during fat loss</li>
-          <li>When you want to improve cardiovascular conditioning rapidly</li>
-          <li>Limit to 2–3 sessions per week — HIIT is demanding on recovery</li>
-        </ul>
-
-        <h2>When to Use Steady-State</h2>
-        <ul>
-          <li>On recovery days — it's gentle on the joints and nervous system</li>
-          <li>When you're training hard with weights and need lower-intensity cardio</li>
-          <li>For stress reduction and mental health benefits</li>
-          <li>For beginners who aren't ready for HIIT intensity</li>
-        </ul>
-
-        <h2>The Verdict</h2>
-        <p>The best cardio is the kind you'll actually do consistently. Use HIIT when time is limited and SSC when you need active recovery or variety. Ideally, use both throughout the week.</p>
-      `
-    },
-    {
-      id: 6,
-      tag: 'Nutrition',
-      emoji: '💧',
-      color: '#0097ff',
-      title: 'Hydration and Performance: How Much Water Do You Need?',
-      excerpt: 'Even mild dehydration kills your performance. Learn exactly how much water you need and when to drink it.',
-      date: 'May 24, 2026',
-      readTime: '4 min read',
-      content: `
-        <h2>Why Hydration Matters for Fitness</h2>
-        <p>Water makes up about 60% of your body and is involved in virtually every physiological process. For athletes and active people, hydration directly affects:</p>
-        <ul>
-          <li><strong>Strength:</strong> A 2% drop in body water reduces strength by up to 10%</li>
-          <li><strong>Endurance:</strong> Dehydration significantly increases perceived effort</li>
-          <li><strong>Recovery:</strong> Water is needed to flush metabolic waste products from muscles</li>
-          <li><strong>Cognitive function:</strong> Even mild dehydration impairs focus and decision-making</li>
-        </ul>
-
-        <h2>How Much Water Do You Need?</h2>
-        <p>A simple formula: drink <strong>35–40ml per kg of body weight per day</strong>. For a 75kg person, that's roughly 2.6–3.0 liters.</p>
-        <p>FitPlan Pro calculates your daily water target based on your caloric intake (a good proxy for metabolic activity).</p>
-
-        <h2>Hydration Around Training</h2>
-        <ul>
-          <li><strong>2 hours before:</strong> Drink 400–600ml</li>
-          <li><strong>During workout:</strong> 150–250ml every 15–20 minutes</li>
-          <li><strong>After workout:</strong> Drink 500ml for every 0.5kg of body weight lost during exercise</li>
-        </ul>
-
-        <h2>Signs You're Dehydrated</h2>
-        <ul>
-          <li>Dark yellow urine (aim for pale yellow)</li>
-          <li>Headaches during or after exercise</li>
-          <li>Feeling dizzy or lightheaded</li>
-          <li>Muscle cramps</li>
-          <li>Decreased performance</li>
-        </ul>
-      `
-    },
-    {
-      id: 7,
-      tag: 'Mindset',
-      emoji: '🧠',
-      color: '#ff6b35',
-      title: '10 Habits of People Who Never Miss a Workout',
-      excerpt: 'Consistency is the most underrated fitness skill. Here are the habits that make some people never skip gym days.',
-      date: 'May 20, 2026',
-      readTime: '5 min read',
-      content: `
-        <h2>Motivation is Unreliable. Systems Win.</h2>
-        <p>People who train consistently don't rely on motivation — they rely on systems and habits that make showing up the path of least resistance. Here are 10 habits they use:</p>
-
-        <h3>1. They Schedule Workouts Like Meetings</h3>
-        <p>Training sessions go in the calendar. Non-negotiable. They don't "find time" — they make time.</p>
-
-        <h3>2. They Prepare the Night Before</h3>
-        <p>Gym bag packed, clothes laid out, pre-workout meal planned. Eliminate morning decisions that can derail you.</p>
-
-        <h3>3. They Follow a Plan</h3>
-        <p>They don't show up to the gym and improvise. A structured program removes decision fatigue and ensures progressive overload.</p>
-
-        <h3>4. They Track Progress</h3>
-        <p>A training log, photos, or body measurements. Seeing progress is the most powerful motivator.</p>
-
-        <h3>5. They Set Process Goals, Not Just Outcome Goals</h3>
-        <p>"Train 4 days this week" is more actionable than "lose 10 kg." Process goals are within your control.</p>
-
-        <h3>6. They Have a Minimum Viable Workout</h3>
-        <p>On tough days, they commit to just 10 minutes. Almost always, they finish the full session once started.</p>
-
-        <h3>7. They Sleep Enough</h3>
-        <p>Recovery makes training enjoyable. When you feel good, you want to train. When you're exhausted, everything is a battle.</p>
-
-        <h3>8. They Find a Community</h3>
-        <p>A training partner, an online group, or a coach. Accountability is the most underrated fitness tool.</p>
-
-        <h3>9. They Enjoy the Process</h3>
-        <p>They find exercises they actually like. Hating your workout is unsustainable long-term.</p>
-
-        <h3>10. They Forgive Missed Days</h3>
-        <p>They never let one missed workout become two. They get back immediately without guilt.</p>
-      `
-    },
-    {
-      id: 8,
-      tag: 'Nutrition',
-      emoji: '🥦',
-      color: '#00e5a0',
-      title: 'The Vegetarian Athlete: Getting Enough Protein Without Meat',
-      excerpt: 'Can you build muscle and perform at your best on a plant-based diet? The answer is yes — here's how.',
-      date: 'May 15, 2026',
-      readTime: '5 min read',
-      content: `
-        <h2>Can Vegetarians Build Muscle?</h2>
-        <p>Absolutely. Multiple studies show that vegetarians and vegans can achieve the same muscle gains as meat-eaters when protein intake is matched. The key is being intentional about your food choices.</p>
-
-        <h2>Best Plant-Based Protein Sources</h2>
-        <ul>
-          <li>🫘 <strong>Lentils:</strong> 9g/100g + high fiber and iron</li>
-          <li>🥚 <strong>Eggs:</strong> 6g per egg, the gold standard of protein quality (not vegan)</li>
-          <li>🧀 <strong>Greek yogurt:</strong> 17g/100g (not vegan)</li>
-          <li>🟤 <strong>Tofu:</strong> 8g/100g, takes on any flavor</li>
-          <li>🫛 <strong>Tempeh:</strong> 19g/100g, fermented soy with great amino profile</li>
-          <li>🥜 <strong>Seitan:</strong> 25g/100g, highest plant protein by weight</li>
-          <li>🟢 <strong>Edamame:</strong> 11g/100g, complete protein</li>
-          <li>🌰 <strong>Hemp seeds:</strong> 31g/100g, complete amino acid profile</li>
-        </ul>
-
-        <h2>The Protein Combining Myth</h2>
-        <p>You don't need to combine proteins in the same meal to get all amino acids. As long as you eat a variety of plant proteins throughout the day, your body gets everything it needs.</p>
-
-        <h2>Supplements Worth Considering</h2>
-        <ul>
-          <li><strong>Plant protein powder</strong> (pea + rice blend is best for amino profile)</li>
-          <li><strong>Creatine monohydrate</strong> — vegetarians have lower natural creatine stores and respond particularly well</li>
-          <li><strong>Vitamin B12</strong> — essential if fully plant-based</li>
-          <li><strong>Iron and Zinc</strong> — harder to absorb from plants, pair with vitamin C</li>
-        </ul>
-      `
-    },
-    {
-      id: 9,
-      tag: 'Training',
-      emoji: '⚡',
-      color: '#ffd700',
-      title: 'The Perfect Warm-Up: 10 Minutes That Prevent Months of Injury',
-      excerpt: 'Skipping the warm-up is the most expensive shortcut in fitness. Here's a science-backed routine that takes 10 minutes.',
-      date: 'May 10, 2026',
-      readTime: '4 min read',
-      content: `
-        <h2>Why Warm-Up Matters</h2>
-        <p>A proper warm-up increases muscle temperature, improves joint mobility, activates the nervous system, and mentally prepares you for training. Studies show a good warm-up can improve performance by 5–20% and dramatically reduces injury risk.</p>
-
-        <h2>The Perfect 10-Minute Warm-Up</h2>
-
-        <h3>Minutes 1–3: General Warm-Up</h3>
-        <ul>
-          <li>Light jogging or jumping jacks — 2 minutes</li>
-          <li>Arm circles (forward and backward) — 30 seconds each</li>
-          <li>Leg swings (front/back and side/side) — 30 seconds each</li>
-        </ul>
-
-        <h3>Minutes 4–6: Mobility Work</h3>
-        <ul>
-          <li>Hip circles — 10 each direction</li>
-          <li>Thoracic rotations — 10 each side</li>
-          <li>Ankle circles — 10 each direction</li>
-          <li>Cat-cow stretches — 10 reps</li>
-        </ul>
-
-        <h3>Minutes 7–10: Activation</h3>
-        <ul>
-          <li>Glute bridges — 15 reps (activates glutes for leg day)</li>
-          <li>Band pull-aparts — 15 reps (activates rear shoulders)</li>
-          <li>Dead bugs — 10 reps each side (core activation)</li>
-          <li>2–3 warm-up sets of your first exercise at 40–60% weight</li>
-        </ul>
-
-        <h2>Key Principle</h2>
-        <p>Your warm-up should be specific to the workout. If you're squatting, spend extra time on hip and ankle mobility. If you're pressing, focus on shoulder and thoracic mobility. Never static stretch cold muscles — save static stretching for after the workout.</p>
-      `
-    },
-    {
-      id: 10,
-      tag: 'Mindset',
-      emoji: '📈',
-      color: '#0097ff',
-      title: 'How to Break a Weight Loss Plateau (Science-Based)',
-      excerpt: 'Your weight loss stalled and nothing seems to work. This happens to everyone — here's exactly why and how to fix it.',
-      date: 'May 5, 2026',
-      readTime: '6 min read',
-      content: `
-        <h2>Why Plateaus Happen</h2>
-        <p>When you lose weight, your body adapts. A lighter body requires fewer calories, your metabolism slows down (adaptive thermogenesis), and activity-induced calorie burn decreases. What worked at 90kg won't work at 75kg.</p>
-
-        <h2>Strategy 1: Recalculate Your TDEE</h2>
-        <p>Use FitPlan Pro to recalculate your plan with your current weight. Your TDEE has likely dropped by 100–200 calories since you started. Your old deficit may now be maintenance.</p>
-
-        <h2>Strategy 2: Take a Diet Break</h2>
-        <p>Eat at maintenance calories for 1–2 weeks. This "resets" adaptive thermogenesis, restores leptin levels, and gives your metabolism a boost. Many people resume losing weight faster after a diet break.</p>
-
-        <h2>Strategy 3: Change Your Training</h2>
-        <p>Your body adapts to exercise. If you've been doing the same workouts for months, switch it up:</p>
-        <ul>
-          <li>Add an extra training day</li>
-          <li>Swap steady-state cardio for HIIT</li>
-          <li>Increase training volume (more sets)</li>
-          <li>Try a completely different type of exercise</li>
-        </ul>
-
-        <h2>Strategy 4: Track More Carefully</h2>
-        <p>Studies consistently show people underestimate their calorie intake by 20–40%. For two weeks, weigh everything you eat precisely. You might find hidden calories in cooking oils, sauces, or drinks.</p>
-
-        <h2>Strategy 5: Increase NEAT</h2>
-        <p>Non-Exercise Activity Thermogenesis (NEAT) — fidgeting, walking, standing — can account for 300–500 extra calories per day. Take the stairs, walk more, stand at your desk. These small habits compound massively.</p>
-
-        <h2>What NOT to Do</h2>
-        <ul>
-          <li>Don't drop calories too low — this accelerates muscle loss and metabolism slowdown</li>
-          <li>Don't give up — plateaus are temporary and a normal part of the process</li>
-          <li>Don't compare to others — your journey is unique</li>
-        </ul>
-      `
-    }
-  ];
-
-  function renderBlogGrid() {
-    const grid = document.getElementById('blogGrid');
-    if (!grid) return;
-    grid.innerHTML = blogPosts.map(p => `
-      <div class="blog-card" onclick="openBlog(${p.id})">
-        <div class="blog-img" style="background:linear-gradient(135deg,${p.color}15,${p.color}05)">${p.emoji}</div>
-        <div class="blog-body">
-          <div class="blog-tag" style="color:${p.color}">${p.tag}</div>
-          <div class="blog-title">${p.title}</div>
-          <div class="blog-excerpt">${p.excerpt}</div>
-          <div class="blog-meta">
-            <span>📅 ${p.date}</span>
-            <span>⏱️ ${p.readTime}</span>
-          </div>
+  const tips = allTips.en[goal] || allTips.en.lose;
+  let html = '';
+  tips.forEach(tip => {
+    html += `
+      <div class="tip-card">
+        <span class="tip-icon">${tip.icon}</span>
+        <div>
+          <div class="tip-title">${tip.t}</div>
+          <div class="tip-text">${tip.d}</div>
         </div>
-      </div>
-    `).join('');
-  }
-
-  function openBlog(id) {
-    const post = blogPosts.find(p => p.id === id);
-    if (!post) return;
-    document.getElementById('bm-tag').textContent = post.tag;
-    document.getElementById('bm-tag').style.color = post.color;
-    document.getElementById('bm-title').textContent = post.title;
-    document.getElementById('bm-meta').textContent = `📅 ${post.date}  •  ⏱️ ${post.readTime}`;
-    document.getElementById('bm-content').innerHTML = post.content;
-    document.getElementById('blogModal').classList.add('show');
-    window.scrollTo(0,0);
-  }
-
-  function closeBlog() {
-    document.getElementById('blogModal').classList.remove('show');
-  }
-
-  // ===== PAGE ROUTER =====
-  // showPage is defined globally in <head>
-
-
-
-  // Wait for full DOM before initializing
-  document.addEventListener('DOMContentLoaded', function() {
-    renderBlogGrid();
+      </div>`;
   });
+  document.getElementById('tipsContainer').innerHTML = html;
+}
 
+// ============================================================
+// I18N SYSTEM
+// ============================================================
+const t = {
+  en: {
+    titles: { lose:'Weight Loss Program 🔥', gain:'Muscle Building Program 💪', tone:'Body Toning Program ⚡', maint:'Maintenance Program ⚖️' },
+    subs: { lose:'Burn fat healthily and steadily', gain:'Build strong muscles and healthy mass', tone:'Defined muscles and a lean physique', maint:'Perfect balance to maintain your health' },
+    dayMealLabel: 'Daily Meal Plan',
+    calUnit: 'kcal',
+    gramUnit: 'g',
+    weekUnit: ' weeks',
+    waterNote: '💧 Daily Water:', waterVal: 'glasses of water minimum per day',
+    mealTime: '⏱️ Meal Timing:', mealTimeVal: '7AM Breakfast — 10AM Snack — 1PM Lunch — 4PM Snack — 7PM Dinner',
+    avoid: '🚫 Avoid:', avoidVal: 'Refined sugars, sodas, and fast food',
+    lowCarbNote: '🥑 Low Carb Mode:', lowCarbVal: 'Replace rice/pasta portions with extra vegetables or salad',
+    mealTimeNames: { 'Breakfast':'Breakfast', 'Snack':'Snack', 'Lunch':'Lunch', 'Dinner':'Dinner' },
+  },
+  ar: {
+    titles: { lose:'برنامج خسارة الوزن 🔥', gain:'برنامج زيادة الكتلة العضلية 💪', tone:'برنامج تحديد الجسم ⚡', maint:'برنامج الحفاظ على الوزن ⚖️' },
+    subs: { lose:'حرق الدهون بشكل صحي ومنتظم', gain:'بناء عضلات قوية وكتلة صحية', tone:'عضلات محددة وجسم رشيق', maint:'توازن مثالي للحفاظ على صحتك' },
+    dayMealLabel: 'الخطة الغذائية اليومية',
+    calUnit: 'كيلو كالوري',
+    gramUnit: ' غرام',
+    weekUnit: ' أسبوع',
+    waterNote: '💧 الماء اليومي:', waterVal: 'كوب ماء يومياً على الأقل',
+    mealTime: '⏱️ مواعيد الوجبات:', mealTimeVal: 'الفطور 7ص — منتصف الصباح 10ص — الغداء 1م — العصر 4م — العشاء 7م',
+    avoid: '🚫 تجنب:', avoidVal: 'السكريات المكررة، المشروبات الغازية، الوجبات السريعة',
+    lowCarbNote: '🥑 نمط قليل الكارب:', lowCarbVal: 'استبدل حصص الأرز/المكرونة بخضروات أو سلطة إضافية',
+    mealTimeNames: { 'Breakfast':'الفطور', 'Snack':'وجبة خفيفة', 'Lunch':'الغداء', 'Dinner':'العشاء' },
+  }
+};
+
+// ============================================================
+// BLOG SYSTEM
+// ============================================================
+const blogPosts = [
+  { id: 1, tag:'Nutrition', emoji:'🥗', color:'#00e5a0', title:'What is TDEE and Why It\'s the Key to Your Weight Goal', excerpt:'Understanding Total Daily Energy Expenditure is the foundation of any successful diet.', date:'June 10, 2026', readTime:'5 min read', content:'<h2>What is TDEE?</h2><p>Total Daily Energy Expenditure (TDEE) is the total number of calories your body burns in a day.</p>' },
+  { id: 2, tag:'Training', emoji:'🏋️', color:'#0097ff', title:'Progressive Overload: The #1 Rule of Muscle Growth', excerpt:'Without progressive overload, your muscles have no reason to grow.', date:'June 8, 2026', readTime:'6 min read', content:'<h2>What is Progressive Overload?</h2><p>Progressive overload is the gradual increase of stress placed on the body during exercise.</p>' },
+  { id: 3, tag:'Nutrition', emoji:'🥩', color:'#ff6b35', title:'How Much Protein Do You Really Need?', excerpt:'Protein requirements are often misunderstood. Here\'s the science.', date:'June 5, 2026', readTime:'4 min read', content:'<h2>Why Protein is Essential</h2><p>Protein is the building block of muscle tissue.</p>' },
+  { id: 4, tag:'Recovery', emoji:'😴', color:'#ffd700', title:'Why Sleep is Your Secret Fitness Weapon', excerpt:'You don\'t build muscle in the gym. You build it while you sleep.', date:'June 2, 2026', readTime:'5 min read', content:'<h2>What Happens When You Sleep</h2><p>Sleep is when your body does most of its repair work.</p>' }
+];
+
+function renderBlogGrid() {
+  const grid = document.getElementById('blogGrid');
+  if (!grid) return;
+  grid.innerHTML = blogPosts.map(p => `
+    <div class="blog-card" onclick="openBlog(${p.id})">
+      <div class="blog-img" style="background:linear-gradient(135deg,${p.color}15,${p.color}05)">${p.emoji}</div>
+      <div class="blog-body">
+        <div class="blog-tag" style="color:${p.color}">${p.tag}</div>
+        <div class="blog-title">${p.title}</div>
+        <div class="blog-excerpt">${p.excerpt}</div>
+        <div class="blog-meta"><span>📅 ${p.date}</span><span>⏱️ ${p.readTime}</span></div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function openBlog(id) {
+  const post = blogPosts.find(p => p.id === id);
+  if (!post) return;
+  document.getElementById('bm-tag').textContent = post.tag;
+  document.getElementById('bm-tag').style.color = post.color;
+  document.getElementById('bm-title').textContent = post.title;
+  document.getElementById('bm-meta').textContent = `📅 ${post.date}  •  ⏱️ ${post.readTime}`;
+  document.getElementById('bm-content').innerHTML = post.content;
+  document.getElementById('blogModal').classList.add('show');
+  window.scrollTo(0,0);
+}
+
+function closeBlog() {
+  document.getElementById('blogModal').classList.remove('show');
+}
+
+// ============================================================
+// INITIALIZATION
+// ============================================================
+document.addEventListener('DOMContentLoaded', function() {
+  renderBlogGrid();
+  // Set default days
+  document.getElementById('statDaysNum').textContent = '5';
+});
 </script>
 
-
-<!-- ========== ABOUT PAGE ========== -->
+<!-- PAGE SECTIONS -->
 <section class="page-section" id="page-about">
-  <div class="page-hero">
-    <h1>About FitPlan Pro</h1>
-    <p>Science-backed fitness planning for everyone, everywhere</p>
-  </div>
-
+  <div class="page-hero"><h1>About FitPlan Pro</h1><p>Science-backed fitness planning for everyone, everywhere</p></div>
   <div class="about-grid">
-    <div class="about-card">
-      <div class="ac-icon">🧬</div>
-      <div class="ac-title">Science-Based</div>
-      <div class="ac-desc">Every plan uses the Mifflin-St Jeor equation and TDEE calculation — the gold standard in nutrition science.</div>
-    </div>
-    <div class="about-card">
-      <div class="ac-icon">🎯</div>
-      <div class="ac-title">100% Personalized</div>
-      <div class="ac-desc">No two plans are the same. Your age, weight, goal, food preferences, and training days all shape your unique program.</div>
-    </div>
-    <div class="about-card">
-      <div class="ac-icon">🌍</div>
-      <div class="ac-title">Bilingual</div>
-      <div class="ac-desc">Full Arabic and English support — we believe language should never be a barrier to better health.</div>
-    </div>
-    <div class="about-card">
-      <div class="ac-icon">🆓</div>
-      <div class="ac-title">Free Forever</div>
-      <div class="ac-desc">No subscriptions, no hidden fees. Professional-grade fitness planning, completely free.</div>
-    </div>
+    <div class="about-card"><div class="ac-icon">🧬</div><div class="ac-title">Science-Based</div><div class="ac-desc">Every plan uses the Mifflin-St Jeor equation and TDEE calculation.</div></div>
+    <div class="about-card"><div class="ac-icon">🎯</div><div class="ac-title">100% Personalized</div><div class="ac-desc">No two plans are the same. Your age, weight, goal, and preferences shape your program.</div></div>
+    <div class="about-card"><div class="ac-icon">🌍</div><div class="ac-title">Bilingual</div><div class="ac-desc">Full Arabic and English support.</div></div>
+    <div class="about-card"><div class="ac-icon">🆓</div><div class="ac-title">Free Forever</div><div class="ac-desc">No subscriptions, no hidden fees. Professional-grade fitness planning.</div></div>
   </div>
-
-  <div class="prose">
-    <h2>Our Mission</h2>
-    <p>FitPlan Pro was built with one goal: to make professional-level fitness and nutrition planning accessible to everyone. Most personalized plans cost hundreds of dollars from a nutritionist or coach. We believe that knowledge shouldn't be gated behind a paywall.</p>
-    <p>Whether you want to lose weight, build muscle, tone your body, or simply maintain a healthy lifestyle — FitPlan Pro generates a complete, science-backed program tailored to your exact body and goals in seconds.</p>
-
-    <h2>How It Works</h2>
-    <p>You enter your stats — age, height, weight, goal, activity level, training days, and food preferences. Our engine calculates your <strong>Basal Metabolic Rate (BMR)</strong> using the Mifflin-St Jeor formula, then multiplies it by your activity factor to find your <strong>Total Daily Energy Expenditure (TDEE)</strong>.</p>
-    <p>From there, we apply a scientifically appropriate caloric surplus or deficit based on your goal, distribute macronutrients (protein, carbohydrates, fats) optimally, and generate a full meal plan and workout schedule adapted to your preferences.</p>
-
   <div class="prose">
     <h2>Contact Us</h2>
-    <p>Have feedback, suggestions, or questions? We'd love to hear from you.</p>
     <p>📧 Email: <a href="mailto:contactfitplanpro@gmail.com">contactfitplanpro@gmail.com</a></p>
     <p>🌐 Website: <a href="https://fit-planplus.vercel.app" target="_blank">fit-planplus.vercel.app</a></p>
   </div>
 </section>
 
-<!-- ========== PRIVACY POLICY PAGE ========== -->
 <section class="page-section" id="page-privacy">
-  <div class="page-hero">
-    <h1>Privacy Policy</h1>
-    <p>Last updated: June 2026</p>
-  </div>
-
-  <div class="policy-card">
-    <div class="prose">
-      <h2>1. Information We Collect</h2>
-      <p>FitPlan Pro is designed with privacy in mind. We collect only the information you voluntarily enter into the plan generator:</p>
-      <ul>
-        <li>Age, gender, height, and weight</li>
-        <li>Fitness goal and target weight</li>
-        <li>Activity level and training preferences</li>
-        <li>Food preferences and dietary restrictions</li>
-      </ul>
-      <p><strong>We do not require account registration.</strong> All data you enter is processed locally in your browser and is not stored on our servers.</p>
-
-      <h2>2. How We Use Your Information</h2>
-      <p>The information you provide is used solely to generate your personalized fitness and nutrition plan. This calculation happens entirely within your browser — your data never leaves your device.</p>
-
-      <h2>3. Cookies and Analytics</h2>
-      <p>We may use anonymous, aggregated analytics (such as page visit counts) to understand how people use FitPlan Pro and improve the service. This data cannot be used to identify you personally.</p>
-
-      <h2>4. Third-Party Services</h2>
-      <p>FitPlan Pro is hosted on Vercel. Their privacy practices are governed by the <a href="https://vercel.com/legal/privacy-policy" target="_blank">Vercel Privacy Policy</a>. We use Google Fonts for typography; Google's privacy policy applies to font delivery.</p>
-
-      <h2>5. Data Security</h2>
-      <p>Since we do not collect or store personal data on our servers, there is no database of your personal information that could be breached. All plan generation happens client-side in your browser.</p>
-
-      <h2>6. Children's Privacy</h2>
-      <p>FitPlan Pro is not intended for children under 14 years of age. We do not knowingly collect personal information from children under 14.</p>
-
-      <h2>7. Changes to This Policy</h2>
-      <p>We may update this Privacy Policy from time to time. Any changes will be posted on this page with an updated date. Continued use of the service after changes constitutes acceptance of the new policy.</p>
-
-      <h2>8. Contact</h2>
-      <p>If you have questions about this Privacy Policy, please contact us at <a href="mailto:contactfitplanpro@gmail.com">contactfitplanpro@gmail.com</a>.</p>
-    </div>
-  </div>
+  <div class="page-hero"><h1>Privacy Policy</h1><p>Last updated: June 2026</p></div>
+  <div class="policy-card"><div class="prose">
+    <h2>1. Information We Collect</h2><p>We collect only the information you voluntarily enter into the plan generator.</p>
+    <h2>2. How We Use Your Information</h2><p>Your data is processed locally in your browser and is not stored on our servers.</p>
+    <h2>3. Contact</h2><p>Questions? Email us at <a href="mailto:contactfitplanpro@gmail.com">contactfitplanpro@gmail.com</a>.</p>
+  </div></div>
 </section>
 
-<!-- ========== TERMS OF SERVICE PAGE ========== -->
 <section class="page-section" id="page-terms">
-  <div class="page-hero">
-    <h1>Terms of Service</h1>
-    <p>Last updated: June 2026</p>
-  </div>
-
-  <div class="policy-card">
-    <div class="prose">
-      <h2>1. Acceptance of Terms</h2>
-      <p>By accessing or using FitPlan Pro ("the Service"), you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use the Service.</p>
-
-      <h2>2. Description of Service</h2>
-      <p>FitPlan Pro is a free online tool that generates personalized fitness and nutrition plans based on user-provided information. The Service is provided for informational and educational purposes only.</p>
-
-      <h2>3. Medical Disclaimer</h2>
-      <p><strong>IMPORTANT:</strong> FitPlan Pro is not a medical service. The plans generated by this tool are for general informational purposes only and should not be considered medical advice. Always consult a qualified healthcare provider, physician, or registered dietitian before starting any new diet or exercise program, especially if you have any pre-existing medical conditions.</p>
-
-      <h2>4. User Responsibilities</h2>
-      <ul>
-        <li>You are responsible for providing accurate information to generate an appropriate plan.</li>
-        <li>You use the generated plans at your own risk.</li>
-        <li>You agree not to use the Service for any unlawful purpose.</li>
-        <li>You agree not to attempt to disrupt or interfere with the Service.</li>
-      </ul>
-
-      <h2>5. Intellectual Property</h2>
-      <p>The FitPlan Pro application, including its design, code, content, and functionality, is owned by FitPlan Pro and is protected by applicable intellectual property laws. You may not copy, modify, or distribute the application without explicit written permission.</p>
-
-      <h2>6. Limitation of Liability</h2>
-      <p>To the maximum extent permitted by law, FitPlan Pro shall not be liable for any direct, indirect, incidental, special, or consequential damages resulting from your use of, or inability to use, the Service or the plans generated by it.</p>
-
-      <h2>7. Changes to Terms</h2>
-      <p>We reserve the right to modify these Terms at any time. Continued use of the Service after changes constitutes your acceptance of the new Terms.</p>
-
-      <h2>8. Governing Law</h2>
-      <p>These Terms are governed by applicable law. Any disputes arising from these Terms shall be resolved through good-faith negotiation.</p>
-
-      <h2>9. Contact</h2>
-      <p>Questions about these Terms? Contact us at <a href="mailto:contactfitplanpro@gmail.com">contactfitplanpro@gmail.com</a>.</p>
-    </div>
-  </div>
+  <div class="page-hero"><h1>Terms of Service</h1><p>Last updated: June 2026</p></div>
+  <div class="policy-card"><div class="prose">
+    <h2>1. Acceptance of Terms</h2><p>By using FitPlan Pro, you agree to these Terms.</p>
+    <h2>2. Medical Disclaimer</h2><p>Always consult a qualified healthcare provider before starting any new diet or exercise program.</p>
+    <h2>3. Contact</h2><p>Questions? Email us at <a href="mailto:contactfitplanpro@gmail.com">contactfitplanpro@gmail.com</a>.</p>
+  </div></div>
 </section>
 
-<!-- ========== BLOG PAGE ========== -->
 <section class="page-section" id="page-blog">
-  <div class="page-hero">
-    <h1>Fitness & Nutrition Blog</h1>
-    <p>Science-backed articles to fuel your transformation</p>
-  </div>
-
+  <div class="page-hero"><h1>Fitness & Nutrition Blog</h1><p>Science-backed articles to fuel your transformation</p></div>
   <div class="blog-grid" id="blogGrid"></div>
 </section>
 
-<!-- BLOG ARTICLE MODAL -->
+<!-- BLOG MODAL -->
 <div class="blog-modal" id="blogModal">
   <div class="blog-modal-inner">
     <button class="blog-modal-close" onclick="closeBlog()">← Back to Blog</button>
@@ -2931,33 +1760,17 @@ function showPage(page) {
   </div>
 </div>
 
-<!-- ========== FOOTER ========== -->
+<!-- FOOTER -->
 <footer class="site-footer">
   <div class="footer-inner">
     <div class="footer-top">
-      <div>
-        <div class="footer-brand-name">⚡ FitPlan Pro</div>
-        <div class="footer-brand-desc">A free, science-backed fitness and nutrition planner. Personalized to your body, your goal, and your lifestyle.</div>
-      </div>
-      <div>
-        <div class="footer-col-title">Pages</div>
-        <button class="footer-link" onclick="showPage('home')">Home</button>
-        <button class="footer-link" onclick="showPage('blog')">Blog</button>
-        <button class="footer-link" onclick="showPage('about')">About</button>
-      </div>
-      <div>
-        <div class="footer-col-title">Legal</div>
-        <button class="footer-link" onclick="showPage('privacy')">Privacy Policy</button>
-        <button class="footer-link" onclick="showPage('terms')">Terms of Service</button>
-      </div>
+      <div><div class="footer-brand-name">⚡ FitPlan Pro</div><div class="footer-brand-desc">A free, science-backed fitness and nutrition planner.</div></div>
+      <div><div class="footer-col-title">Pages</div><button class="footer-link" onclick="showPage('home')">Home</button><button class="footer-link" onclick="showPage('blog')">Blog</button><button class="footer-link" onclick="showPage('about')">About</button></div>
+      <div><div class="footer-col-title">Legal</div><button class="footer-link" onclick="showPage('privacy')">Privacy Policy</button><button class="footer-link" onclick="showPage('terms')">Terms of Service</button></div>
     </div>
-    <div class="footer-bottom">
-      <span>© 2026 FitPlan Pro. All rights reserved.</span>
-      <span>Built with ❤️ for a healthier world</span>
-    </div>
+    <div class="footer-bottom"><span>© 2026 FitPlan Pro. All rights reserved.</span><span>Built with ❤️ for a healthier world</span></div>
   </div>
 </footer>
 
 </body>
 </html>
-
